@@ -41,9 +41,9 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'knox',
+    'django.contrib.sites',
     # 'rest_framework.authtoken',
     # 'rest_auth',
-    # 'django.contrib.sites',
     # 'allauth',
     # 'allauth.account',
     # 'rest_auth.registration',
@@ -56,8 +56,8 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-   # 'filesec.middleware.CustomCorsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
