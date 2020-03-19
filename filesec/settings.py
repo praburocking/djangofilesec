@@ -25,7 +25,7 @@ SECRET_KEY = 'ru=1b%+1v&*caoowl=2o3f#@*esw0b!jz9a*3ks2^!--f6%%@w'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['https://filesec.herokuapp.com/']
 CORS_URLS_REGEX = r'^/api/v1/.*$'
 CORS_ORIGIN_WHITELIST = ['http://localhost:3000']
 

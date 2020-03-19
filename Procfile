@@ -1,1 +1,1 @@
-web: gunicorn filesec.wsgi
+web: gunicorn filesec.wsgi --log-file -
