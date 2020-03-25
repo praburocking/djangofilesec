@@ -58,8 +58,6 @@ INSTALLED_APPS = [
     'api',
     'accounts',
     'files'
-
-
 ]
 
 MIDDLEWARE = [
