@@ -13,6 +13,13 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os
 import dj_database_url
 import django_heroku
+import environ
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
+environ.Env.read_env()
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -24,7 +31,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'ru=1b%+1v&*caoowl=2o3f#@*esw0b!jz9a*3ks2^!--f6%%@w'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = ['filesec.herokuapp.com','localhost']
 CORS_URLS_REGEX = r'^/api/v1/.*$'
