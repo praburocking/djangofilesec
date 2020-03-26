@@ -23,7 +23,6 @@ environ.Env.read_env()
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
@@ -45,16 +44,12 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'corsheaders',
     'rest_framework',
     'knox',
     'django.contrib.sites',
-    # 'rest_framework.authtoken',
-    # 'rest_auth',
-    # 'allauth',
-    # 'allauth.account',
-    # 'rest_auth.registration',
     'api',
     'accounts',
     'files'
@@ -62,6 +57,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -77,7 +73,7 @@ ROOT_URLCONF = 'filesec.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'build')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -141,10 +137,15 @@ USE_L10N = True
 
 USE_TZ = True
 
-REACT_APP_DIR = os.path.join(BASE_DIR, 'gamecliet')
-STATICFILES_DIRS = [ os.path.join(REACT_APP_DIR, 'build', 'static'),]
-STATIC_ROOT= os.path.join(BASE_DIR, 'build', 'static')
+# REACT_APP_DIR = os.path.join(BASE_DIR, 'gamecliet')
+# STATICFILES_DIRS = [ os.path.join(REACT_APP_DIR, 'build', 'static'),]
+# STATIC_ROOT= os.path.join(BASE_DIR, 'static')
 
+
+STATIC_URL = '/static/'
+# Place static in the same location as webpack build files
+STATIC_ROOT = os.path.join(BASE_DIR, 'build', 'static')
+STATICFILES_DIRS = []
 
 REST_FRAMEWORK = {
 
@@ -157,7 +158,6 @@ REST_FRAMEWORK = {
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
-
-STATIC_URL = '/static/'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-django_heroku.settings(locals())
+django_heroku.settings(locals(),staticfiles=False)

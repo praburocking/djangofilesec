@@ -21,6 +21,6 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include('api.urls')),
-    url(r'^(?!api)', views.FrontendAppView.as_view()),
+    url(r'^(?!api)', views.index,name="index"),
 
 ]
