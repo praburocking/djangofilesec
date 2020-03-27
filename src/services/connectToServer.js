@@ -4,7 +4,8 @@ require('dotenv').config()
 
 console.log("server url",process.env);
 
-let url=process.env.NODE_ENV==="development"?process.env.REACT_APP_DEVELOPMENT_SERVER_URL:process.env.REACT_APP_PRODUCTION_SERVER_URL;
+let url="https://filesec.herokuapp.com/api/v1/"
+
 //url="http://localhost:3001/api/"
 //url="https://prabuheros-server.herokuapp.com/api/"
 
