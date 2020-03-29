@@ -87,7 +87,7 @@ import Input from 'antd/es/input'
     const handeDelete=async(key)=>
       {
           let deleteResp=await deleteFile(key)
-          if(deleteResp.status===200)
+          if([200,201,204].includes( deleteResp.status) )
             {
               props.deleteFromStore(key)
             }

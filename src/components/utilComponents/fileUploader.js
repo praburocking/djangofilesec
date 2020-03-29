@@ -45,24 +45,13 @@ const FileUploader=(props)=>
     const [eKey,setEKey]=useState(null);
 
 
-  //  const onChangeHandler=event=>{
-
-  //       console.log(event.target.files[0])
-        
-  //       if(event.target.files[0])
-  //       {
-  //           setFile(event.target.files[0]);
-  //           setModal(true);
-  //       }
-  //   }
-
    const handleOk = async(e) => {
         console.log(e);
         const data = new FormData() 
         data.append('file', file);
         data.append('key',eKey);
         let uploadResp=await uploadfile(data)
-        if(uploadResp.status===200)
+        if([200,201,204].includes(uploadResp.status))
         {
           props.updateFilesToStore(uploadResp.data)
         }
