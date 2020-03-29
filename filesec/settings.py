@@ -11,33 +11,25 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-import dj_database_url
+#import dj_database_url
 import django_heroku
 import environ
 env = environ.Env(
-    # set casting, default value
     DEBUG=(bool, False)
 )
 environ.Env.read_env()
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+#env settings
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'ru=1b%+1v&*caoowl=2o3f#@*esw0b!jz9a*3ks2^!--f6%%@w'
-
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
 
+#cors settings
 ALLOWED_HOSTS = ['filesec.herokuapp.com','localhost']
 CORS_URLS_REGEX = r'^/api/v1/.*$'
 CORS_ORIGIN_WHITELIST = ['http://localhost:3000']
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -50,11 +42,11 @@ INSTALLED_APPS = [
     'rest_framework',
     'knox',
     'django.contrib.sites',
+    'django_s3_storage',
     'api',
     'accounts',
     'files'
 ]
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -65,11 +57,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
 ]
-
 ROOT_URLCONF = 'filesec.urls'
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -88,24 +77,26 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'filesec.wsgi.application'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
 SITE_ID = 1
 
-# Database
-# https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-
+# Database configurations
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
 # prod_db  =  dj_database_url.config(conn_max_age=500)
 # DATABASES['default'].update(prod_db)
 
-# Password validation
-# https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
+
+#authentication configurations
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (  # added
+        'knox.auth.TokenAuthentication',
+    ),
+    'DATETIME_FORMAT': "%m/%d/%Y %H:%M:%S",
+}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -122,42 +113,28 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-#AUTH_USER_MODEL = 'users.CustomUser'
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
-# REACT_APP_DIR = os.path.join(BASE_DIR, 'gamecliet')
-# STATICFILES_DIRS = [ os.path.join(REACT_APP_DIR, 'build', 'static'),]
-# STATIC_ROOT= os.path.join(BASE_DIR, 'static')
-
-
+ #static configurations
 STATIC_URL = '/static/'
-# Place static in the same location as webpack build files
 STATIC_ROOT = os.path.join(BASE_DIR, 'build', 'static')
 STATICFILES_DIRS = []
-
-REST_FRAMEWORK = {
-
-    'DEFAULT_AUTHENTICATION_CLASSES': (  # added
-        'knox.auth.TokenAuthentication',
-    ),
-    'DATETIME_FORMAT': "%m/%d/%Y %H:%M:%S",
-}
-
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.0/howto/static-files/
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+#amazon S3 settings
+AWS_S3_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
+AWS_REGION = env('AWS_S3_REGION_NAME')
+AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
+AWS_S3_ENDPOINT_URL = 'https://s3.amazonaws.com'
+AWS_S3_ADDRESSING_STYLE = "auto"
+DEFAULT_FILE_STORAGE = 'django_s3_storage.storage.S3Storage'
+
+
 django_heroku.settings(locals(),staticfiles=False)

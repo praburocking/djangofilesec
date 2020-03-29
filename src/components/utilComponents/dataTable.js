@@ -28,7 +28,7 @@ import Input from 'antd/es/input'
     const columns = [
       {
         title: 'Name',
-        dataIndex: 'file',
+        dataIndex: 'name',
         key: 'name',
         render: text => <a style={{color:"black"}}>{text}</a>,
       },

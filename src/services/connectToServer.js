@@ -6,8 +6,7 @@ console.log("server url",process.env);
 
 let url="https://filesec.herokuapp.com/api/v1/"
 
-//url="http://localhost:3001/api/"
-//url="https://prabuheros-server.herokuapp.com/api/"
+url="http://localhost:8000/api/v1/"
 
 let user_url=url+"iam/accounts";
 let login_url=url+"iam/login";
@@ -18,10 +17,10 @@ let payment_url=url+"pay"
 let forgotPassword_url=url+"forgotpassword"
 let resetPass_url=url+"resetpass"
 let verifyuser_url=url+"verifyuser"
-let uploadfile_url=url+"file/upload"
+let uploadfile_url=url+"app/files"
 let getfiles_url=url+"app/files"
 let downloadfiles_url=url+'file/download'
-let deletefile_url=url+'file'
+let deletefile_url=url+'app/files'
 
 export const signup=async (userData)=>
 {
