@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 import uuid
 from django_s3_storage.storage import S3Storage
+from .utils import CONSTANTS
 
 storage = S3Storage(aws_s3_bucket_name='filesec')
 
@@ -17,11 +18,15 @@ class Files(models.Model):
     user=models.ForeignKey(User,related_name='Files',on_delete=models.CASCADE)
 
     def save(self,*args,**kargs):
-        self.name =self.file.name
-        self.file.name=str(self.id)
-        self.size=self.file.size
-        super().save(*args,**kargs)
+        if(self.file.size<1000):
+            self.name =self.file.name
+            self.file.name=str(self.id)
+            self.size=self.file.size
+            super().save(*args,**kargs)
+        else:
+              Exception("File size exceeded")
 
 
     def __str__(self):
         return self.user.username+"_"+self.file.name+"_"+self.name
+

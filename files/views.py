@@ -28,4 +28,4 @@ class filesDownload(GenericAPIView):
     def post(self,request,pk):
         file=get_object_or_404(Files,pk=pk)
         file=File(file.file,name=file.name)
-        return(HttpResponse(file,content_type='text/plain'))
+        return(HttpResponse(file,content_type='text/plain',))
