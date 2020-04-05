@@ -27,6 +27,7 @@ class Files(models.Model):
             self.name =self.file.name
             self.file.name=str(self.id)
             self.size=self.file.size
+            self.salt=os.urandom(16)
             user_key=self.private_key
             self.private_key=random_key_gen(CONSTANTS["RANDOM_KEY_MAX_LEN"])
             print(random_key_gen(CONSTANTS["RANDOM_KEY_MAX_LEN"]))
