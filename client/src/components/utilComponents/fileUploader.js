@@ -49,7 +49,7 @@ const FileUploader=(props)=>
         console.log(e);
         const data = new FormData() 
         data.append('file', file);
-        data.append('key',eKey);
+        data.append('private_key',eKey);
         let uploadResp=await uploadfile(data)
         if([200,201,204].includes(uploadResp.status))
         {

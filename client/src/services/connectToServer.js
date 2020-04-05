@@ -178,7 +178,7 @@ export const downloadFiles=async (id,key)=>{
         method:"POST",
         headers:setAuthorizationHeader().headers,
         data: {
-            key:key
+            private_key:key
           },
         responseType: 'blob'
         })

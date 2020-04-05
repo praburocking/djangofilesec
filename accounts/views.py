@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
 from .serializers import UserSerializer
-from django.contrib.auth.models import User
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.response import Response
 from rest_framework import status
@@ -10,6 +9,7 @@ from django.shortcuts import  get_object_or_404
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import  csrf_exempt
 from knox.models import AuthToken
+from .models import User
 # Create your views here.
 
 class createUser(APIView):
@@ -41,12 +41,6 @@ class userExist(APIView):
 
 
 
-
-
-
-
-
-
 class loginView(APIView):
     authentication_classes = [BasicAuthentication]
     @method_decorator(csrf_exempt)
@@ -55,10 +49,9 @@ class loginView(APIView):
     def post(self,request):
         try:
             if not request.user.is_authenticated:
-                user=User.objects.all()
-                user=get_object_or_404(user,email=request.data['email'])
-                user=authenticate(username=user.username,password=request.data['password'])
+                user=authenticate(username=request.data['email'],password=request.data['password'])
                 if user is not None:
+                    #login(request,user)
                     return Response(data={"user":UserSerializer(instance=user).data,"authtoken": AuthToken.objects.create(user)[1]})
                 else:
                     return Response(data={"detail":"invalid email/password"},status=status.HTTP_401_UNAUTHORIZED)
@@ -69,16 +62,6 @@ class loginView(APIView):
             return Response(data={"detail":"invalid inputdata"},status=status.HTTP_400_BAD_REQUEST)
 
 
-# class logoutView(APIView):
-#     def post(self,request):
-#         try:
-#             if request.user.is_authenticated:
-#                 logout(request)
-#                 return Response(data={"detail": "logged-out"}, status=status.HTTP_200_OK)
-#             else:
-#                 return Response(data={"detail": "no user found"}, status=status.HTTP_401_UNAUTHORIZED)
-#         except:
-#             return Response(data={"detail":"exception while logging-out"},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class accountsView(APIView):
     def delete(self, request, format='json'):

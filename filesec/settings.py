@@ -43,8 +43,8 @@ INSTALLED_APPS = [
     'knox',
     'django.contrib.sites',
     'django_s3_storage',
-    'api',
     'accounts',
+    'api',
     'files'
 ]
 MIDDLEWARE = [
@@ -91,6 +91,8 @@ DATABASES = {
 
 
 #authentication configurations
+
+AUTH_USER_MODEL = 'accounts.User'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (  # added
         'knox.auth.TokenAuthentication',
