@@ -16,7 +16,7 @@ class Files(models.Model):
     file=models.FileField(null=False,storage=storage)
     name=models.TextField(null=False,default='noname')
     private_key=models.TextField(null=False,default='nokey')
-    salt=models.BinaryField(null=False,default=os.urandom(16),max_length=16)
+    salt=models.BinaryField(null=False,default=os.urandom(16),max_length=100)
     format=models.TextField(null=False,default='noformat')
     size=models.IntegerField(null=False,default=0)
     user=models.ForeignKey(get_user_model(),related_name='Files',on_delete=models.CASCADE)
