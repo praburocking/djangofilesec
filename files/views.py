@@ -33,7 +33,7 @@ class filesDownload(GenericAPIView):
             if "private_key" in request.data.keys():
                 file=get_object_or_404(Files,pk=pk)
                 key=file.private_key
-                salt=file.salt
+                salt = file.salt.tobytes()
                 file_name=file.name
                 file=File(file.file,name=file.name)
                 user_key = request.data["private_key"]
