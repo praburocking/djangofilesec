@@ -1,9 +1,11 @@
 import React from 'react'
 import {Row,Col,Layout,Typography,Card,Timeline,Carousel,Divider} from 'antd'
-import { Avatar } from 'antd';
+import { Button } from 'antd';
 import {state_to_props} from '../../util/common_utils'
 import {connect} from 'react-redux'
 import Header from '../utilComponents/header'
+import {EditFilled} from '@ant-design/icons'
+import './accounts.css'
 
 
 const Accounts=(props)=>
@@ -12,16 +14,43 @@ const Accounts=(props)=>
     return(<Layout className="parallax" style={{backgroundImage:"../media/bg.jpg"}}>
    <Header defaultSelectedKeys={['1']} isLoggedIn="true"/>
     <Content style={{ padding: '10 10 10 10px', marginTop: 64, minHeight:"720px"}}>
-    <Row>
-        <Col span={6} style={{minHeight:"720px"}}>
-        <Avatar shape="square" size={64} >{props.user.username[0].toUpperCase()}</Avatar>
-        <Row>
-            USER
-            </Row>
+        <div class="center" style={{textAlign:"center",maxWidth:"1000px",minWidth:"1000px"}}>
+    <Row style={{color:"white"}}>
+        <Col span={24} >
+        <div class="profile-header-container">   
+    		<div class="profile-header-img">
+                <img class="img-circle" src="//lh3.googleusercontent.com/-6V8xOA6M7BA/AAAAAAAAAAI/AAAAAAAAAAA/rzlHcD0KYwo/photo.jpg?sz=120"/>
+                <div class="rank-label-container">
+                    <Button class="label label-default rank-label"  style={{backgroundColor:"rgb(24,144,255)"}}><EditFilled />Edit</Button>
+                </div>
+            </div>
+        </div>  
         </Col>
-       
-        <Col span={18}></Col>
+
+            
+        <Col span={24} style={{color:"white",textAlign:"center"}}>
+            <Row style={{paddingTop :"10px",paddingBottom:"10px",alignContent:"center"}} >
+                 <Col span={12}><strong>Name</strong></Col><Col span={12}>{props.user.username}</Col>
+            </Row>
+            <Divider/>
+             <Row style={{paddingTop :"10px",paddingBottom:"10px"}}>
+                 <Col span={12}><strong>Total Space</strong></Col><Col span={12}>{props.user.username}</Col><Col></Col>
+             </Row>
+             <Divider/>
+             <Row  style={{paddingTop :"10px",paddingBottom:"10px"}}>
+                <Col span={12}><strong>Free Space</strong></Col><Col span={12}>{props.user.username}</Col><Col></Col>
+             </Row>
+             <Divider/>
+             <Row style={{paddingTop :"10px",paddingBottom:"10px"}}>
+                <Col span={12}><strong>plan</strong></Col><Col span={12}>{props.user.username}</Col><Col></Col>
+             </Row>
+             <Divider/>
+             <Row style={{paddingTop :"10px",paddingBottom:"10px"}}>
+                <Col span={12}><strong>password</strong></Col><Col span={12}>***</Col><Col></Col>
+             </Row>
+        </Col>
         </Row>
+        </div>
     </Content>
     <Footer >
     <div style={{textAlign:"left"}}>  For any enquiries, contact prabumohan96@gmail.com</div>
