@@ -1,16 +1,53 @@
 
- import Table from 'antd/es/table'
- import Divider from 'antd/es/divider'
- import Tag from 'antd/es/tag'
- import message from 'antd/es/message'
+ import {Table,Divider,message,Modal,Input,Tag} from 'antd'
  import {downloadFiles,deleteFile} from '../../services/connectToServer'
 import {connect} from 'react-redux'
 import React,{useState} from 'react';
 import {state_to_props} from '../../util/common_utils'
-import Modal from 'antd/es/modal'
-import Input from 'antd/es/input'
 
 
+const columns1 = [
+  { title: 'Name', dataIndex: 'name', key: 'name' },
+  { title: 'Age', dataIndex: 'age', key: 'age' },
+  { title: 'Address', dataIndex: 'address', key: 'address' },
+  {
+    title: 'Action',
+    dataIndex: '',
+    key: 'x',
+    render: () => <a>Delete</a>,
+  },
+];
+
+const data = [
+  {
+    key: 1,
+    name: 'John Brown',
+    age: 32,
+    address: 'New York No. 1 Lake Park',
+    description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.',
+  },
+  {
+    key: 2,
+    name: 'Jim Green',
+    age: 42,
+    address: 'London No. 1 Lake Park',
+    description: 'My name is Jim Green, I am 42 years old, living in London No. 1 Lake Park.',
+  },
+  {
+    key: 3,
+    name: 'Not Expandable',
+    age: 29,
+    address: 'Jiangsu No. 1 Lake Park',
+    description: 'This not expandable',
+  },
+  {
+    key: 4,
+    name: 'Joe Black',
+    age: 32,
+    address: 'Sidney No. 1 Lake Park',
+    description: 'My name is Joe Black, I am 32 years old, living in Sidney No. 1 Lake Park.',
+  },
+];
  
 
 
@@ -117,8 +154,8 @@ import Input from 'antd/es/input'
   
       }
       return(
-    <div>
-      <Table columns={columns} dataSource={props.data} />
+    <div  >
+      <Table columns={columns} dataSource={props.data} size="middle"  />
       <Modal
           title="please Enter your decryption key"
           visible={isShowModal}
@@ -130,5 +167,6 @@ import Input from 'antd/es/input'
         </div>
       )
   }
+
 
 export default connect(null,{deleteFromStore})(DataTable);

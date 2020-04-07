@@ -6,7 +6,7 @@ import Input from 'antd/es/input'
 import Button from 'antd/es/button'
 import message from 'antd/es/message'
 import Typography from 'antd/es/typography'
-
+import {LeftOutlined} from '@ant-design/icons'
 import {connect} from 'react-redux'
 import {state_to_props} from '../../util/common_utils'
 
@@ -19,59 +19,51 @@ const setUserDetailsToStore=(user)=>
   return {type:"USER_INIT",data:user};
 }
 
-const ForgotPassword=(props)=>{
+const ForgotPassword=  (props)=>{
   const [isLoading,setLoading]=useState(false);
-  const { getFieldDecorator,getFieldsError,getFieldError,isFieldTouched } = props.form;
-  useEffect(()=>{props.form.validateFields()},[]);
-  const emailError = isFieldTouched('email') && getFieldError('email');
   const {Title,Paragraph}=Typography;
 
-  const handleSubmit = e => {
-    e.preventDefault();
-    console.log("type",setLoading);
+  const onFinish = async (values) => {
     setLoading(true);
-    props.form.validateFields( async (err, values) => {
-      if (!err) {
-        const forgotPassRes=await forgotPassword(values);
-        if(forgotPassRes && forgotPassRes.status===200)
-        {
-        message.success("password reset link has been sent to your registered mail-id");
-        setLoading(false);
-        props.history.push('/')
-        }
-        else
-        {
-        if(forgotPassRes.data.message)
-        {
-          message.error(forgotPassRes.data.message);
-        }
-        else
-        {
-          message.error("Exception while Signing-in ");
-        }
-       
-        setLoading(false);
-        }
-      }
-    });
+    const forgotPassRes=await forgotPassword(values);
+    if(forgotPassRes && forgotPassRes.status===200)
+    {
+    message.success("password reset link has been sent to your registered mail-id");
+    setLoading(false);
+    props.history.push('/')
+    }
+    else
+    {
+    if(forgotPassRes.data.message)
+    {
+      message.error(forgotPassRes.data.message);
+    }
+    else
+    {
+      message.error("Exception while Signing-in ");
+    }
+    
+    setLoading(false);
+    }
+     
   };
 
 
   return (<div>
   <Title level={3} style={{color:"white"}}>Forgot Password</Title>
   <br/>
-    <Form onSubmit={handleSubmit} className="login-form">
+    <Form onFinish={onFinish} className="login-form">
 {console.log("from return",props.user.username)}
- <Form.Item validateStatus={emailError ? 'error' : ''} help={emailError || ''}>
-    {getFieldDecorator('email', {
-      rules: [{ required: true, message: 'Please input mailID' },{ type:'email', message: 'Please enter the proper E-Mail ID' }],
-    })(
+ <Form.Item 
+    name='email' 
+    rules={[{ required: true, message: 'Please input mailID' },{ type:'email', message: 'Please enter the proper E-Mail ID' }]}
+    >
       <Input
         prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
         size="large"
         placeholder="Email"
-      />,
-    )}
+      />
+  
   </Form.Item>
  
 
@@ -82,8 +74,8 @@ const ForgotPassword=(props)=>{
     </Button>
   </Form.Item>
 </Form>
-<Link to ="/login"><Icon type="arrow-left" /><Paragraph style={{color:"white"}}> Back to Login</Paragraph></Link>
+<Link to ="/login"><Paragraph style={{color:"white"}}> <LeftOutlined/>Back to Login</Paragraph></Link>
 </div>)
 }
 
-export default connect(state_to_props,{setUserDetailsToStore})(withRouter(Form.create({ name: 'forgotpassword' })(ForgotPassword)));
+export default connect(state_to_props,{setUserDetailsToStore})(withRouter(ForgotPassword));

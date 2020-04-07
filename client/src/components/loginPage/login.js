@@ -1,7 +1,6 @@
 import React,{useState,useEffect} from 'react'
 //import { Form, Icon, Input, Button, Checkbox } from 'antd';
 import Form from 'antd/es/form'
-import Icon from 'antd/es/icon'
 import Input from 'antd/es/input'
 import Button from 'antd/es/button'
 import message from 'antd/es/message'
@@ -9,15 +8,15 @@ import Typogrpahy from 'antd/es/typography'
 import Row from 'antd/es/row'
 import Column from 'antd/es/col'
 import {ACTIONS,setUserDetailsToStore,userFetchType} from '../../store/action'
-
+import {LeftOutlined,RightOutlined} from '@ant-design/icons'
 import {connect} from 'react-redux'
 import {state_to_props} from '../../util/common_utils'
 
 import {withRouter,Link} from 'react-router-dom'
 import {getCookie} from '../../util/common_utils'
+import {MailTwoTone,LockTwoTone} from '@ant-design/icons'
 
 const Login=(props)=>{
-  useEffect(()=>{props.form.validateFields()},[]);
   useEffect(()=>{
     if(props.user.username && props.user.email &&getCookie("token"))
     {
@@ -32,20 +31,15 @@ const Login=(props)=>{
   },[props.user])
   
   const [isLoading,setLoading]=useState(false);
-  const { getFieldDecorator,getFieldsError,getFieldError,isFieldTouched } = props.form;
-  const emailError = isFieldTouched('email') && getFieldError('email');
-  const passwordError = isFieldTouched('password') && getFieldError('password');
+  // const emailError = isFieldTouched('email') && getFieldError('email');
+  // const passwordError = isFieldTouched('password') && getFieldError('password');
   const {Title}=Typogrpahy
 
-  const handleSubmit = e => {
-    e.preventDefault();
+  const onFinish = values => {
     console.log("type",setLoading);
     setLoading(true);
-    props.form.validateFields( async (err, values) => {
-      if (!err) {
-        props.setUserDetailsToStore(values,userFetchType.LOGIN)
-      }
-    });
+    props.setUserDetailsToStore(values,userFetchType.LOGIN)
+
   };
 
 
@@ -53,30 +47,44 @@ const Login=(props)=>{
   <div>
     <Title level={3} style={{color:"white"}}>Login</Title>
     <br/>
-    <Form onSubmit={handleSubmit} className="login-form">
+    <Form onFinish={onFinish} className="login-form">
 {console.log("from return",props.user.username)}
- <Form.Item validateStatus={emailError ? 'error' : ''} help={emailError || ''}>
-    {getFieldDecorator('email', {
-      rules: [{ required: true, message: 'Please input mailID' },{ type:'email', message: 'Please enter the proper E-Mail ID' }],
-    })(
+ <Form.Item
+ name="email"
+ rules={[
+   {
+required:true,
+message:"please enter your email ID"
+ },
+ {
+   type:'email',
+   message:"please enter the proper email ID"
+ }
+ ]}>
       <Input
-        prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+        prefix={<MailTwoTone style={{ color: 'rgba(0,0,0,.25)' }} />}
         size="large"
         placeholder="Email"
-      />,
-    )}
+      />
   </Form.Item>
-  <Form.Item validateStatus={passwordError ? 'error' : ''} help={passwordError || ''}>
-    {getFieldDecorator('password', {
-      rules: [{ required: true, message: 'Please input your Password!' }],
-    })(
+
+  <Form.Item  
+  name='password'
+  rules={
+    [
+      {
+        required:true,
+        message:"please enter the password"
+      }
+    ]
+  }
+  >
       <Input
-        prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+        prefix={<LockTwoTone style={{ color: 'rgba(0,0,0,.25)' }} />}
         size="large"
         type="password"
         placeholder="Password"
-      />,
-    )}
+      />
   </Form.Item>
 
   <Form.Item>
@@ -91,18 +99,18 @@ const Login=(props)=>{
 <Row >
   <Column span={12} style={{color:"white"}}>
   <Link to="/" style={{color:"white"}}>
-  <Icon type="left" style={{color:"#1890ff"}}/>
+  <LeftOutlined style={{color:"#1890ff"}}/>
   
       Signup
     </Link>
    </Column>
   <Column span={12}>
 <Link  to="/forgotpassword" style={{color:"white"}}>
-      Forgot password <Icon type="right" style={{color:"#1890ff"}}/>
+      Forgot password <RightOutlined style={{color:"#1890ff"}}/>
     </Link>
     </Column>
     </Row>
 </div>)
 }
 
-export default connect(state_to_props,{setUserDetailsToStore})(withRouter(Form.create({ name: 'Login' })(Login)));
+export default connect(state_to_props,{setUserDetailsToStore})(withRouter(Login));

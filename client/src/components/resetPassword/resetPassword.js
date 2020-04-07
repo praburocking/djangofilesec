@@ -22,14 +22,9 @@ const setUserDetailsToStore=(user)=>
 
 const ResetPassword=(props)=>{
   const [isLoading,setLoading]=useState(false);
-  const { getFieldDecorator,getFieldError,isFieldTouched } = props.form;
-  //const emailError = isFieldTouched('email') && getFieldError('email');
-  const passwordError = isFieldTouched('password') && getFieldError('password');
   const {Title}=Typogrpahy
 
-
-
-  useEffect( ()=>
+  useEffect(()=>
   {
     const verify=async()=>{
     let token=props.location.search
@@ -52,12 +47,8 @@ const ResetPassword=(props)=>{
   verify();
   },[]);
 
-  const handleSubmit = e => {
-    e.preventDefault();
-    console.log("sumbit")
-    props.form.validateFields( async (err, values) => {
+  const onFinish = async(values) => {
       console.log("values ",values);
-      if (!err) {
         setLoading(true);
         console.log('Received values of form: ', values);
         let token=props.location.search
@@ -82,8 +73,6 @@ const ResetPassword=(props)=>{
       {
         message.error("Exception while resetting your password");
       }
-      }
-    });
   };
 
 
@@ -91,41 +80,25 @@ const ResetPassword=(props)=>{
   <div>
     <Title level={3} style={{color:"white"}}>Reset Password</Title>
     <br/>
-    <Form onSubmit={handleSubmit} className="login-form">
+    <Form onFinish={onFinish} className="login-form">
 
- {/* <Form.Item validateStatus={emailError ? 'error' : ''} help={emailError || ''}>
-    {getFieldDecorator('email', { })(
-      <Input
-        prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-        size="large"
-        placeholder="Email"
-        
-      />,
-    )}
-  </Form.Item> */}
-  <Form.Item validateStatus={passwordError ? 'error' : ''} help={passwordError || ''}>
-    {getFieldDecorator('password', {
-      rules: [{ required: true, message: 'Please input your Password!' }],
-    })(
+  <Form.Item 
+  name='password'
+  rules={ [{ required: true, message: 'Please input your Password!' }]}>
       <Input
         prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
         size="large"
         type="password"
-        placeholder="Password"
-      />,
-    )}
+        placeholder="Password" />
   </Form.Item>
 
   <Form.Item>
- 
-    
-
     <Button type="primary" htmlType="submit" size="large" className="login-form-button" loading={isLoading}>
     { !isLoading && "Reset Password" }
     { isLoading && "Resetting Password"}
     </Button>
-    
   </Form.Item>
+
 </Form>
 <Link className="login-form-forgot" to="/forgotpassword">
       Forgot password
@@ -134,4 +107,4 @@ const ResetPassword=(props)=>{
 </div>)
 }
 
-export default connect(state_to_props,{setUserDetailsToStore})(withRouter(Form.create({ name: 'resetPassword' })(ResetPassword)));
+export default connect(state_to_props,{setUserDetailsToStore})(withRouter(ResetPassword));

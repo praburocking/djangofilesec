@@ -2,7 +2,7 @@
  import Input from 'antd/es/input'
  import message from 'antd/es/message'
  import Upload from 'antd/es/upload'
- import Icon from 'antd/es/icon'
+import { InboxOutlined} from '@ant-design/icons'
 import './fileUploader.css'
 import {uploadfile} from '../../services/connectToServer'
 import React,{useState} from 'react'
@@ -88,7 +88,7 @@ const FileUploader=(props)=>
             <div className="col-md-6" style={{backgroundColor:"rgb(57, 224, 89)"}}>
             <Dragger {...prop} >
                 <p className="ant-upload-drag-icon">
-               <Icon type="inbox" />
+                <InboxOutlined />
                </p>
                <p className="ant-upload-text">Click or drag file to this area to upload</p>
                 <p className="ant-upload-hint">

@@ -6,8 +6,8 @@ from django.contrib.auth.admin import UserAdmin
 
 class CustomUserAdmin(admin.ModelAdmin):
     pass
-    add_form = create_form
-    form = change_form
+    # add_form = create_form
+    # form = change_form
     # model = User
     # list_display = ('email', 'staff', 'active',)
     # list_filter = ('email', 'staff', 'active',)

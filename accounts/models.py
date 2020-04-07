@@ -33,7 +33,7 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser):
     email=models.EmailField(unique=True,max_length=255)
     max_file_size=models.IntegerField(null=False,default=100)
-    used_file_size=models.IntegerField(null=False,default=0)
+    used_file_size=models.FloatField(null=False,default=0)
     verified=models.BooleanField(null=False,default=False)
     username=models.CharField(null=False,max_length=255)
     created_time=models.DateTimeField(null=False,auto_now_add=True)

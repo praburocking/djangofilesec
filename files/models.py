@@ -18,7 +18,7 @@ class Files(models.Model):
     private_key=models.TextField(null=False,default='nokey')
     salt=models.BinaryField(null=False,default=b'\xc1\x10\xcd\x13\xc3\xf2\x8d=\xb9\xd7\x1e0$\x81\xdel',max_length=60)
     format=models.TextField(null=False,default='noformat')
-    size=models.IntegerField(null=False,default=0)
+    size=models.FloatField(null=False,default=0)
     user=models.ForeignKey(get_user_model(),related_name='Files',on_delete=models.CASCADE)
 
 
@@ -26,12 +26,13 @@ class Files(models.Model):
     def save(self,*args,**kargs):
             self.name =self.file.name
             self.file.name=str(self.id)
-            self.size=self.file.size
+            self.size=self.file.size/1000000
             self.salt=os.urandom(16)
             user_key=self.private_key
             self.private_key=random_key_gen(CONSTANTS["RANDOM_KEY_MAX_LEN"])
             print(random_key_gen(CONSTANTS["RANDOM_KEY_MAX_LEN"]))
             self.file=encrypt(self.file,key_fuser(self.private_key,user_key),self.salt)
+            self.user.add_new_file_size(self.size)
             super().save(*args,**kargs)
 
 

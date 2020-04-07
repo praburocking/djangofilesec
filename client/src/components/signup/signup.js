@@ -15,19 +15,22 @@ import {withRouter} from 'react-router-dom'
 import {state_to_props,getCookie} from '../../util/common_utils'
 import {setUserDetailsToStore,emtStores,userFetchType} from '../../store/action'
 import {connect} from 'react-redux'
+import {SmileTwoTone,MailTwoTone,LockTwoTone,DollarCircleTwoTone} from '@ant-design/icons'
 
 
 const Signup=(props)=>{
   const {Title} = Typography;
-  const { getFieldDecorator,getFieldsError,getFieldError,isFieldTouched } = props.form;
+  //const { getFieldsError,getFieldError,isFieldTouched } = props.form;
   const [isLoading, setLoading]=useState(false)
-  const [emailError,setEmailError]=useState(isFieldTouched('email') && getFieldError('email'));
-  const [userNameError,setUserNameError]=useState(isFieldTouched('email') && getFieldError('email'));
-  let passwordError = isFieldTouched('password') && getFieldError('password');
-  let planError=isFieldTouched('plan') && getFieldError('plan');
+  // const [emailError,setEmailError]=useState(isFieldTouched('email') && getFieldError('email'));
+  // const [userNameError,setUserNameError]=useState(isFieldTouched('email') && getFieldError('email'));
+  // let passwordError = isFieldTouched('password') && getFieldError('password');
+  // let planError=isFieldTouched('plan') && getFieldError('plan');
+
+  const [form] = Form.useForm();
   const {Option}=Select;
 
-  useEffect(()=>{props.form.validateFields()},[]);
+  //useEffect(()=>{props.form.validateFields()},[]);
   useEffect(()=>{
     if(props.user && props.user.username && props.user.email && getCookie("token"))
     {
@@ -52,35 +55,28 @@ const Signup=(props)=>{
     return Object.keys(fieldsError).some(field => fieldsError[field]);
   }
 
-  const isExist=async (event,type)=>
-  {
+  // const isExist=async (event,type)=>
+  // {
     
-    if(event.target.value)
-      {
-        const existResp= await isUserExist(type,event.target.value);
-        console.log("exist ",existResp);
-        if(existResp.status!==200)
-        {
-          (type==="email")?setEmailError(false):setUserNameError(false)
-        }
-        else
-        { 
-          (type==="email")?setEmailError("email-ID already exist"):setUserNameError("username already exist")
-        }
-        }
-  }
+  //   if(event.target.value)
+  //     {
+  //       const existResp= await isUserExist(type,event.target.value);
+  //       console.log("exist ",existResp);
+  //       if(existResp.status!==200)
+  //       {
+  //         (type==="email")?setEmailError(false):setUserNameError(false)
+  //       }
+  //       else
+  //       { 
+  //         (type==="email")?setEmailError("email-ID already exist"):setUserNameError("username already exist")
+  //       }
+  //       }
+  // }
 
-  const handleSubmit = event => {
-    event.preventDefault();
-
+  const handleSubmit = values => {
     setLoading(true);
-    props.form.validateFields( async (err, values) => {
-      if (!err) {
-        console.log("values",values);
-        props.setUserDetailsToStore(values,userFetchType.SIGNUP);
-
-      }
-    });
+    console.log("values",values);
+    props.setUserDetailsToStore(values,userFetchType.SIGNUP);
   };
 
   
@@ -88,65 +84,74 @@ const Signup=(props)=>{
   return (<div>
     <Title style={{color:"white"}} level={3} >Sign-up</Title>
     <br/>
-    <Form onSubmit={handleSubmit} className="login-form">
+    <Form onFinish={handleSubmit} className="login-form">
 
-    <Form.Item validateStatus={userNameError?'error': ''} help={ userNameError || ''} >
-    {getFieldDecorator('username', {
-      rules: [{ required: true, message: 'Please input username' }],
-    })(
+    <Form.Item
+        name='username'
+        rules={[
+          {
+            required: true,
+          },
+        ]}>
       <Input
-        prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+        prefix={<SmileTwoTone style={{ color: 'rgba(0,0,0,.25)' }} />}
         size="large"
         placeholder="UserName"
-        onBlur={(event)=>isExist(event,"username")}
-      />,
-    )}
-  </Form.Item>
+       />
+      </Form.Item>
 
-  <Form.Item validateStatus={emailError ? 'error' : ''} help={emailError || ''} >
-    {getFieldDecorator('email', {
-      rules: [{ required: true, message: 'Please input mailID' },{ type:'email', message: 'Please enter the proper E-Mail ID' }],
-    })(
+      <Form.Item
+        name='email'
+        rules={[
+          {
+            type: 'email', 
+          },
+          {
+            required:true,
+          }
+        ]} >
       <Input
-        prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+        prefix={<MailTwoTone style={{ color: 'rgba(0,0,0,.25)' }} />}
         size="large"
         placeholder="Email"
-        onBlur={(event)=>isExist(event,"email")}
-      />,
-    )}
-  </Form.Item>
-  <Form.Item validateStatus={passwordError ? 'error' : ''} help={passwordError || ''}>
-    {getFieldDecorator('password', {
-      rules: [{ required: true, message: 'Please input your Password!' }],
-    })(
-      <Input
-        prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+      />
+      </Form.Item>
+
+      <Form.Item
+        name='password'
+        rules={[
+          {
+            required: true,
+            message:'please input your password'
+          },
+        ]}>
+      <Input.Password
+        prefix={<LockTwoTone style={{ color: 'rgba(0,0,0,.25)' }} />}
         size="large"
         type="password"
         placeholder="Password"
-      />,
-    )}
-  </Form.Item>
+      />
+      </Form.Item>
 
-  <Form.Item validateStatus={planError ? 'error' : ''} help={planError || ''}>
-    {getFieldDecorator('plan', {
-      rules: [{ required: true, message: 'Please select a plan' }],
-    })(
+
+      <Form.Item
+       name='plan'
+       rules={
+         [{
+           required:true
+         }]
+       }>
       <Select
           size="large" 
-          placeholder="select your plan"
-        >
+          placeholder="select your plan" >
           <Option value="planA">plan A, 8 User, 3USD/month</Option>
           <Option value="planB">plan B, 12 User, 5USD/month</Option>
-        </Select>,
-    )}
-  </Form.Item>
+        </Select>
+      </Form.Item>
 
-  
   <Form.Item>
-    
     <br/>
-    <Button type="primary" htmlType="submit" size="large" className="login-form-button"   disabled={hasErrors(getFieldsError())} loading={isLoading}>
+    <Button type="primary" htmlType="submit" size="large" className="login-form-button"   loading={isLoading}>
       {!isLoading && "Start Your Free Trial"}
       {isLoading && "Signing You In"}
     </Button>
@@ -155,4 +160,4 @@ const Signup=(props)=>{
 </Form></div>)
 }
 
-export default connect(state_to_props,{setUserDetailsToStore,emtStores})(withRouter(Form.create({ name: 'Signup' })(Signup)));
+export default connect(state_to_props,{setUserDetailsToStore,emtStores})(withRouter(Signup));
