@@ -84,7 +84,7 @@ export const add_payment=async ()=>
 export const isUserExist=async (type,data)=>
 {
     try {
-        const response = await axios.get(signup_url + "/exist?"+type+"=" + data, null);
+        const response = await axios.get(signup_url + "/exist?"+type+"=" + encodeURIComponent(data), null);
         return response;
     }
     catch (error) {
