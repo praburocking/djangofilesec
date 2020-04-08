@@ -20,17 +20,15 @@ import {SmileTwoTone,MailTwoTone,LockTwoTone,DollarCircleTwoTone} from '@ant-des
 
 const Signup=(props)=>{
   const {Title} = Typography;
-  //const { getFieldsError,getFieldError,isFieldTouched } = props.form;
+ 
   const [isLoading, setLoading]=useState(false)
-  // const [emailError,setEmailError]=useState(isFieldTouched('email') && getFieldError('email'));
-  // const [userNameError,setUserNameError]=useState(isFieldTouched('email') && getFieldError('email'));
-  // let passwordError = isFieldTouched('password') && getFieldError('password');
-  // let planError=isFieldTouched('plan') && getFieldError('plan');
+   const [emailError,setEmailError]=useState(false);
+  
+  
+
 
   const [form] = Form.useForm();
   const {Option}=Select;
-
-  //useEffect(()=>{props.form.validateFields()},[]);
   useEffect(()=>{
     if(props.user && props.user.username && props.user.email && getCookie("token"))
     {
@@ -50,28 +48,21 @@ const Signup=(props)=>{
     }
   },[props.user])
 
-  function hasErrors(fieldsError) {
-    console.log("fieldError",fieldsError);
-    return Object.keys(fieldsError).some(field => fieldsError[field]);
-  }
 
-  // const isExist=async (event,type)=>
-  // {
-    
-  //   if(event.target.value)
-  //     {
-  //       const existResp= await isUserExist(type,event.target.value);
-  //       console.log("exist ",existResp);
-  //       if(existResp.status!==200)
-  //       {
-  //         (type==="email")?setEmailError(false):setUserNameError(false)
-  //       }
-  //       else
-  //       { 
-  //         (type==="email")?setEmailError("email-ID already exist"):setUserNameError("username already exist")
-  //       }
-  //       }
-  // }
+  const isExist=async (value)=>
+  {
+    console.log("value ",value);
+    if(value)
+      {
+        const existResp= await isUserExist('email',value);
+        console.log("exist ",existResp);
+        existResp.status!==200?setEmailError(false):setEmailError(true) 
+        if(existResp.status!==200)
+        {return Promise.resolve()}
+        else
+        {return Promise.reject("Email-Id already exist")}
+        }
+  }
 
   const handleSubmit = values => {
     setLoading(true);
@@ -105,10 +96,18 @@ const Signup=(props)=>{
         rules={[
           {
             type: 'email', 
+            message:'please enter the proper mail-ID'
           },
           {
             required:true,
+            message:"please enter the mail-ID"
+          },
+         ({getFieldValue})=>({
+          async validator(rule,value){
+            return await isExist(value)
           }
+           
+         })
         ]} >
       <Input
         prefix={<MailTwoTone style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -143,6 +142,7 @@ const Signup=(props)=>{
        }>
       <Select
           size="large" 
+          prefix={<LockTwoTone style={{ color: 'rgba(0,0,0,.25)' }} />}
           placeholder="select your plan" >
           <Option value="planA">plan A, 8 User, 3USD/month</Option>
           <Option value="planB">plan B, 12 User, 5USD/month</Option>
