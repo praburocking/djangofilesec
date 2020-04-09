@@ -18,9 +18,9 @@ const text = (
   );
 
     return(
-    <Layout className="parallax layout-bg" >
+    <Layout className="layout-bg" >
    <Header defaultSelectedKeys={['2']}/>
-    <Content style={{ padding: '0 0 0 0px', marginTop: 64, minHeight:"1020px",marginLeft:"80px",marginRight:"80px",marginTop:"120px" }}>
+    <Content style={{ padding: '0 0 0 0px', minHeight:"84vh",marginLeft:"80px",marginRight:"80px",marginTop:"120px", maxHeight:"84vh"}}>
      <Title className="alignCenter" style={{color:"white"}}>FAQ</Title>
     <Collapse bordered={false} defaultActiveKey={['1']} style={{backgroundColor:"rgb(5, 163, 255)",color:"white"}}>
     <Panel header="This is panel header 1" key="1" style={{color:"white"}}>
@@ -36,7 +36,7 @@ const text = (
 
 
     </Content>
-    <Footer >
+    <Footer  style={{minHeight:"8vh",maxHeight:"8vh"}}>
     <div style={{textAlign:"left"}}>  For any enquiries, contact prabumohan96@gmail.com</div>
        <div style={{textAlign:"right"}}> © 2020, All Rights Reserved.</div></Footer>
 </Layout>)

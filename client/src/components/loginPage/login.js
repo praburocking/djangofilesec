@@ -79,7 +79,7 @@ message:"please enter your email ID"
     ]
   }
   >
-      <Input
+      <Input.Password
         prefix={<LockTwoTone style={{ color: 'rgba(0,0,0,.25)' }} />}
         size="large"
         type="password"

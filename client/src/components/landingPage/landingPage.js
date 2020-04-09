@@ -54,7 +54,7 @@ const LandingPage=(props)=>
                         <Title level={2} style={{color:"white"}}>Why Us?</Title>
                     </Col>
                 </Row>
-                <Row type="flex" justify="space-between"style={{marginLeft:"15px",marginRight:"15px"}}>
+                <Row  className="alignCenter" style={{marginLeft:"15px",marginRight:"15px"}}>
                 <Col span={6}  className="alignCenter" >
                     <Avatar shape="square" size={64} icon="user" style={{marginBottom:10}}/>
                     <Title level={4} style={{color:"white"}}>Title</Title>

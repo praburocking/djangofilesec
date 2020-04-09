@@ -1,7 +1,6 @@
 import React,{useState,useEffect} from 'react'
 //import { Form, Icon, Input, Button, Checkbox } from 'antd';
 import Form from 'antd/es/form'
-import Icon from 'antd/es/icon'
 import Input from 'antd/es/input'
 import Button from 'antd/es/button'
 import message from 'antd/es/message'
@@ -9,6 +8,7 @@ import Typography from 'antd/es/typography'
 import {LeftOutlined} from '@ant-design/icons'
 import {connect} from 'react-redux'
 import {state_to_props} from '../../util/common_utils'
+import {MailTwoTone} from '@ant-design/icons'
 
 import {withRouter,Link} from 'react-router-dom'
 
@@ -54,18 +54,24 @@ const ForgotPassword=  (props)=>{
   <br/>
     <Form onFinish={onFinish} className="login-form">
 {console.log("from return",props.user.username)}
- <Form.Item 
-    name='email' 
-    rules={[{ required: true, message: 'Please input mailID' },{ type:'email', message: 'Please enter the proper E-Mail ID' }]}
-    >
+<Form.Item
+ name="email"
+ rules={[
+   {
+required:true,
+message:"please enter your email ID"
+ },
+ {
+   type:'email',
+   message:"please enter the proper email ID"
+ }
+ ]}>
       <Input
-        prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+        prefix={<MailTwoTone style={{ color: 'rgba(0,0,0,.25)' }} />}
         size="large"
         placeholder="Email"
       />
-  
   </Form.Item>
- 
 
   <Form.Item>
     <Button type="primary" htmlType="submit" size="large" className="login-form-button" loading={isLoading}>

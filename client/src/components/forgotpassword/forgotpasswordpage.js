@@ -9,9 +9,9 @@ import ForgotPassword from './forgotpassword'
 
 const ForgotPasswordPage=(props)=>
 { const {  Content, Footer } = Layout;
-    return(<Layout className="parallax" style={{backgroundImage:"../media/bg.jpg",height:"calc(100vw)"}} >
+    return(<Layout className="parallax" >
    <Header defaultSelectedKeys={['1']}/>
-    <Content style={{ padding: '0 0 0 0px', marginTop: 64,height:"720px"}}>
+    <Content style={{ padding: '0 0 0 0px', marginTop: 64,minHeight:"84vh",maxHeight:"84vh"}}>
      <Row className="alignCenter"> 
          <Col span={8}></Col>
           <Col span={8}  style={{margin:"15px",marginTop:"120px",background: "rgba(80, 80, 80, 0.5)",paddingLeft:"40px",paddingRight:"40px",paddingBottom:"50px",paddingTop:"50px"}} >

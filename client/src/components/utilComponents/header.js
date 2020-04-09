@@ -36,15 +36,16 @@ const Header=(props)=>
                 className={ !userExist() && "header"}
                 style={{ lineHeight: '64px',maxWidth:"200px" }}>
                 
-                {!userExist()&&<Menu.Item key="1" style={{ minWidth:"100px" }} onClick={()=>props.history.push('/login')}>LOGIN</Menu.Item>}
-                <Menu.Item key="2" style={{ minWidth:"100px" }} onClick={()=>props.history.push('/faq')}>FAQ</Menu.Item>
+                {!userExist()&&<Menu.Item key="1" style={{ minWidth:"5vw",minHeight:"8vh" }} onClick={()=>props.history.push('/login')}>LOGIN</Menu.Item>}
+                {userExist()  && <Menu.Item key="2" style={{ minWidth:"5vw"}} onClick={()=>props.history.push('/faq')}>FAQ</Menu.Item>}
+                {!userExist()  && <Menu.Item key="2" style={{ minWidth:"5vw",minHeight:"8vh"}} onClick={()=>props.history.push('/faq')}>FAQ</Menu.Item>}
                 {userExist() && <Menu.Divider />}
-                {userExist() && <Menu.Item key="3" style={{ minWidth:"100px" ,color:"red"}} onClick={()=>props.history.push('/logout')}>Logout</Menu.Item>}
+                {userExist() && <Menu.Item key="3" style={{ minWidth:"5vw" ,color:"red"}} onClick={()=>props.history.push('/logout')}>Logout</Menu.Item>}
                 </Menu>
     )
 
     return(
-    <Header style={{ position: 'fixed', zIndex: 1, width: '100%',background: "rgba(2, 164, 255, 0.7)" }} >
+    <Header style={{ position: 'fixed', zIndex: 1, width: '100%',background: "rgba(2, 164, 255, 0.7)",minHeight:"8vh",maxHeight:"8vh" }}  >
     <Link to="/"> <div className="logo" /></Link>
         <Row type="flex" justify="end" align="top"><Col>
 

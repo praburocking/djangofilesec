@@ -13,7 +13,7 @@ const Accounts=(props)=>
     
     return(<Layout className="parallax" style={{backgroundImage:"../media/bg.jpg"}}>
    <Header defaultSelectedKeys={['1']} isLoggedIn="true"/>
-    <Content style={{ padding: '10 10 10 10px', marginTop: 64, minHeight:"720px"}}>
+    <Content style={{ padding: '10 10 10 10px', marginTop: 64, minHeight:"84vh",maxHeight:"84vh"}}>
         <div class="center" style={{textAlign:"center",maxWidth:"1000px",minWidth:"1000px"}}>
     <Row style={{color:"white"}}>
         <Col span={24} >
@@ -52,7 +52,7 @@ const Accounts=(props)=>
         </Row>
         </div>
     </Content>
-    <Footer >
+    <Footer  style={{minHeight:"8vh",maxHeight:"8vh"}}>
     <div style={{textAlign:"left"}}>  For any enquiries, contact prabumohan96@gmail.com</div>
        <div style={{textAlign:"right"}}> © 2020, All Rights Reserved.</div></Footer>
 </Layout>)

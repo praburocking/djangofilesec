@@ -18,7 +18,11 @@
 .layout-bg{
  
   background-color: #020120;
-  height:calc(100vw)
+  height:100%
+}
+
+.bg-color{
+  background-color: #020120;
 }
 
 .App-header {
