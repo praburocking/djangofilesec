@@ -19,4 +19,11 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ( 'username', 'email', 'password')
 
+class UserUpdateSerializer(serializers.ModelSerializer):
+    username=serializers.CharField(min_length=4,required=False)
+    email=serializers.EmailField(min_length=8,required=False)
+    class Meta:
+        model=User
+        fields=('username','email')
+
 

@@ -1,4 +1,4 @@
-import {getFiles,login,getUser,signup} from '../services/connectToServer'
+import {getFiles,login,getUser,signup,update_username} from '../services/connectToServer'
 import {setAuthorizationCookies} from '../util/common_utils'
 
 export const ACTIONS={
@@ -8,13 +8,16 @@ export const ACTIONS={
     USER_ERROR:"USER_ERROR",
     AUTH_INIT:"AUTH_INIT",
     AUTH_REMOVE:"AUTH_REMOVE",
-    EMT_STORE:"EMT_STORE"}
+    EMT_STORE:"EMT_STORE",
+    USER_UPDATE:"USER_UPDATE"}
 
 export const userFetchType={
   ACCOUNTS:1,
   SIGNUP:2,
-  LOGIN:3
+  LOGIN:3,
+  UPDATE:4
 }
+export const SUCCESS_RESPONSE=[200,201,202]
 
 export const listFiles=()=>
 {       return async dispatch=>{
@@ -38,33 +41,66 @@ export const setUserDetailsToStore=(values,type)=>
     let res=null;
     if(type===userFetchType.LOGIN){
     res=await login(values);
+      if(res && SUCCESS_RESPONSE.includes(res.status))
+      {
+        dispatch( {type:ACTIONS.USER_INIT,data:res.data});
+        setAuthorizationCookies(res.data)
+      }
+      else
+        {
+          dispatchError(res,dispatch)
+        }
     }
     else if(type===userFetchType.ACCOUNTS)
     {
       res=await getUser();
+      if(res && SUCCESS_RESPONSE.includes(res.status))
+      {
+        dispatch( {type:ACTIONS.USER_INIT,data:res.data});
+      }
+      else
+      {
+        dispatchError(res,dispatch)
+      }
     }
     else if(type===userFetchType.SIGNUP)
     {
       res=await signup(values)
+      if(res && SUCCESS_RESPONSE.includes(res.status))
+      {
+        dispatch( {type:ACTIONS.USER_INIT,data:res.data});
+        setAuthorizationCookies(res.data)
+      }
+      else
+      {
+        dispatchError(res,dispatch)
+      }
     }
-        if((res && res.status===200) || (type===userFetchType.SIGNUP && res && (res.status===201 || res.status===200)) )
-        {
-        if(type===userFetchType.LOGIN ||type===userFetchType.SIGNUP ){
-          setAuthorizationCookies(res.data)
-          dispatch( {type:ACTIONS.USER_INIT,data:res.data.user});
-        }
-        else
-        {
-          dispatch( {type:ACTIONS.USER_INIT,data:res.data});
-        }
-       
-        }
-        else
-        {
-          if(res && res.data && res.data.detail)
-          {
-            dispatch({type:ACTIONS.USER_ERROR,data:{error:{code:res.code,detail:res.data.detail}}})
-          }
-        }
+    else if (type===userFetchType.UPDATE)
+    {
+      res=await update_username(values)
+      if(res && SUCCESS_RESPONSE.includes(res.status))
+      {
+      dispatch( {type:ACTIONS.USER_INIT,data:res.data});
+      setAuthorizationCookies(res.data)
+      }
+      else
+      {
+        dispatchError(res,dispatch)
+      }
+    }
+
+  
   }
+}
+
+const dispatchError=(res,dispatch)=>
+{
+
+  if(res && res.data && res.data.detail)
+  {
+    dispatch({type:ACTIONS.USER_ERROR,data:{error:{code:res.code,detail:res.data.detail}}})
+  }
+
+
 }

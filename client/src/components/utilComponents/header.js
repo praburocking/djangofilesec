@@ -45,7 +45,7 @@ const Header=(props)=>
     )
 
     return(
-    <Header style={{ position: 'fixed', zIndex: 1, width: '100%',background: "rgba(2, 164, 255, 0.7)",minHeight:"8vh",maxHeight:"8vh" }}  >
+    <Header style={{ position: 'fixed', zIndex: 1, width: '100%',background: "rgba(2, 164, 255, 0.7)",minHeight:"64px",maxHeight:"8vh" }}  >
     <Link to="/"> <div className="logo" /></Link>
         <Row type="flex" justify="end" align="top"><Col>
 

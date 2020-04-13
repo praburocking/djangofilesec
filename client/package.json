@@ -5,6 +5,7 @@
   "dependencies": {
     "@ant-design/codemod-v4": "^1.1.0",
     "@ant-design/icons": "^4.0.5",
+    "@atlaskit/inline-edit": "^10.0.30",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",

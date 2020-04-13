@@ -59,7 +59,7 @@ function App(props) {
       <Route exact path="/verifyuser" render={()=>userExist()?<Redirect to="/home"/>:<VerifyUser/>}></Route>
       <Route exact path ="/signup" render={()=>userExist()?<Redirect to="/home"/>:<Signup/>}></Route>
       <Route exact path ="/pagenotfound" render={()=><NotFound/>} ></Route>
-      <Route  render={()=><Redirect to="/pagenotfound"/>} ></Route>
+      {/* <Route  render={()=><Redirect to="/pagenotfound"/>} ></Route> */}
       </Switch>
       
       </>

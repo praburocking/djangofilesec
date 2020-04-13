@@ -104,4 +104,10 @@ export function setCookie(cname, cvalue, exdays) {
   }
 
 
-  
+  export function extend(obj, src) {
+    for (var key in src) {
+        if (src.hasOwnProperty(key)) obj[key] = src[key];
+    }
+    let newObj=obj;
+    return newObj;
+}

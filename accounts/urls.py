@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import createUser,loginView,accountsView,userExist
+from .views import createUser,loginView,accountsView,userExist,accountsImageView
 from knox import views as knox_views
 
 urlpatterns=[
@@ -8,4 +8,5 @@ urlpatterns=[
     path(r'logout',knox_views.LogoutView.as_view()),
     path(r'accounts',accountsView.as_view()),
     path(r'signup/exist',userExist.as_view()),
+    path(r'accounts/userimage',accountsImageView.as_view())
 ]

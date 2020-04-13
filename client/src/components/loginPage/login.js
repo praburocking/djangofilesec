@@ -31,8 +31,6 @@ const Login=(props)=>{
   },[props.user])
   
   const [isLoading,setLoading]=useState(false);
-  // const emailError = isFieldTouched('email') && getFieldError('email');
-  // const passwordError = isFieldTouched('password') && getFieldError('password');
   const {Title}=Typogrpahy
 
   const onFinish = values => {

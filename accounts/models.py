@@ -1,5 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import BaseUserManager,AbstractBaseUser
+from django_s3_storage.storage import S3Storage
+import uuid
+storage = S3Storage(aws_s3_bucket_name='filesec-userimage')
 
 # Create your models here.
 
@@ -31,6 +34,8 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser):
+
+    id=models.UUIDField(primary_key = True, default = uuid.uuid4, editable = False)
     email=models.EmailField(unique=True,max_length=255)
     max_file_size=models.IntegerField(null=False,default=100)
     used_file_size=models.FloatField(null=False,default=0)
@@ -39,6 +44,7 @@ class User(AbstractBaseUser):
     created_time=models.DateTimeField(null=False,auto_now_add=True)
     modified_time=models.DateTimeField(null=False,auto_now=True)
     active = models.BooleanField(default=True)
+    user_image=models.ImageField(null=True,storage=storage)
 
     #admin properties
     staff = models.BooleanField(default=False)  # a admin user; non super-user

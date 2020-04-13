@@ -10,7 +10,6 @@ let url="https://filesec.herokuapp.com/api/v1/"
 
 let user_url=url+"iam/accounts";
 let login_url=url+"iam/login";
-//et user_url=url+"users";
 let logout_url=url+"iam/logout";
 let signup_url=url+"iam/signup"
 let payment_url=url+"pay"
@@ -68,6 +67,46 @@ export const getUser=async ()=>
 }
 
 
+export const getUserImage=async()=>
+{
+    try {
+        let config=setAuthorizationHeader()
+        config["responseType"]='blob';
+        console.log("config",config)
+        const response = await axios.get(user_url+"/userimage", config);
+        var arrayBufferView = new Uint8Array( response.data );
+        let blob = new Blob([arrayBufferView], {
+            type: 'image/jpeg',
+        });
+        var urlCreator = window.URL || window.webkitURL;
+        var imageUrl = urlCreator.createObjectURL( blob );
+        return imageUrl
+    }
+    catch (error) {
+        return error.response;
+    }
+}
+
+export const addUserImage=async(data)=>
+{
+    try {
+        const response = await axios.post(user_url+"/userimage", data, setAuthorizationHeader());
+        return response;
+    }
+    catch (error) {
+        return error.response;
+    }
+}
+
+export const update_username=async(data)=>{
+try{
+    const response = await axios.patch(user_url, data, setAuthorizationHeader());
+    return response;
+}
+catch (error) {
+    return error.response;
+}
+}
 
 
 export const add_payment=async ()=>
