@@ -41,9 +41,10 @@ export const setUserDetailsToStore=(values,type)=>
     let res=null;
     if(type===userFetchType.LOGIN){
     res=await login(values);
-      if(res && SUCCESS_RESPONSE.includes(res.status))
+    console.log("res ",res);
+      if(res && SUCCESS_RESPONSE.includes(res.status) && res.data && res.data.user)
       {
-        dispatch( {type:ACTIONS.USER_INIT,data:res.data});
+        dispatch( {type:ACTIONS.USER_INIT,data:res.data.user});
         setAuthorizationCookies(res.data)
       }
       else

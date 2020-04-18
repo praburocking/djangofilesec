@@ -11,7 +11,7 @@ import ResetPassword from './resetPassword'
 const LoginPage=(props)=>
 { const {  Content, Footer } = Layout;
 
-    return(<Layout className="parallax" style={{backgroundImage:"../media/bg.jpg",height:"calc(100vw)"}} >
+    return(<Layout className="parallax" style={{height:"calc(100vw)"}} >
    <Header defaultSelectedKeys={['1']}/>
     <Content style={{ padding: '0 0 0 0px', marginTop: 64,height:"720px"}}>
      <Row className="alignCenter"> 

@@ -72,7 +72,7 @@ const Signup=(props)=>{
 
   
 
-  return (<div style={{maxHeight:"40vh"}}>
+  return (<div >
     <Title style={{color:"white"}} level={3} >Sign-up</Title>
     <br/>
     <Form onFinish={handleSubmit} className="login-form">

@@ -64,7 +64,7 @@ const updatePlan=(e)=>
 
 
     
-    return(<Layout className="parallax" style={{backgroundImage:"../media/bg.jpg"}}>
+    return(<Layout className="parallax">
    <Header defaultSelectedKeys={['1']} isLoggedIn="true"/>
     <Content style={{ padding: '10 10 10 10px', marginTop: 64, minHeight:"84vh",maxHeight:"84vh"}}>
         <div className="center" style={{textAlign:"center",maxWidth:"1000px",minWidth:"1000px"}}>
