@@ -13,6 +13,7 @@ from knox.auth import TokenAuthentication
 from .models import User
 from django.http.response import HttpResponse
 from django.core.files import File
+from .email import user_mail
 
 
 # Create your views here.
@@ -25,6 +26,8 @@ class createUser(APIView):
         if serializer.is_valid(raise_exception=True):
             user = serializer.save()
             if user:
+                ue=user_mail(user.email)
+                ue.welcome_email(user.username)
                 return Response({"user": serializer.data, "authtoken": AuthToken.objects.create(user)[1]},
                                 status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

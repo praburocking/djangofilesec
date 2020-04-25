@@ -67,9 +67,9 @@ export const setUserDetailsToStore=(values,type)=>
     else if(type===userFetchType.SIGNUP)
     {
       res=await signup(values)
-      if(res && SUCCESS_RESPONSE.includes(res.status))
+      if(res && SUCCESS_RESPONSE.includes(res.status) && res.data && res.data.user)
       {
-        dispatch( {type:ACTIONS.USER_INIT,data:res.data});
+        dispatch( {type:ACTIONS.USER_INIT,data:res.data.user});
         setAuthorizationCookies(res.data)
       }
       else
