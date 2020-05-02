@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django_s3_storage',
     'accounts',
+    'licenses',
     'api',
     'files'
 ]

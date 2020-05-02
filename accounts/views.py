@@ -14,6 +14,9 @@ from .models import User
 from django.http.response import HttpResponse
 from django.core.files import File
 from .email import user_mail
+from licenses.models import License,LICENSE
+from licenses.serializer import LicenseSerializer
+from licenses.util import LicenseUtil
 
 
 # Create your views here.
@@ -25,10 +28,13 @@ class createUser(APIView):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             user = serializer.save()
+            licen= License.objects.create(userId=user,licenseType=LICENSE["FREE"]["NAME"],totalSpace=LICENSE["FREE"]["SIZE"])
+            licenSerializer=LicenseSerializer(licen)
+
             if user:
                 ue=user_mail(user.email)
                 ue.welcome_email(user.username)
-                return Response({"user": serializer.data, "authtoken": AuthToken.objects.create(user)[1]},
+                return Response({"user": serializer.data, "authtoken": AuthToken.objects.create(user)[1], "license": licenSerializer.data},
                                 status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -68,8 +74,11 @@ class loginView(APIView):
                 user = authenticate(username=request.data['email'], password=request.data['password'])
                 if user is not None:
                     # login(request,user)
+                    licenseUtil=LicenseUtil(userId=user)
                     return Response(data={"user": UserSerializer(instance=user).data,
-                                          "authtoken": AuthToken.objects.create(user)[1]})
+                                          "authtoken": AuthToken.objects.create(user)[1],
+                                          "license": licenseUtil.getLicenseJo()
+                                          })
                 else:
                     return Response(data={"detail": "invalid email/password"}, status=status.HTTP_401_UNAUTHORIZED)
             else:
@@ -91,9 +100,10 @@ class accountsView(APIView):
     def get(self, request):
         if request.user.is_authenticated:
             queryset = User.objects.all()
-            queryset = get_object_or_404(queryset, pk=request.user.id)
-            US = UserSerializer(queryset)
-            return Response(data=US.data)
+            user = get_object_or_404(queryset, pk=request.user.id)
+            US = UserSerializer(user)
+            licenseUtil = LicenseUtil(userId=user)
+            return Response(data={"user":US.data,"license":licenseUtil.getLicenseJo()})
         else:
             return Response(data={"detail": "Unauthorized Access"}, status=status.HTTP_401_UNAUTHORIZED)
 

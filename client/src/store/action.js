@@ -9,7 +9,10 @@ export const ACTIONS={
     AUTH_INIT:"AUTH_INIT",
     AUTH_REMOVE:"AUTH_REMOVE",
     EMT_STORE:"EMT_STORE",
-    USER_UPDATE:"USER_UPDATE"}
+    USER_UPDATE:"USER_UPDATE",
+    FILES_DEL:"FILES_DEL",
+    LICENSE_INIT:"LICENSE_INIT"
+  }
 
 export const userFetchType={
   ACCOUNTS:1,
@@ -42,9 +45,10 @@ export const setUserDetailsToStore=(values,type)=>
     if(type===userFetchType.LOGIN){
     res=await login(values);
     console.log("res ",res);
-      if(res && SUCCESS_RESPONSE.includes(res.status) && res.data && res.data.user)
+      if(res && SUCCESS_RESPONSE.includes(res.status) && res.data && res.data.user && res.data.license)
       {
         dispatch( {type:ACTIONS.USER_INIT,data:res.data.user});
+        dispatch({type:ACTIONS.LICENSE_INIT,data:res.data.license})
         setAuthorizationCookies(res.data)
       }
       else
@@ -55,9 +59,10 @@ export const setUserDetailsToStore=(values,type)=>
     else if(type===userFetchType.ACCOUNTS)
     {
       res=await getUser();
-      if(res && SUCCESS_RESPONSE.includes(res.status))
+      if(res && SUCCESS_RESPONSE.includes(res.status) && res.data && res.data.user && res.data.license)
       {
-        dispatch( {type:ACTIONS.USER_INIT,data:res.data});
+        dispatch( {type:ACTIONS.USER_INIT,data:res.data.user});
+        dispatch({type:ACTIONS.LICENSE_INIT,data:res.data.license})
       }
       else
       {
@@ -67,9 +72,10 @@ export const setUserDetailsToStore=(values,type)=>
     else if(type===userFetchType.SIGNUP)
     {
       res=await signup(values)
-      if(res && SUCCESS_RESPONSE.includes(res.status) && res.data && res.data.user)
+      if(res && SUCCESS_RESPONSE.includes(res.status) && res.data && res.data.user && res.data.license)
       {
         dispatch( {type:ACTIONS.USER_INIT,data:res.data.user});
+        dispatch({type:ACTIONS.LICENSE_INIT,data:res.data.license});
         setAuthorizationCookies(res.data)
       }
       else

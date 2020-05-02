@@ -6,6 +6,7 @@ import uuid
 from django_s3_storage.storage import S3Storage
 from .utils import get_key,encrypt,random_key_gen,CONSTANTS,key_fuser
 import os
+from licenses.util import LicenseUtil
 
 storage = S3Storage(aws_s3_bucket_name='filesec')
 
@@ -30,10 +31,11 @@ class Files(models.Model):
             self.salt=os.urandom(16)
             user_key=self.private_key
             self.private_key=random_key_gen(CONSTANTS["RANDOM_KEY_MAX_LEN"])
-            print(random_key_gen(CONSTANTS["RANDOM_KEY_MAX_LEN"]))
             self.file=encrypt(self.file,key_fuser(self.private_key,user_key),self.salt)
-            self.user.add_new_file_size(self.size)
-            super().save(*args,**kargs)
+            licenseUtil=LicenseUtil(self.user)
+            if licenseUtil.checkSizeExist(self.size):
+                licenseUtil.updateUsedSize(self.size,True)
+                super().save(*args,**kargs)
 
 
     def __str__(self):
