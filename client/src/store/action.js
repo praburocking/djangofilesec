@@ -47,9 +47,9 @@ export const setUserDetailsToStore=(values,type)=>
     console.log("res ",res);
       if(res && SUCCESS_RESPONSE.includes(res.status) && res.data && res.data.user && res.data.license)
       {
+        setAuthorizationCookies(res.data)
         dispatch( {type:ACTIONS.USER_INIT,data:res.data.user});
         dispatch({type:ACTIONS.LICENSE_INIT,data:res.data.license})
-        setAuthorizationCookies(res.data)
       }
       else
         {
@@ -74,9 +74,9 @@ export const setUserDetailsToStore=(values,type)=>
       res=await signup(values)
       if(res && SUCCESS_RESPONSE.includes(res.status) && res.data && res.data.user && res.data.license)
       {
+        setAuthorizationCookies(res.data)
         dispatch( {type:ACTIONS.USER_INIT,data:res.data.user});
         dispatch({type:ACTIONS.LICENSE_INIT,data:res.data.license});
-        setAuthorizationCookies(res.data)
       }
       else
       {

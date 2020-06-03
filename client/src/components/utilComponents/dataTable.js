@@ -116,7 +116,7 @@ import {state_to_props} from '../../util/common_utils'
           visible={isShowModal}
           onOk={()=>download(currentDownload)}
           onCancel={handleCancel}>
-          <Input type="text" placeholder="Decryption Key" value={eKey} onChange={changeEKey}/>
+          <Input.Password  placeholder="Decryption Key" value={eKey} onChange={changeEKey}/>
           <p>we will use this key along with our own random private key to decrypt your data</p>
         </Modal>
         </div>
