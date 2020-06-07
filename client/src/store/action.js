@@ -72,6 +72,7 @@ export const setUserDetailsToStore=(values,type)=>
     else if(type===userFetchType.SIGNUP)
     {
       res=await signup(values)
+      console.log("res  ==>",res);
       if(res && SUCCESS_RESPONSE.includes(res.status) && res.data && res.data.user && res.data.license)
       {
         setAuthorizationCookies(res.data)
@@ -79,7 +80,7 @@ export const setUserDetailsToStore=(values,type)=>
         dispatch({type:ACTIONS.LICENSE_INIT,data:res.data.license});
       }
       else
-      {
+      { console.log("top dipagching eerror  ",res);
         dispatchError(res,dispatch)
       }
     }
@@ -103,10 +104,16 @@ export const setUserDetailsToStore=(values,type)=>
 
 const dispatchError=(res,dispatch)=>
 {
-
+  console.log("dispatching error"); 
   if(res && res.data && res.data.detail)
   {
+    console.log("dispatching error  inside if"); 
     dispatch({type:ACTIONS.USER_ERROR,data:{error:{code:res.code,detail:res.data.detail}}})
+  }
+  else
+  {
+    console.log("dispatching unkown error"); 
+    dispatch({type:ACTIONS.USER_ERROR,data:{error:{code:500,detail:"unkown error"}}})
   }
 
 

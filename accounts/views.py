@@ -17,7 +17,8 @@ from .email import user_mail
 from licenses.models import License,LICENSE
 from licenses.serializer import LicenseSerializer
 from licenses.util import LicenseUtil
-
+from django.contrib.auth import get_user_model
+from userVerification import sendConfirm
 
 # Create your views here.
 
@@ -72,13 +73,17 @@ class loginView(APIView):
         try:
             if not request.user.is_authenticated:
                 user = authenticate(username=request.data['email'], password=request.data['password'])
-                if user is not None:
+                
+                if user is not None and user.verified:
                     # login(request,user)
                     licenseUtil=LicenseUtil(userId=user)
                     return Response(data={"user": UserSerializer(instance=user).data,
                                           "authtoken": AuthToken.objects.create(user)[1],
                                           "license": licenseUtil.getLicenseJo()
                                           })
+                elif not user.verified:
+                    sendConfirm(user)
+                    return Response(data={"detail": "user not verified, new email send please verify the user"}, status=status.HTTP_401_UNAUTHORIZED)
                 else:
                     return Response(data={"detail": "invalid email/password"}, status=status.HTTP_401_UNAUTHORIZED)
             else:

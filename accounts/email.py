@@ -14,4 +14,11 @@ class user_mail:
         msg = EmailMessage(subject, message,self.email_from, self.recipients)
         msg.content_subtype = "html"  # Main content is now text/html
         return msg.send()
+    
+    def sendVerification_email(self,name,key):
+        subject="please verify you mail ID"
+        message ="Hi"+name+"<div><br></div><div>Please verify your email address by clicking the following link, the link will be active only for a day.</div><div><br></div><div><br></div><div>"+key+"</div><div><br></div><div>with regards,</div><div>Prabu.M</div>"
+        msg = EmailMessage(subject, message,self.email_from, self.recipients)
+        msg.content_subtype = "html"  # Main content is now text/html
+        return msg.send()
 

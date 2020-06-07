@@ -41,9 +41,8 @@ class User(AbstractBaseUser):
     username=models.CharField(null=False,max_length=255)
     created_time=models.DateTimeField(null=False,auto_now_add=True)
     modified_time=models.DateTimeField(null=False,auto_now=True)
-    active = models.BooleanField(default=True)
     user_image=models.ImageField(null=True,storage=storage)
-
+    active = models.BooleanField(default=True)
     #admin properties
     staff = models.BooleanField(default=False)  # a admin user; non super-user
     admin = models.BooleanField(default=False)  # a superuser
@@ -72,7 +71,7 @@ class User(AbstractBaseUser):
 
     def has_module_perms(self, app_label):
         return True
-
+        
     @property
     def is_staff(self):
 

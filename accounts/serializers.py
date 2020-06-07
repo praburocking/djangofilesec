@@ -1,7 +1,7 @@
 from .models import User
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
-
+from userVerification import sendConfirm
 
 class UserSerializer(serializers.ModelSerializer):
     email = serializers.EmailField( required=True,validators=[UniqueValidator(queryset=User.objects.all())])
@@ -10,6 +10,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user = User.objects.create_user(email=validated_data['email'], password=validated_data['password'],username=validated_data['username'])
+        sendConfirm(user)
         return user
 
     def update(self, instance, validated_data):

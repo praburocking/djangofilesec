@@ -1,6 +1,7 @@
-from django.urls import path
+from django.urls import path,include
 from .views import createUser,loginView,accountsView,userExist,accountsImageView
 from knox import views as knox_views
+from userVerification import urls as mail_urls
 
 urlpatterns=[
     path(r'signup',createUser.as_view()),
@@ -8,5 +9,6 @@ urlpatterns=[
     path(r'logout',knox_views.LogoutView.as_view()),
     path(r'accounts',accountsView.as_view()),
     path(r'signup/exist',userExist.as_view()),
-    path(r'accounts/userimage',accountsImageView.as_view())
+    path(r'accounts/userimage',accountsImageView.as_view()),
+    path('email/', include(mail_urls)),
 ]

@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'accounts',
     'licenses',
     'api',
-    'files'
+    'files',
+    'userVerification',
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -63,7 +64,7 @@ ROOT_URLCONF = 'filesec.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'build')],
+        'DIRS': [os.path.join(BASE_DIR, 'build'),os.path.join(BASE_DIR,'emailTemplates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -83,6 +84,17 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = env('EMAIL_PORT')
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+
+
+#for authentication emails
+EMAIL_SERVER = env('EMAIL_HOST')
+EMAIL_ADDRESS = env('EMAIL_HOST_USER')
+EMAIL_PASSWORD = env('EMAIL_HOST_PASSWORD')
+EMAIL_MAIL_SUBJECT = 'Confirm your email'
+EMAIL_MAIL_HTML ="verificationEmail.html"
+EMAIL_PAGE_TEMPLATE="verificationResponse.html"
+EMAIL_PAGE_DOMAIN = 'http://filesec.herokuapp.com'
+EMAIL_MODEL_ADMIN = False # the default value is False
 
 
 SITE_ID = 1
