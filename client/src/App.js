@@ -21,7 +21,7 @@ import ForgotPasswordPage from './components/forgotpassword/forgotpasswordpage'
 import ResetPasswordPage from './components/resetPassword/resetPasswordPage'
 import VerifyUser from './components/verifyUser'
 import {setUserDetailsToStore,emtStores,userFetchType} from './store/action'
-
+import {message} from 'antd'
 
 function App(props) {
   useEffect(()=>{
@@ -33,6 +33,7 @@ function App(props) {
   useEffect(()=>{
     if(props.user.error)
     {
+      message.error(props.user.error.detail)
       props.emtStores()
       deleteAuthorizationCookies()
     }

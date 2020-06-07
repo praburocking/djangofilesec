@@ -18,6 +18,7 @@ import {MailTwoTone,LockTwoTone} from '@ant-design/icons'
 
 const Login=(props)=>{
   useEffect(()=>{
+    console.log(" props.user ",props.user)
     if(props.user.username && props.user.email &&getCookie("token"))
     {
       message.success("welcome "+props.user.username +" !")
