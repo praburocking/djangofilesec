@@ -77,11 +77,8 @@ class loginView(APIView):
                 if user is not None and user.verified:
                     # login(request,user)
                     licenseUtil=LicenseUtil(userId=user)
-                    return Response(data={"user": UserSerializer(instance=user).data,
-                                          "authtoken": AuthToken.objects.create(user)[1],
-                                          "license": licenseUtil.getLicenseJo()
-                                          })
-                elif not user.verified:
+                    return Response(data={"user": UserSerializer(instance=user).data, "authtoken": AuthToken.objects.create(user)[1], "license": licenseUtil.getLicenseJo()})
+                elif user is not None and not user.verified:
                     sendConfirm(user)
                     return Response(data={"detail": "user not verified, new email send please verify the user"}, status=status.HTTP_401_UNAUTHORIZED)
                 else:

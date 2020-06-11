@@ -23,13 +23,13 @@ const Accounts=(props)=>
     const [planEdit,setPlanEdit]=useState(false)
     const [passEdit,setPassEdit]=useState(false)
     const [name,setName]=useState(props.user.username)
-    let src="";
+    const [userImageUrl,setUserImageUrl]=useState("");
 
     useEffect(()=>{
         const asyncprocess=async ()=>{
         console.log("imageRef ",imageRef)
-        src= await getUserImage()
-        
+        let src= await getUserImage()
+        setUserImageUrl(src);
         }
         asyncprocess()
     },[])
@@ -72,7 +72,7 @@ const updatePlan=(e)=>
         <Col span={24} >
         <div className="profile-header-container">   
     		<div className="profile-header-img">
-                <img className="img-circle" src={src} ref={imageRef}/>
+                <img className="img-circle" src={userImageUrl} />
                 <div className="rank-label-container">
                 <Upload onChange={onChange}  beforeUpload={()=>false}  multiple= {false} action='#' showUploadList={false} accept="image/*">
                     <Button className="label label-default rank-label"  style={{backgroundColor:"rgb(24,144,255)"}}><EditFilled />Edit</Button>
@@ -89,15 +89,19 @@ const updatePlan=(e)=>
             </Row>
             <Divider style={{padding:"0px",margin:"0px"}}/>
              <Row className="accounts-list" style={{paddingTop :"30px",paddingBottom:"30px"}}>
-                 <Col span={11}><strong>Total Space</strong></Col><Col span={11}>{props.user.username}</Col><Col span={2}></Col>
+                 <Col span={11}><strong>Total Space</strong></Col><Col span={11}>{props.license.totalSpace}</Col><Col span={2}></Col>
              </Row>
              <Divider style={{padding:"0px",margin:"0px"}}/>
              <Row className="accounts-list"  style={{paddingTop :"30px",paddingBottom:"30px"}}>
-                <Col span={11}><strong>Free Space</strong></Col><Col span={11}>{props.user.username}</Col><Col span={2}></Col>
+                <Col span={11}><strong>Free Space</strong></Col><Col span={11}>{props.license.totalSpace-props.license.usedSpace}</Col><Col span={2}></Col>
              </Row>
              <Divider style={{padding:"0px",margin:"0px"}} />
              <Row className="accounts-list" style={{paddingTop :"30px",paddingBottom:"30px"}}>
-                <Col span={11}><strong>plan</strong></Col><Col span={11}>{planEdit? <Input style={{minHeight:"34px"}} value={props.user.username} addonAfter={<QuickEditButtons successFunct={updatePlan} FailureFuct={updatePlan}/>}/>:props.user.username }</Col>{!planEdit && <Col span={2} className="account-change-cursor" onClick={()=>setPlanEdit(true)}><EditFilled/></Col>}
+                <Col span={11}><strong>plan</strong></Col><Col span={11}>{planEdit? <Input style={{minHeight:"34px"}} value={props.license.licenseType} addonAfter={<QuickEditButtons successFunct={updatePlan} FailureFuct={updatePlan}/>}/>:props.license.licenseType }</Col>{!planEdit && <Col span={2} className="account-change-cursor" onClick={()=>setPlanEdit(true)}><EditFilled/></Col>}
+             </Row>
+             <Divider style={{padding:"0px",margin:"0px"}}/>
+             <Row className="accounts-list"  style={{paddingTop :"30px",paddingBottom:"30px"}}>
+                <Col span={11}><strong>E-Mail</strong></Col><Col span={11}>{props.user.email}</Col><Col span={2}></Col>
              </Row>
              <Divider style={{padding:"0px",margin:"0px"}}/>
              <Row className="accounts-list" style={{paddingTop :"30px",paddingBottom:"30px"}}>

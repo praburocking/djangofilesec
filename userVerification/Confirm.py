@@ -6,6 +6,8 @@ from random import randint, shuffle
 from smtplib import SMTP
 from threading import Thread
 from django.core.mail import EmailMessage
+from datetime import timedelta
+from django.utils import timezone
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -28,7 +30,7 @@ def verify(request, email_token):
 
 
 def sendConfirm(user, **kwargs):
-    from .models import User
+    from .models import Token
     try:
         email = user.email
         user.verified = False
@@ -44,12 +46,21 @@ def sendConfirm(user, **kwargs):
             token = str(sha224(bytes(email + str(dt.now()) + str(randint(1000, 9999)) + word, 'utf-8')).hexdigest())
 
         try:
-            User.objects.get(user=user,token_type=token_type).delete()
-        except User.DoesNotExist:
+            user_email=Token.objects.get(user=user,token_type=token_type)
+            is_token_active=user_email.is_token_active()
+            if is_token_active :
+                token=user_email.token
+            else:
+                user_email.delete()
+                user_email = Token.objects.create(user=user, token=token,token_type=token_type)
+                user_email.save()
+        except Token.DoesNotExist:
+            user_email = Token.objects.create(user=user, token=token,token_type=token_type)
+            user_email.save()
             pass
 
-        user_email = User.objects.create(user=user, email_token=token,token_type=token_type)
-        user_email.save()
+        #user_email = User.objects.create(user=user, email_token=token,token_type=token_type)
+        
         t = Thread(target=sendConfirm_thread, args=(email, token))
         t.start()
     except AttributeError:
@@ -57,7 +68,6 @@ def sendConfirm(user, **kwargs):
 
 
 def sendConfirm_thread(email, token):
-    from .models import User
     try:
         sender = settings.EMAIL_SERVER
         domain = settings.EMAIL_PAGE_DOMAIN
@@ -75,8 +85,10 @@ def sendConfirm_thread(email, token):
             addr = str(v[0][0][0])
             link = domain + addr[0: addr.index('%')] + token
     try:
+        
         html = settings.EMAIL_MAIL_HTML
         html = render_to_string(html, {'link': link})
+        print("html verification  mail "+html)
         msg = EmailMessage(subject, html,address, email.split(","))
         msg.content_subtype = "html"  # Main content is now text/html
         msg.send()
@@ -84,30 +96,17 @@ def sendConfirm_thread(email, token):
         pass
 
 def verifyToken(email_token):
-    from .models import User
+    from .models import Token
     try:
-        user_email = User.objects.get(email_token=email_token,token_type='U_V')
-        user = get_user_model().objects.get(email=user_email.user.email)
-        user.verified = True
-        user.save()
-        user_email.delete()
-        return True
-    except User.DoesNotExist:
+        user_email = Token.objects.get(token=email_token,token_type='U_V')
+        if  user_email.is_token_active():
+            user = get_user_model().objects.get(email=user_email.user.email)
+            user.verified = True
+            user.save()
+            user_email.delete()
+            return True
+        else:
+            return False
+    except Token.DoesNotExist:
         return False
 
-def generate_key( generator=None, *args, **kwargs):
-        from .models import User
-        """
-        Generate random unique token key.
-        """
-        generator = settings.DEFAULT_KEY_GENERATOR if generator is None else generator
-        generator_func = import_string(generator) if isinstance(generator, str) else generator
-
-        key = generator_func(*args, **kwargs)
-        try_generator_iterations = 1
-        while User.objects.filter(email_token=key).exists():
-            if try_generator_iterations >= settings.MAX_RANDOM_KEY_ITERATIONS:
-                raise IntegrityError('Could not produce unique key for verification token')
-            try_generator_iterations += 1
-            key = generator_func(*args, **kwargs)
-        return key

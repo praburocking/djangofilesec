@@ -6,7 +6,7 @@ console.log("server url",process.env);
 
 let url="https://filesec.herokuapp.com/api/v1/"
 
-//url="http://localhost:8000/api/v1/"
+url="http://localhost:8000/api/v1/"
 
 let user_url=url+"iam/accounts";
 let login_url=url+"iam/login";
@@ -80,6 +80,7 @@ export const getUserImage=async()=>
         });
         var urlCreator = window.URL || window.webkitURL;
         var imageUrl = urlCreator.createObjectURL( blob );
+        console.log("imageUrl ==>",imageUrl);
         return imageUrl
     }
     catch (error) {
