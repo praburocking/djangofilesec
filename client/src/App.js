@@ -57,7 +57,7 @@ function App(props) {
       <Route exact path ="/accounts" render={()=>userExist()?<Accounts/>:<Redirect to="/"/>} ></Route>
       <Route exact path="/forgotpassword" render={()=>userExist()?<Redirect to="/home"/>:<ForgotPasswordPage/>}></Route>
       <Route exact path="/resetPassword" render={()=>userExist()?<Redirect to="/home"/>:<ResetPasswordPage/>}></Route>
-      <Route exact path="/verifyuser" render={()=>userExist()?<Redirect to="/home"/>:<VerifyUser/>}></Route>
+      <Route exact path="/verifyuser/:token" render={({match})=><VerifyUser token={match.params.token}/>}></Route>
       <Route exact path ="/signup" render={()=>userExist()?<Redirect to="/home"/>:<Signup/>}></Route>
       <Route exact path ="/pagenotfound" render={()=><NotFound/>} ></Route>
       {/* <Route  render={()=><Redirect to="/pagenotfound"/>} ></Route> */}

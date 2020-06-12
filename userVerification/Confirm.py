@@ -1,3 +1,4 @@
+from http import HTTPStatus
 from datetime import datetime as dt
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -8,6 +9,7 @@ from threading import Thread
 from django.core.mail import EmailMessage
 from datetime import timedelta
 from django.utils import timezone
+from django.http import HttpResponse
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -23,8 +25,12 @@ from .errors import NotAllFieldCompiled
 # Create your views here.
 def verify(request, email_token):
     try:
-        template = settings.EMAIL_PAGE_TEMPLATE
-        return render(request, template, {'success': verifyToken(email_token)})
+        #template = settings.EMAIL_PAGE_TEMPLATE
+        #return render(request, template, {'success': verifyToken(email_token)})
+        if verifyToken(email_token):
+            return HttpResponse('{status":"verified","message":"token verified"}', status=HTTPStatus.ACCEPTED,content_type='application/json')
+        else:
+            return HttpResponse('{"status":"not verified","message":"token verified failed/invalid token"}',status=HTTPStatus.FORBIDDEN,content_type='application/json')
     except AttributeError:
         raise NotAllFieldCompiled('EMAIL_PAGE_TEMPLATE field not found')
 
@@ -70,7 +76,7 @@ def sendConfirm(user, **kwargs):
 def sendConfirm_thread(email, token):
     try:
         sender = settings.EMAIL_SERVER
-        domain = settings.EMAIL_PAGE_DOMAIN
+        link = settings.EMAIL_USER_VERIFICATION_LINK
         subject = settings.EMAIL_MAIL_SUBJECT
         address = settings.EMAIL_ADDRESS
         port = settings.EMAIL_PORT
@@ -78,12 +84,7 @@ def sendConfirm_thread(email, token):
     except AttributeError:
         raise NotAllFieldCompiled('Compile all the fields in the settings')
 
-    domain += '/' if not domain.endswith('/') else ''
-    link = ''
-    for k, v in get_resolver(None).reverse_dict.items():
-        if k is verify and v[0][0][1][0]:
-            addr = str(v[0][0][0])
-            link = domain + addr[0: addr.index('%')] + token
+    link=link+token
     try:
         
         html = settings.EMAIL_MAIL_HTML

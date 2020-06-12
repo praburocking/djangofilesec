@@ -106,7 +106,12 @@ const updatePlan=(e)=>
              <Divider style={{padding:"0px",margin:"0px"}}/>
              <Row className="accounts-list" style={{paddingTop :"30px",paddingBottom:"30px"}}>
                 <Col span={11}><strong>password</strong></Col><Col span={11}>{passEdit? <Input.Password addonAfter={<QuickEditButtons successFunct={updatePass} FailureFuct={updatePass}/>}/>:'***'}</Col> { !passEdit && <Col span={2} className="account-change-cursor" onClick={()=>setPassEdit(true)}><EditFilled/></Col>}
-            </Row>
+            </Row> 
+            <Divider style={{padding:"0px",margin:"0px"}}/>
+             <Row className="accounts-list"  style={{paddingTop :"30px",paddingBottom:"30px"}}>
+                <Col span={11}><strong>Free Space</strong></Col><Col span={11}><div contenteditable="true">{props.license.totalSpace-props.license.usedSpace}</div></Col><Col span={2}></Col>
+             </Row>
+            
         </Col>
         </Row>
         </div>

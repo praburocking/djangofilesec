@@ -6,6 +6,7 @@ console.log("server url",process.env);
 
 let url="https://filesec.herokuapp.com/api/v1/"
 
+
 //url="http://localhost:8000/api/v1/"
 
 let user_url=url+"iam/accounts";
@@ -15,7 +16,7 @@ let signup_url=url+"iam/signup"
 let payment_url=url+"pay"
 let forgotPassword_url=url+"forgotpassword"
 let resetPass_url=url+"resetpass"
-let verifyuser_url=url+"verifyuser"
+let verifyuser_url=url+"iam/verifyuser"
 let uploadfile_url=url+"app/files"
 let getfiles_url=url+"app/files"
 let downloadfiles_url=url+'app/files/download'
@@ -163,10 +164,11 @@ export const resetPass=async (key)=>
         return error.response;
     }
 }
-export const verifyUser=async (key)=>
+export const verifyUser=async(token)=>
 {
     try {
-        const response = await axios.post(verifyuser_url, key);
+        console.log("token ..",token);
+        const response = await axios.get(verifyuser_url+"/"+token);
         return response;
     }
     catch (error) {
