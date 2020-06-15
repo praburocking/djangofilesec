@@ -16,7 +16,7 @@ let signup_url=url+"iam/signup"
 let payment_url=url+"pay"
 let forgotPassword_url=url+"forgotpassword"
 let resetPass_url=url+"resetpass"
-let verifyuser_url=url+"iam/verifyuser"
+let verifyuser_url=url+"iam/verify"
 let uploadfile_url=url+"app/files"
 let getfiles_url=url+"app/files"
 let downloadfiles_url=url+'app/files/download'
@@ -164,11 +164,11 @@ export const resetPass=async (key)=>
         return error.response;
     }
 }
-export const verifyUser=async(token)=>
+export const verifyUser=async(token,type)=>
 {
     try {
         console.log("token ..",token);
-        const response = await axios.get(verifyuser_url+"/"+token);
+        const response = await axios.get(verifyuser_url+"/"+type+"/"+token);
         return response;
     }
     catch (error) {

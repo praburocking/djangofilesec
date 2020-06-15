@@ -93,7 +93,7 @@ EMAIL_PASSWORD = env('EMAIL_HOST_PASSWORD')
 EMAIL_MAIL_SUBJECT = 'Confirm your email'
 EMAIL_MAIL_HTML ="verificationEmail.html"
 EMAIL_PAGE_TEMPLATE="verificationResponse.html"
-EMAIL_USER_VERIFICATION_LINK = env('HOST_URL')+'/verifyuser/'
+EMAIL_USER_VERIFICATION_LINK = env('HOST_URL')+'/verify/'
 EMAIL_MODEL_ADMIN = False # the default value is False
 
 

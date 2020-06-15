@@ -7,7 +7,7 @@ from django.utils import timezone
 class Token(models.Model):
     class Meta:
          unique_together = (('token_type', 'user'),)
-    TOKEN_TYPE = (('U_V', 'USER_VERIFICATION'),)
+    TOKEN_TYPE = (('U_V', 'USER_VERIFICATION'),('P_R','PASSWORD_RECOVERY'))
     id=models.UUIDField(primary_key = True, default = uuid.uuid4, editable = False)
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     token_type=models.CharField(max_length=10, choices=TOKEN_TYPE)
@@ -20,3 +20,6 @@ class Token(models.Model):
 
     def is_token_active(self):
          return (self.is_active  and self.token and (self.expiration_in_minutes is None or timezone.now() <= self.created_at + timedelta(minutes=self.expiration_in_minutes)))
+
+    def get_type(self):
+         return self.token_type; 

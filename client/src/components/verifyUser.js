@@ -6,6 +6,7 @@ import {verifyUser} from '../services/connectToServer'
 import {withRouter} from 'react-router-dom'
 import message from 'antd/es/message'
 import {Button,Row,Col} from 'antd'
+import constants from '../util/constants'
 
 const VerifyUser=(props)=>
 { 
@@ -17,12 +18,13 @@ const VerifyUser=(props)=>
         const verifyuser=async()=>
             {
                 
-                if(props.token)
+                if(props.token && props.type)
                 {   let token=props.token;
+                    let type=props.type;
                     console.log("token ==> ",token);
-                   const verifyUserResp=await verifyUser(token);
+                   const verifyUserResp=await verifyUser(token,type);
 
-                   if(verifyUserResp.status===200)
+                   if(!constants.errorResponse.includes (verifyUserResp.status))
                    {
                     message.success("User verified redirecting to Login");
                     setVerified(true);

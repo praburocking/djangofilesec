@@ -25,6 +25,7 @@ class Files(models.Model):
 
 
     def save(self,*args,**kargs):
+        if not self.pk:
             self.name =self.file.name
             self.file.name=str(self.id)
             self.size=self.file.size/1000000
@@ -36,6 +37,12 @@ class Files(models.Model):
             if licenseUtil.checkSizeExist(self.size):
                 licenseUtil.updateUsedSize(self.size,True)
                 super().save(*args,**kargs)
+        else:
+            super().save(*args,**kargs)
+            
+    def delete(self,*args,**kwargs):
+        self.file.delete()
+        super(Files, self).delete(*args, **kwargs)
 
 
     def __str__(self):

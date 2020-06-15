@@ -23,11 +23,11 @@ from .errors import NotAllFieldCompiled
 
 
 # Create your views here.
-def verify(request, email_token):
+def verify(request, email_token,token_type):
     try:
         #template = settings.EMAIL_PAGE_TEMPLATE
         #return render(request, template, {'success': verifyToken(email_token)})
-        if verifyToken(email_token):
+        if verifyToken(email_token,token_type):
             return HttpResponse('{status":"verified","message":"token verified"}', status=HTTPStatus.ACCEPTED,content_type='application/json')
         else:
             return HttpResponse('{"status":"not verified","message":"token verified failed/invalid token"}',status=HTTPStatus.FORBIDDEN,content_type='application/json')
@@ -35,13 +35,12 @@ def verify(request, email_token):
         raise NotAllFieldCompiled('EMAIL_PAGE_TEMPLATE field not found')
 
 
-def sendConfirm(user, **kwargs):
+def sendConfirm(user, token_type, **kwargs):
     from .models import Token
     try:
         email = user.email
         user.verified = False
         user.save()
-        token_type='U_V'
 
         try:
             token = kwargs['token']
@@ -67,13 +66,13 @@ def sendConfirm(user, **kwargs):
 
         #user_email = User.objects.create(user=user, email_token=token,token_type=token_type)
         
-        t = Thread(target=sendConfirm_thread, args=(email, token))
+        t = Thread(target=sendConfirm_thread, args=(email, token,token_type))
         t.start()
     except AttributeError:
         raise InvalidUserModel('The user model you provided is invalid')
 
 
-def sendConfirm_thread(email, token):
+def sendConfirm_thread(email, token,token_type):
     try:
         sender = settings.EMAIL_SERVER
         link = settings.EMAIL_USER_VERIFICATION_LINK
@@ -84,7 +83,7 @@ def sendConfirm_thread(email, token):
     except AttributeError:
         raise NotAllFieldCompiled('Compile all the fields in the settings')
 
-    link=link+token
+    link=link+token_type+"/"+token
     try:
         
         html = settings.EMAIL_MAIL_HTML
@@ -96,10 +95,10 @@ def sendConfirm_thread(email, token):
     except AttributeError:
         pass
 
-def verifyToken(email_token):
+def verifyToken(email_token,token_type):
     from .models import Token
     try:
-        user_email = Token.objects.get(token=email_token,token_type='U_V')
+        user_email = Token.objects.get(token=email_token,token_type=token_type)
         if  user_email.is_token_active():
             user = get_user_model().objects.get(email=user_email.user.email)
             user.verified = True
