@@ -128,7 +128,10 @@ class accountsImageView(APIView):
             queryset = get_object_or_404(queryset, pk=request.user.id)
             if not queryset.user_image == None:
                 userimage = queryset.user_image
-                return HttpResponse(content=userimage, content_type='image/*')
+                response=HttpResponse(content=userimage, content_type='image/*')
+                response['Content-Disposition'] = 'attachment; filename="'+userimage.name+'"'
+                response['X-Frame-Options']='SAMEORIGIN'
+                return response
             else:
                 return Response(data={"detail": "no image"})
         else:

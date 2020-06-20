@@ -12,6 +12,15 @@ storage = S3Storage(aws_s3_bucket_name='filesec')
 
 # Create your models here.
 
+class FileManager(models.QuerySet):
+    def create(self,*args,**kargs):
+        return super(FileManager,self).create(*args,**kargs)
+
+    def delete(self):
+        for obj in self.get_queryset():
+            obj.delete()
+
+
 class Files(models.Model):
     id=models.UUIDField( primary_key = True, default = uuid.uuid4, editable = False)
     file=models.FileField(null=False,storage=storage)
@@ -21,11 +30,9 @@ class Files(models.Model):
     format=models.TextField(null=False,default='noformat')
     size=models.FloatField(null=False,default=0)
     user=models.ForeignKey(get_user_model(),related_name='Files',on_delete=models.CASCADE)
-
-
-
+    
     def save(self,*args,**kargs):
-        if not self.pk:
+        if self._state.adding:
             self.name =self.file.name
             self.file.name=str(self.id)
             self.size=self.file.size/1000000
@@ -39,12 +46,17 @@ class Files(models.Model):
                 super().save(*args,**kargs)
         else:
             super().save(*args,**kargs)
-            
+
+
     def delete(self,*args,**kwargs):
+        size=self.file.size/1000000
         self.file.delete()
+        licenseUtil=LicenseUtil(self.user)
+        licenseUtil.updateUsedSize(size,False)
         super(Files, self).delete(*args, **kwargs)
 
 
     def __str__(self):
         return self.user.username+"_"+self.file.name+"_"+self.name
+    objects=FileManager.as_manager()
 

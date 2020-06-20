@@ -35,7 +35,7 @@ const HomePage=(props)=>
              <FileUploader/>
              </Col>
              <Col span={6} className="App" style={{color:"white",padding:"20px",margin:20}}>
-             <Progress type="dashboard" percent={75} status="active" style={{color:"white"}}/>
+             <Progress type="dashboard" percent={(props.license.usedSpace/props.license.totalSpace)*100} status="active" style={{color:"white"}} strokeWidth={12}/>
              </Col>
         </Row>
         <Row style={{backgroundColor:"rgb(255, 255, 255)",marginLeft:50,marginRight:50}}>

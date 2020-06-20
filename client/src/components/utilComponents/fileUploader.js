@@ -43,10 +43,11 @@ const FileUploader=(props)=>
     const [file,setFile]=useState(null);
     const [isShowModal,setModal]=useState(false);
     const [eKey,setEKey]=useState(null);
-
+    const [isFileUpLoading,setFileUpLoading]=useState(false)
 
    const handleOk = async(e) => {
         console.log(e);
+        setFileUpLoading(true)
         const data = new FormData() 
         data.append('file', file);
         data.append('private_key',eKey);
@@ -66,6 +67,7 @@ const FileUploader=(props)=>
             message.error("exception while uploading,please try again later")
           } 
         }
+        setFileUpLoading(false)
         setModal(false);
         setFile(null);
         setEKey(null);
@@ -73,9 +75,11 @@ const FileUploader=(props)=>
     
     const  handleCancel = e => {
         console.log(e);
-        setModal(false);
-        setFile(null);
-        setEKey(null);
+        if(!isFileUpLoading){
+          setModal(false);
+          setFile(null);
+          setEKey(null);
+        }
       };
 
     const changeEKey=(event)=>
@@ -101,11 +105,11 @@ const FileUploader=(props)=>
           title="please Enter your entryption key"
           visible={isShowModal}
           onOk={handleOk}
-          onCancel={handleCancel}>
-          <Input type="text" placeholder="Encryption Key" value={eKey} onChange={changeEKey}/>
+          onCancel={handleCancel}
+          confirmLoading={isFileUpLoading}>
+          <Input.Password type="text" placeholder="Encryption Key" value={eKey} onChange={changeEKey}/>
           <p>we will use this key along with our own random private key to encrypt your data</p>
         </Modal>
-	      
 	  </div>
     )
 }

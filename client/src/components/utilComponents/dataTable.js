@@ -17,6 +17,7 @@ import {state_to_props} from '../../util/common_utils'
     const [isShowModal,setModal]=useState(false);
     const [currentDownload,setCurrentDownload]=useState(null); 
     const [eKey,setEKey]=useState(null);
+    const [isFileDownLoading,setFileDownLoading]=useState(false)
     const columns = [
       {
         title: 'Name',
@@ -42,6 +43,7 @@ import {state_to_props} from '../../util/common_utils'
     const download=async (record)=>
     {
       var key=record.key;
+      setFileDownLoading(true)
       var downloadResp=await downloadFiles(key,eKey);
       setEKey(null);
       if(downloadResp.status===200)
@@ -66,7 +68,9 @@ import {state_to_props} from '../../util/common_utils'
             message.error("Exception while downloading the file")
           }
         }
+        setFileDownLoading(false)
         setModal(false)
+
     }
 
     const handleDownload=(record)=>
@@ -115,7 +119,8 @@ import {state_to_props} from '../../util/common_utils'
           title="please Enter your decryption key"
           visible={isShowModal}
           onOk={()=>download(currentDownload)}
-          onCancel={handleCancel}>
+          onCancel={handleCancel}
+          confirmLoading={isFileDownLoading} >
           <Input.Password  placeholder="Decryption Key" value={eKey} onChange={changeEKey}/>
           <p>we will use this key along with our own random private key to decrypt your data</p>
         </Modal>

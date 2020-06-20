@@ -75,14 +75,8 @@ export const getUserImage=async()=>
         config["responseType"]='blob';
         console.log("config",config)
         const response = await axios.get(user_url+"/userimage", config);
-        var arrayBufferView = new Uint8Array( response.data );
-        let blob = new Blob([arrayBufferView], {
-            type: 'image/jpeg',
-        });
-        var urlCreator = window.URL || window.webkitURL;
-        var imageUrl = urlCreator.createObjectURL( blob );
-        console.log("imageUrl ==>",imageUrl);
-        return imageUrl
+        console.log("userimage response ",response)
+        return response
     }
     catch (error) {
         return error.response;

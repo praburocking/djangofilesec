@@ -29,7 +29,7 @@ const VerifyUser=(props)=>
                     message.success("User verified redirecting to Login");
                     setVerified(true);
                     //props.history.push('/login');
-                    status="Verified, Please login!!"
+                    setStatus("Verified, Please login!!");
                    }
                    else
                    {   console.log("eriyuser ",verifyUserResp.data)
