@@ -105,7 +105,7 @@ const FileUploader=(props)=>
           title="please Enter your entryption key"
           visible={isShowModal}
           onOk={handleOk}
-          onCancel={handleCancel}
+          onCancel={!isFileUpLoading  &&  handleCancel}
           confirmLoading={isFileUpLoading}>
           <Input.Password type="text" placeholder="Encryption Key" value={eKey} onChange={changeEKey}/>
           <p>we will use this key along with our own random private key to encrypt your data</p>

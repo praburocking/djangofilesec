@@ -47,7 +47,9 @@ INSTALLED_APPS = [
     'licenses',
     'api',
     'files',
+    'payments',
     'userVerification',
+   
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

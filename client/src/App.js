@@ -22,8 +22,12 @@ import ResetPasswordPage from './components/resetPassword/resetPasswordPage'
 import VerifyUser from './components/verifyUser'
 import {setUserDetailsToStore,emtStores,userFetchType} from './store/action'
 import {message} from 'antd'
+import {Elements} from '@stripe/react-stripe-js';
+import {loadStripe} from '@stripe/stripe-js';
 
 function App(props) {
+  const stripePromise = loadStripe('pk_test_JJ1eMdKN0Hp4UFJ6kWXWO4ix00jtXzq5XG');
+
   useEffect(()=>{
     if(verifyAndGetToken())
     {
@@ -47,7 +51,7 @@ function App(props) {
 
   return (
     <>
-    
+    <Elements stripe={stripePromise}>
     <Switch location={props.location}>
       <Route exact path ="/" render={()=>userExist()?<Redirect to="/home"/>:<LandingPage/>} ></Route>
       <Route exact path ="/faq" render={()=><Faq/>} ></Route>
@@ -62,7 +66,7 @@ function App(props) {
       <Route exact path ="/pagenotfound" render={()=><NotFound/>} ></Route>
       {/* <Route  render={()=><Redirect to="/pagenotfound"/>} ></Route> */}
       </Switch>
-      
+      </Elements>
       </>
   );
 }

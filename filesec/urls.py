@@ -18,9 +18,11 @@ from django.urls import path,include
 from django.conf.urls import url
 from . import views
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include('api.urls')),
     url(r'^(?!api)', views.index,name="index"),
+    # url(r"^payments/", include("payments.urls")),
 
 ]

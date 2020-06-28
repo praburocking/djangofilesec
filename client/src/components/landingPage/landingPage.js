@@ -27,12 +27,12 @@ const LandingPage=(props)=>
         <Content style={{ padding: '0 0 0 0px', marginTop: 64, minHeight:"1020px" }}>
             <Row style={{minHeight:"720px"}}>
                 <Col span={16}>
-                <Carousel dotPosition="left"  autoplay style={{margin:15,marginTop:30,minHeight:700,minWidth:400,opacity: 0.5,color:"white"}}>
-                    <div style={{minHeight:700,minWidth:400,color:"white"}} >
-                     <h3>we are here to tell some awesome things about our product</h3>
+                <Carousel dotPosition="bottom"  autoplay style={{margin:15,marginTop:30,minHeight:700,minWidth:556,color:"white"}}>
+                    <div style={{minHeight:700,minWidth:556,color:"white"}} >
+                    <img  src="static/acc_1.png"  height="556" width="1000"/>
                     </div>
                      <div>
-                     <h3>we are here to tell some awesome things about our product</h3>
+                     <img  src="static/acc_2.png"  height="556" width="1000"/>
                     </div>
                     <div>
                     <h3>we are here to tell some awesome things about our product</h3>

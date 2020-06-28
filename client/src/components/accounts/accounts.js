@@ -4,10 +4,15 @@ import { Button,Avatar,Modal } from 'antd';
 import {state_to_props} from '../../util/common_utils'
 import {connect} from 'react-redux'
 import Header from '../utilComponents/header'
-import {EditFilled, CloseCircleFilled, CheckCircleFilled} from '@ant-design/icons'
+import {EditFilled, CloseCircleFilled, CheckCircleFilled,LockTwoTone} from '@ant-design/icons'
 import './accounts.css'
 import {setUserDetailsToStore,userFetchType} from '../../store/action'
 import {addUserImage,getUserImage} from '../../services/connectToServer'
+import Select from 'antd/es/select'
+import CardForm from '../payment/card';
+
+
+const {Option}=Select;
 
 
 const QuickEditButtons=(props)=>
@@ -23,7 +28,9 @@ const Accounts=(props)=>
     const [passEdit,setPassEdit]=useState(false)
     const [name,setName]=useState(props.user.username)
     const [userImageUrl,setUserImageUrl]=useState("");
-    const [isPassModal,setPassModal]=useState(false)
+    const [isPassModal,setPassModal]=useState(false);
+    const [isLicModal,setLicModal]=useState(false);
+    const [isShowCard,setShowCard]=useState(false);
 
     useEffect(()=>{
         const asyncprocess=async ()=>{
@@ -62,8 +69,7 @@ const updatePass=(e)=>
 {  
  
 }
-const updatePlan=(e)=>
-{
+const updatePlan=(e)=>{
     setPlanEdit(false)
 }
 const handleOk = () => {
@@ -73,13 +79,28 @@ const handleOk = () => {
 const showPassModal=()=>{
         setPassModal(true);
        }
+const showLicModal=()=>{
+        setLicModal(true);
+       }
+const cancelLicModal=()=>{
+    setShowCard(false);
+    setLicModal(false);
+}
   const  handleCancel = () => {
            setPassModal(false);
          }; 
+const handlePlanChange=(e)=>
+{
+console.log(e);
+if(props.license.licenseType==="Free" && e!=="Free"){
+    setShowCard(true);
+}
+
+}
     
     return(<Layout className="parallax">
    <Header defaultSelectedKeys={['1']} isLoggedIn="true"/>
-    <Content style={{ padding: '10 10 10 10px', marginTop: 64, minHeight:"84vh",maxHeight:"84vh"}}>
+    <Content style={{ padding: '10 10 10 10px', marginTop: 64, minHeight:"84vh"}}>
         <div className="center" style={{textAlign:"center",maxWidth:"1000px",minWidth:"1000px"}}>
     <Row style={{color:"white"}}>
         <Col span={24} >
@@ -111,7 +132,7 @@ const showPassModal=()=>{
              </Row>
              <Divider style={{padding:"0px",margin:"0px"}} />
              <Row className="accounts-list" style={{paddingTop :"30px",paddingBottom:"30px"}}>
-                <Col span={11}><strong>plan</strong></Col><Col span={11}>{planEdit? <Input style={{minHeight:"34px"}} value={props.license.licenseType} addonAfter={<QuickEditButtons successFunct={updatePlan} FailureFuct={updatePlan}/>}/>:props.license.licenseType }</Col>{!planEdit && <Col span={2} className="account-change-cursor" onClick={()=>setPlanEdit(true)}><EditFilled/></Col>}
+                <Col span={11}><strong>plan</strong></Col><Col span={11}>{props.license.licenseType}</Col>  <Col span={2} className="account-change-cursor" onClick={()=>showLicModal()}><EditFilled/></Col>
              </Row>
              <Divider style={{padding:"0px",margin:"0px"}}/>
              <Row className="accounts-list"  style={{paddingTop :"30px",paddingBottom:"30px"}}>
@@ -122,11 +143,27 @@ const showPassModal=()=>{
                 <Col span={11}><strong>password</strong></Col><Col span={11}>{'***'}</Col>  <Col span={2} className="account-change-cursor" onClick={()=>showPassModal()}><EditFilled/></Col>
             </Row> 
             <Row>
-            <Modal title="password change" visible={isPassModal}  onOk={handleOk} onCancel={handleCancel} confirmLoading={false} >
-          <p>please type your old password along with your new password</p>
-          <Input.Password  placeholder="old password"/>
+                <Modal title="password change" visible={isPassModal}  onOk={handleOk} onCancel={handleCancel} confirmLoading={false} >
+                     <p>please type your old password along with your new password</p>
+                     <Input.Password  placeholder="old password"/>
+                        <br/>
+                    <Input.Password  placeholder="new password"/>
+                 </Modal>
+            </Row>
+            <Row>
+                 <Modal title="update plan" visible={isLicModal}  onOk={handleOk} onCancel={cancelLicModal} confirmLoading={false} >
+                <Select
+                size="large" 
+                prefix={<LockTwoTone style={{ color: 'rgba(0,0,0,.25)' }} />}
+                placeholder="select your plan" 
+                onChange={handlePlanChange}
+                >
+                <Option value="planA">plan A, 8 User, 3USD/month</Option>
+                 <Option value="planB">plan B, 12 User, 5USD/month</Option>
+                 </Select>
+    { isShowCard&&  <CardForm/>}
           <br/>
-          <Input.Password  placeholder="new password"/>
+          <Input.Password  placeholder="password"/>
         </Modal>
             </Row>
         </Col>

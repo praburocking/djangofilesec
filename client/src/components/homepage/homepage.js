@@ -11,6 +11,7 @@ import FileUploader from '../utilComponents/fileUploader'
 import DataTable from '../utilComponents/dataTable'
 import {state_to_props} from '../../util/common_utils'
 import {listFiles} from '../../store/action'
+import  CircularProgressBar from '../utilComponents/circularProgressBar'
 
 
 const HomePage=(props)=>
@@ -35,7 +36,11 @@ const HomePage=(props)=>
              <FileUploader/>
              </Col>
              <Col span={6} className="App" style={{color:"white",padding:"20px",margin:20}}>
-             <Progress type="dashboard" percent={(props.license.usedSpace/props.license.totalSpace)*100} status="active" style={{color:"white"}} strokeWidth={12}/>
+             {/* <Progress type="dashboard" percent={(props.license.usedSpace/props.license.totalSpace)*100} status="active" style={{color:"white"}} strokeWidth={12}/> */}
+             <CircularProgressBar
+            strokeWidth="10"
+            sqSize="200"
+            percentage={(props.license.usedSpace/props.license.totalSpace)*100}/>
              </Col>
         </Row>
         <Row style={{backgroundColor:"rgb(255, 255, 255)",marginLeft:50,marginRight:50}}>
