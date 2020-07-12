@@ -132,27 +132,10 @@ const Signup=(props)=>{
       />
       </Form.Item>
 
-
-      <Form.Item
-       name='plan'
-       rules={
-         [{
-           required:true
-         }]
-       }>
-      <Select
-          size="large" 
-          prefix={<LockTwoTone style={{ color: 'rgba(0,0,0,.25)' }} />}
-          placeholder="select your plan" >
-          <Option value="planA">plan A, 8 User, 3USD/month</Option>
-          <Option value="planB">plan B, 12 User, 5USD/month</Option>
-        </Select>
-      </Form.Item>
-
   <Form.Item>
     <br/>
     <Button type="primary" htmlType="submit" size="large" className="login-form-button"   loading={isLoading}>
-      {!isLoading && "Start Your Free Trial"}
+      {!isLoading && "Create Your Free Account"}
       {isLoading && "Signing You In"}
     </Button>
     

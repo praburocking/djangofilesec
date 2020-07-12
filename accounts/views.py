@@ -19,6 +19,7 @@ from licenses.serializer import LicenseSerializer
 from licenses.util import LicenseUtil
 from django.contrib.auth import get_user_model
 from userVerification import sendConfirm
+from payments.payment_util import create_customer,get_customer
 
 # Create your views here.
 
@@ -31,6 +32,9 @@ class createUser(APIView):
             user = serializer.save()
             licen= License.objects.create(userId=user,licenseType=LICENSE["FREE"]["NAME"],totalSpace=LICENSE["FREE"]["SIZE"])
             licenSerializer=LicenseSerializer(licen)
+            stripe_customer=create_customer(user=user,license=licen)
+            print(licenSerializer.data)
+            #licenSerializer.data["stripe_customer_id"]=stripe_customer.stripe_customer_id
 
             if user:
                 ue=user_mail(user.email)
@@ -76,8 +80,10 @@ class loginView(APIView):
                 
                 if user is not None and user.verified:
                     # login(request,user)
-                    licenseUtil=LicenseUtil(userId=user)
-                    return Response(data={"user": UserSerializer(instance=user).data, "authtoken": AuthToken.objects.create(user)[1], "license": licenseUtil.getLicenseJo()})
+                    licenseUtil=LicenseUtil(userId=user.id)
+                    license_value=licenseUtil.getLicenseJo()
+                    license_value["stripe_customer_id"]=get_customer(user=user).stripe_customer_id
+                    return Response(data={"user": UserSerializer(instance=user).data, "authtoken": AuthToken.objects.create(user)[1], "license": license_value})
                 elif user is not None and not user.verified:
                     sendConfirm(user,'U_V')
                     return Response(data={"detail": "user not verified, new email send please verify the user"}, status=status.HTTP_401_UNAUTHORIZED)
@@ -105,7 +111,9 @@ class accountsView(APIView):
             user = get_object_or_404(queryset, pk=request.user.id)
             US = UserSerializer(user)
             licenseUtil = LicenseUtil(userId=user)
-            return Response(data={"user":US.data,"license":licenseUtil.getLicenseJo()})
+            license_value=licenseUtil.getLicenseJo()
+            license_value["stripe_customer_id"]=get_customer(user=user).stripe_customer_id
+            return Response(data={"user":US.data,"license":license_value})
         else:
             return Response(data={"detail": "Unauthorized Access"}, status=status.HTTP_401_UNAUTHORIZED)
 

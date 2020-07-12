@@ -4,12 +4,12 @@ import { Button,Avatar,Modal } from 'antd';
 import {state_to_props} from '../../util/common_utils'
 import {connect} from 'react-redux'
 import Header from '../utilComponents/header'
-import {EditFilled, CloseCircleFilled, CheckCircleFilled,LockTwoTone} from '@ant-design/icons'
+import {EditFilled, CloseCircleFilled, CheckCircleFilled} from '@ant-design/icons'
 import './accounts.css'
 import {setUserDetailsToStore,userFetchType} from '../../store/action'
 import {addUserImage,getUserImage} from '../../services/connectToServer'
 import Select from 'antd/es/select'
-import CardForm from '../payment/card';
+import CheckoutForm from '../payment/CheckoutForm';
 
 
 const {Option}=Select;
@@ -30,8 +30,6 @@ const Accounts=(props)=>
     const [userImageUrl,setUserImageUrl]=useState("");
     const [isPassModal,setPassModal]=useState(false);
     const [isLicModal,setLicModal]=useState(false);
-    const [isShowCard,setShowCard]=useState(false);
-
     useEffect(()=>{
         const asyncprocess=async ()=>{
         let imgResp= await getUserImage()
@@ -76,27 +74,15 @@ const handleOk = () => {
     console.log("handle ok")
     setPassModal(false);
     }
+const  handleCancel = () => {
+        setPassModal(false);
+      }; 
 const showPassModal=()=>{
         setPassModal(true);
        }
 const showLicModal=()=>{
         setLicModal(true);
        }
-const cancelLicModal=()=>{
-    setShowCard(false);
-    setLicModal(false);
-}
-  const  handleCancel = () => {
-           setPassModal(false);
-         }; 
-const handlePlanChange=(e)=>
-{
-console.log(e);
-if(props.license.licenseType==="Free" && e!=="Free"){
-    setShowCard(true);
-}
-
-}
     
     return(<Layout className="parallax">
    <Header defaultSelectedKeys={['1']} isLoggedIn="true"/>
@@ -151,20 +137,7 @@ if(props.license.licenseType==="Free" && e!=="Free"){
                  </Modal>
             </Row>
             <Row>
-                 <Modal title="update plan" visible={isLicModal}  onOk={handleOk} onCancel={cancelLicModal} confirmLoading={false} >
-                <Select
-                size="large" 
-                prefix={<LockTwoTone style={{ color: 'rgba(0,0,0,.25)' }} />}
-                placeholder="select your plan" 
-                onChange={handlePlanChange}
-                >
-                <Option value="planA">plan A, 8 User, 3USD/month</Option>
-                 <Option value="planB">plan B, 12 User, 5USD/month</Option>
-                 </Select>
-    { isShowCard&&  <CardForm/>}
-          <br/>
-          <Input.Password  placeholder="password"/>
-        </Modal>
+                 <CheckoutForm isLicModal={isLicModal} setLicModal={setLicModal}/>
             </Row>
         </Col>
         </Row>

@@ -7,9 +7,9 @@ import uuid
 
 
 LICENSE={
-    "FREE": {"NAME": "Free", "SIZE": 100},
-    "PAID1": {"NAME": "Paid1", "SIZE": 500},
-    "Paid2": {"NAME": "Paid2", "SIZE": 1000},
+    "FREE": {"NAME": "Free", "SIZE": 50,"priceId":"Free"},
+    "PAID1": {"NAME": "Paid1", "SIZE": 100,"priceId":"price_1H3yk3AD7nX8Xg8myxZ505pY"},
+    "Paid2": {"NAME": "Paid2", "SIZE": 200,"priceId":"price_1H3ynxAD7nX8Xg8mKDhsWjHT"},
 }
 
 

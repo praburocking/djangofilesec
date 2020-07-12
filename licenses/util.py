@@ -24,7 +24,8 @@ class LicenseUtil:
             license.usedSpace=license.usedSpace-newFileSize
         license=license.save()
         return license
-
+    def updateLicense(self,**kargs):
+        license=License.objects.filter(userId=self.userId).update(**kargs)
     def checkSizeExist(self, newFileSize):
         license = get_object_or_404(License, userId=self.userId)
         if license.usedSpace + newFileSize <= license.totalSpace:

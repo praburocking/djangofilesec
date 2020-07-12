@@ -13,7 +13,7 @@ let user_url=url+"iam/accounts";
 let login_url=url+"iam/login";
 let logout_url=url+"iam/logout";
 let signup_url=url+"iam/signup"
-let payment_url=url+"pay"
+let payment_url=url+"payment"
 let forgotPassword_url=url+"forgotpassword"
 let resetPass_url=url+"resetpass"
 let verifyuser_url=url+"iam/verify"
@@ -105,13 +105,32 @@ catch (error) {
 }
 
 
-export const add_payment=async ()=>
+export const subscribeUser=async (data)=>
 {
     try {
-        const response = await axios.post(payment_url, null, setAuthorizationHeader());
+        const response = await axios.post(payment_url+"/createSubscription",data, setAuthorizationHeader());
         return response;
     }
     catch (error) {
+        return error.response;
+    }
+}
+export const geStripeCustomer=async()=>{
+    try{
+        const response=await axios.get(payment_url+"/stripe/customer",setAuthorizationHeader());
+        return  response;
+    }
+    catch(error){
+        return error.response;
+    }
+}
+
+export const updateStripeCustomer=async(data)=>{
+    try{
+        const response=await axios.patch(payment_url+"/stripe/customer",data,setAuthorizationHeader());
+        return  response;
+    }
+    catch(error){
         return error.response;
     }
 }

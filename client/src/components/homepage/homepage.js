@@ -40,7 +40,7 @@ const HomePage=(props)=>
              <CircularProgressBar
             strokeWidth="10"
             sqSize="200"
-            percentage={(props.license.usedSpace/props.license.totalSpace)*100}/>
+            percentage={((props.license.usedSpace/props.license.totalSpace)*100).toFixed(2)}/>
              </Col>
         </Row>
         <Row style={{backgroundColor:"rgb(255, 255, 255)",marginLeft:50,marginRight:50}}>
