@@ -9,9 +9,11 @@ from .payment_util import get_customer_from_stripe,update_customer_address
 from licenses.models import LICENSE
 from licenses.util import LicenseUtil
 from .models import Stripe_customer
+import logging
 
 # Create your views here.
 class createSubscription(APIView):
+    logger=logging.getLogger(__name__)
     def post(self,request):
         #data = json.loads(request.data)
         data=request.data
@@ -22,7 +24,7 @@ class createSubscription(APIView):
             if stripe_customer.stripe_price_id==data["priceId"]:
                 return Response({"message":"no subscription change"})
             # Attach the payment method to the customer
-            print(data)
+            logger.info("input data "+str(data))
             if stripe_customer.stripe_default_card is None:
                 paymentAttach=stripe.PaymentMethod.attach(data['paymentMethodId'],customer=data['customerId'])
                 # Set the default payment method on the customer
@@ -34,6 +36,7 @@ class createSubscription(APIView):
                 stripe.Subscription.delete(stripe_customer.stripe_subscription_id)
             if data["priceId"]!="free":
                 subscription=stripe.Subscription.create(customer=data['customerId'],items=[{"price": data['priceId']}],expand=['latest_invoice.payment_intent'])
+                logger.info("subscription id"+subscription.id)
                 stripe_customer.stripe_subscription_id=subscription.id
                 stripe_customer.stripe_price_id=data["priceId"]
             else:
@@ -46,12 +49,11 @@ class createSubscription(APIView):
                 for i in LICENSE:
                    if LICENSE[i]['priceId']==data['priceId']:
                         licenseUtil.updateLicense(totalSpace=LICENSE[i]['SIZE'],licenseType=LICENSE[i]['NAME'])
-            print(subscription)
-            
+            logger.info("Stripe customer before saving "+stripe_customer)
             stripe_customer.save()
             return Response(subscription)
         except Exception as e:
-            print(e)
+            logger.exception(e)
             stripe_customer.save()
             exp={"message":"exception while creating subscription"}
             return Response(exp)

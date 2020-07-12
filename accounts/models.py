@@ -46,6 +46,7 @@ class User(AbstractBaseUser):
     #admin properties
     staff = models.BooleanField(default=False)  # a admin user; non super-user
     admin = models.BooleanField(default=False)  # a superuser
+    is_superuser=models.BooleanField(default=False)
 
     USERNAME_FIELD='email'
 

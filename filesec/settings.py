@@ -14,6 +14,8 @@ import os
 #import dj_database_url
 import django_heroku
 import environ
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
 env = environ.Env(
     DEBUG=(bool, False)
 )
@@ -45,6 +47,7 @@ INSTALLED_APPS = [
     'django_s3_storage',
     'accounts',
     'licenses',
+    'log_viewer',
     'api',
     'files',
     'payments',
@@ -170,5 +173,28 @@ AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
 AWS_S3_ADDRESSING_STYLE = "auto"
 DEFAULT_FILE_STORAGE = 'django_s3_storage.storage.S3Storage'
 
+
+
+LOG_VIEWER_FILES = ['logfile1', 'logfile2', ...]
+LOG_VIEWER_FILES_DIR = os.path.join(BASE_DIR, '/logs')
+LOG_VIEWER_MAX_READ_LINES = 2000  # total log lines will be read
+LOG_VIEWER_PAGE_LENGTH = 25       # total log lines per-page
+
+# Optionally you can set the next variables in order to customize the admin:
+
+# LOG_VIEWER_FILE_LIST_TITLE = "Custom title"
+# LOG_VIEWER_FILE_LIST_STYLES = "/static/css/my-custom.css"
+
+
+
+
+sentry_sdk.init(
+    dsn="https://4184927374f1407894fe14bfe94ca9c2@o419378.ingest.sentry.io/5331811",
+    integrations=[DjangoIntegration()],
+
+    # If you wish to associate users to errors (assuming you are using
+    # django.contrib.auth) you may enable sending PII data.
+    send_default_pii=True
+)
 
 django_heroku.settings(locals(),staticfiles=False)

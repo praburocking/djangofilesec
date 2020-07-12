@@ -20,6 +20,11 @@ from licenses.util import LicenseUtil
 from django.contrib.auth import get_user_model
 from userVerification import sendConfirm
 from payments.payment_util import create_customer,get_customer
+import logging
+logger = logging.getLogger('my_handler')  # eg: log_viewer_demo/log_viewer_demo/logger.py
+logger.info('My log')
+logger.warning('My log')
+logger.error('My log')
 
 # Create your views here.
 

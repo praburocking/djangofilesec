@@ -17,12 +17,17 @@ from django.contrib import admin
 from django.urls import path,include
 from django.conf.urls import url
 from . import views
-
+import logging
+def trigger_error(request):
+    logger=logging.getLogger(__name__)
+    logger.error("we are testing")
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include('api.urls')),
+    path('admin/log_viewer/', include('log_viewer.urls')),
+    path('sentry-debug/', trigger_error),
     url(r'^(?!api)', views.index,name="index"),
-    # url(r"^payments/", include("payments.urls")),
+   
 
 ]
