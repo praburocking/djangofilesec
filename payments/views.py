@@ -11,9 +11,11 @@ from licenses.util import LicenseUtil
 from .models import Stripe_customer
 import logging
 
+
+logger=logging.getLogger(__name__)
 # Create your views here.
 class createSubscription(APIView):
-    logger=logging.getLogger(__name__)
+    
     def post(self,request):
         #data = json.loads(request.data)
         data=request.data
