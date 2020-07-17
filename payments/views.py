@@ -13,6 +13,7 @@ import logging
 
 
 logger=logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 # Create your views here.
 class createSubscription(APIView):
     
@@ -38,7 +39,7 @@ class createSubscription(APIView):
                 stripe.Subscription.delete(stripe_customer.stripe_subscription_id)
             if data["priceId"]!="free":
                 subscription=stripe.Subscription.create(customer=data['customerId'],items=[{"price": data['priceId']}],expand=['latest_invoice.payment_intent'])
-                logger.info("subscription id"+subscription.id)
+                logger.info("subscription id"+str(subscription.id))
                 stripe_customer.stripe_subscription_id=subscription.id
                 stripe_customer.stripe_price_id=data["priceId"]
             else:
@@ -51,11 +52,11 @@ class createSubscription(APIView):
                 for i in LICENSE:
                    if LICENSE[i]['priceId']==data['priceId']:
                         licenseUtil.updateLicense(totalSpace=LICENSE[i]['SIZE'],licenseType=LICENSE[i]['NAME'])
-            logger.info("Stripe customer before saving "+stripe_customer)
+            logger.info("Stripe customer before saving "+str(stripe_customer))
             stripe_customer.save()
             return Response(subscription)
         except Exception as e:
-            logger.exception(e)
+            logger.exception(str(e))
             stripe_customer.save()
             exp={"message":"exception while creating subscription"}
             return Response(exp)

@@ -185,7 +185,10 @@ LOG_VIEWER_PAGE_LENGTH = 25       # total log lines per-page
 # LOG_VIEWER_FILE_LIST_TITLE = "Custom title"
 # LOG_VIEWER_FILE_LIST_STYLES = "/static/css/my-custom.css"
 
-
+# sentry_logging = LoggingIntegration(
+#     level=logging.INFO,        # Capture info and above as breadcrumbs
+#     event_level=logging.ERROR  # Send errors as events
+# )
 
 
 sentry_sdk.init(
