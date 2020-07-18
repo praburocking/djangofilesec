@@ -20,8 +20,12 @@ from licenses.util import LicenseUtil
 from django.contrib.auth import get_user_model
 from userVerification import sendConfirm
 from payments.payment_util import create_customer,get_customer
+from http import HTTPStatus
 import logging
 logger = logging.getLogger(__name__)  # eg: log_viewer_demo/log_viewer_demo/logger.py
+f_handler=logging.FileHandler('logs/app.log')
+logger.addHandler(f_handler)
+logger.setLevel(logging.INFO)
 
 # Create your views here.
 
@@ -35,13 +39,14 @@ class createUser(APIView):
             licen= License.objects.create(userId=user,licenseType=LICENSE["FREE"]["NAME"],totalSpace=LICENSE["FREE"]["SIZE"])
             licenSerializer=LicenseSerializer(licen)
             stripe_customer=create_customer(user=user,license=licen)
-            print(licenSerializer.data)
-            #licenSerializer.data["stripe_customer_id"]=stripe_customer.stripe_customer_id
-
+            logger.info("license serialiser data ==> %s",licenSerializer.data)
+            logger.info("type of the data %s",type(licenSerializer.data))
+            newLicenseData={"stripe_customer_id":stripe_customer.stripe_customer_id}#licenSerializer.data["stripe_customer_id=stripe_customer.stripe_customer_id
+            newLicenseData.update(licenSerializer.data)
             if user:
                 ue=user_mail(user.email)
                 ue.welcome_email(user.username)
-                return Response({"user": serializer.data, "authtoken": AuthToken.objects.create(user)[1], "license": licenSerializer.data},
+                return Response({"user": serializer.data, "authtoken": AuthToken.objects.create(user)[1], "license": newLicenseData},
                                 status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -158,3 +163,14 @@ class accountsImageView(APIView):
             return Response(data={"detail": "image added"})
         else:
             return Response({"detail": "not authenticated"})
+
+class passwordChange(APIView):
+    def post(self,request):
+        if(request.user.is_authenticated):
+            if authenticate(username=request.user.email, password=request.data['old_password']) is not None:
+                request.user.set_password(request.data['new_password'])
+                return Response(data={"detail":"password updated"},status=HTTPStatus.OK)
+            else:
+                return Response(data={"detail":"old_password is incorrect"},status=HTTPStatus.FORBIDDEN)
+        else:
+            return Response(data={"detail":"not authenticated"},status=HTTPStatus.FORBIDDEN)    

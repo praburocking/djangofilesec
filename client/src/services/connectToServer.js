@@ -67,6 +67,17 @@ export const getUser=async ()=>
     }
 }
 
+export const changePassword=async (data)=>
+{
+    try {
+        const response = await axios.post(user_url+"/passwordchange", data,setAuthorizationHeader());
+        return response;
+    }
+    catch (error) {
+        return error.response;
+    }
+}
+
 
 export const getUserImage=async()=>
 {

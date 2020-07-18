@@ -1,5 +1,5 @@
 import React,{useRef,useEffect,useState} from 'react'
-import {Row,Col,Layout,Divider,Upload,Input} from 'antd'
+import {Row,Col,Layout,Divider,Upload,Input,Form} from 'antd'
 import { Button,Avatar,Modal } from 'antd';
 import {state_to_props} from '../../util/common_utils'
 import {connect} from 'react-redux'
@@ -7,7 +7,7 @@ import Header from '../utilComponents/header'
 import {EditFilled, CloseCircleFilled, CheckCircleFilled} from '@ant-design/icons'
 import './accounts.css'
 import {setUserDetailsToStore,userFetchType} from '../../store/action'
-import {addUserImage,getUserImage} from '../../services/connectToServer'
+import {addUserImage,getUserImage,changePassword} from '../../services/connectToServer'
 import Select from 'antd/es/select'
 import CheckoutForm from '../payment/CheckoutForm';
 
@@ -30,6 +30,7 @@ const Accounts=(props)=>
     const [userImageUrl,setUserImageUrl]=useState("");
     const [isPassModal,setPassModal]=useState(false);
     const [isLicModal,setLicModal]=useState(false);
+    const [form] = Form.useForm();
     useEffect(()=>{
         const asyncprocess=async ()=>{
         let imgResp= await getUserImage()
@@ -70,8 +71,16 @@ const updatePass=(e)=>
 const updatePlan=(e)=>{
     setPlanEdit(false)
 }
-const handleOk = () => {
+const handleOk = async() => {
     console.log("handle ok")
+    form.validateFields().then( async (values) => {
+        console.log("form value",values);
+        let response=await changePassword(values);
+        console.log(response)
+      })
+      .catch(info => {
+        console.log('Validate Failed:', info);
+      });
     setPassModal(false);
     }
 const  handleCancel = () => {
@@ -131,9 +140,14 @@ const showLicModal=()=>{
             <Row>
                 <Modal title="password change" visible={isPassModal}  onOk={handleOk} onCancel={handleCancel} confirmLoading={false} >
                      <p>please type your old password along with your new password</p>
-                     <Input.Password  placeholder="old password"/>
-                        <br/>
-                    <Input.Password  placeholder="new password"/>
+                     <Form form={form} >
+                        <Form.Item name="old_password">
+                          <Input.Password name="old_password" id="old_password" placeholder="old password" />
+                        </Form.Item>
+                        <Form.Item name="new_password">
+                          <Input.Password name="new_password" id="new_password" placeholder="new password" />
+                        </Form.Item>
+                    </Form>
                  </Modal>
             </Row>
             <Row>

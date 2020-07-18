@@ -174,9 +174,8 @@ AWS_S3_ADDRESSING_STYLE = "auto"
 DEFAULT_FILE_STORAGE = 'django_s3_storage.storage.S3Storage'
 
 
-
-LOG_VIEWER_FILES = ['logfile1', 'logfile2', ...]
-LOG_VIEWER_FILES_DIR = os.path.join(BASE_DIR, '/logs')
+LOG_VIEWER_FILES = ['app.log', 'logfile2', ...]
+LOG_VIEWER_FILES_DIR = os.path.join(BASE_DIR, 'logs')
 LOG_VIEWER_MAX_READ_LINES = 2000  # total log lines will be read
 LOG_VIEWER_PAGE_LENGTH = 25       # total log lines per-page
 

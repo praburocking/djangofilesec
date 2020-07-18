@@ -33,7 +33,7 @@ const setLicModal=props.setLicModal;
   const stripe = useStripe();
   const elements = useElements();
   const [subscribing, setSubscribing] = useState(false);
-  const [accountInformation, setAccountInformation] = useState(null);
+  const [isShowLoading, setShowLoading] = useState(false);
   const [isShowCard,setShowCard]=useState(false);
   const plan_A_priceid="price_1H3yk3AD7nX8Xg8myxZ505pY";
   const plan_B_priceid="price_1H3ynxAD7nX8Xg8mKDhsWjHT";
@@ -42,8 +42,9 @@ const setLicModal=props.setLicModal;
   const [form] = Form.useForm();
 
 
-  const handleOk = (e) => {
+  const handleOk = async (e) => {
     console.log("handle ok")
+    setShowLoading(true)
     if(showAddressForm)
     {
       console.log("form",form);
@@ -61,9 +62,10 @@ const setLicModal=props.setLicModal;
     }
      if(isShowCard)
     {
-      setLicModal(false);
+      await handleSubmit(e)
+    
     }
-    handleSubmit(e)
+   
    
     }
 
@@ -175,7 +177,6 @@ if(props.license.licenseType==="Free" && e!=="Free"){
     // Payment was successful. Provision access to your service.
     // Remove invoice from localstorage because payment is now complete.
     // clearCache();
-    setAccountInformation(result);
     // Change your UI to show a success message to your customer.
     // onSubscriptionSampleDemoComplete(result);
     // Call your backend to grant access to your service based on
@@ -269,11 +270,13 @@ if(props.license.licenseType==="Free" && e!=="Free"){
       console.log('[PaymentMethod]', paymentMethod);
       createSubscription({ paymentMethodId: paymentMethod.id });
     }
+    setShowLoading(false)
+    setLicModal(false);
   };
     return (
 
 
-           <Modal title="update plan" visible={isLicModal}  onOk={handleOk} onCancel={cancelLicModal} confirmLoading={false} >
+           <Modal title="update plan" visible={isLicModal}  onOk={handleOk} onCancel={cancelLicModal} confirmLoading={isShowLoading} >
                 <Select
                 size="large" 
                 prefix={<LockTwoTone style={{ color: 'rgba(0,0,0,.25)' }} />}

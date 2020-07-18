@@ -20,6 +20,8 @@ from . import views
 import logging
 def trigger_error(request):
     logger=logging.getLogger(__name__)
+    logging.basicConfig(filename='logs/app.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
+    logging.error("error er")
     logger.error("we are testing")
 
 urlpatterns = [
