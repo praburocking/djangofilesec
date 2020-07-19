@@ -24,7 +24,7 @@ from http import HTTPStatus
 import logging
 logger = logging.getLogger(__name__)  # eg: log_viewer_demo/log_viewer_demo/logger.py
 #f_handler=logging.FileHandler('logs/app.log')
-logger.addHandler(f_handler)
+#logger.addHandler(f_handler)
 logger.setLevel(logging.INFO)
 
 # Create your views here.
