@@ -12,7 +12,8 @@ import {state_to_props} from '../../util/common_utils'
 import {connect} from 'react-redux'
 import { Redirect } from 'react-router-dom';
 import {LockTwoTone} from '@ant-design/icons'
-import {subscribeUser,geStripeCustomer,updateStripeCustomer} from '../../services/connectToServer'
+import {subscribeUser,geStripeCustomer,updateStripeCustomer,getUser} from '../../services/connectToServer'
+import {setUserDetailsToStore,userFetchType} from '../../store/action'
 
 const Option={Select};
 // Make sure to call `loadStripe` outside of a component’s render to avoid
@@ -37,9 +38,9 @@ const setLicModal=props.setLicModal;
   const [isShowCard,setShowCard]=useState(false);
   const plan_A_priceid="price_1H3yk3AD7nX8Xg8myxZ505pY";
   const plan_B_priceid="price_1H3ynxAD7nX8Xg8mKDhsWjHT";
-  const [selectedPlan,setPlan]=useState("");
   const [showAddressForm,setAddressForm]=useState(false);
   const [form] = Form.useForm();
+  const [plan,setPlan]=useState(props.license.licenseType)
 
 
   const handleOk = async (e) => {
@@ -60,13 +61,9 @@ const setLicModal=props.setLicModal;
         console.log('Validate Failed:', info);
       });
     }
-     if(isShowCard)
-    {
-      await handleSubmit(e)
+     handleSubmit(e)
+     
     
-    }
-   
-   
     }
 
 const cancelLicModal=()=>{
@@ -77,7 +74,8 @@ setLicModal(false);
 const handlePlanChange=async (e)=>
 {
 console.log(e);
-if(props.license.licenseType==="Free" && e!=="Free"){
+setPlan(e);
+if(e!=="Free"  && props.license.licenseType!==e){
   let response=await geStripeCustomer()
   console.log("stripe response ",response)
   setShowCard(true);
@@ -88,6 +86,9 @@ if(props.license.licenseType==="Free" && e!=="Free"){
   // {
   //   setAddressForm(true);
   // }
+}
+else{
+  setShowCard(false);
 }
 
 }
@@ -186,12 +187,12 @@ if(props.license.licenseType==="Free" && e!=="Free"){
 
   function createSubscription({ paymentMethodId }) {
 
-    let priceId = selectedPlan==="planA"?plan_A_priceid:plan_B_priceid;
-    if(selectedPlan==="Free"){
+    let priceId = plan==="planA"?plan_A_priceid:plan_B_priceid;
+    if(plan==="Free"){
       priceId="Free";
-    }else if(selectedPlan==="planA"){
+    }else if(plan==="planA"){
       priceId=plan_A_priceid;
-    }else if(selectedPlan==="planB"){
+    }else if(plan==="planB"){
       priceId=plan_B_priceid;
     }
     return (
@@ -253,25 +254,40 @@ if(props.license.licenseType==="Free" && e!=="Free"){
     // Get a reference to a mounted CardElement. Elements knows how
     // to find your CardElement because there can only ever be one of
     // each type of element.
-    const cardElement = elements.getElement(CardElement);
 
-    // Use your card Element with other Stripe.js APIs
-    const { error, paymentMethod } = await stripe.createPaymentMethod({
-      type: 'card',
-      card: cardElement,
-    });
+    if(props.license.licenseType===plan){
+      return;
+    }
+
     if(isShowCard){
-      setShowCard(false)
-    }
-    if (error) {
-      console.log('[error]', error);
-      message.error(error);
-    } else {
-      console.log('[PaymentMethod]', paymentMethod);
-      createSubscription({ paymentMethodId: paymentMethod.id });
-    }
-    setShowLoading(false)
-    setLicModal(false);
+        const cardElement = elements.getElement(CardElement);
+        if(cardElement===null || cardElement===undefined){
+          return;
+        }
+        // Use your card Element with other Stripe.js APIs
+        const { error, paymentMethod } = await stripe.createPaymentMethod({
+          type: 'card',
+          card: cardElement,
+        });
+
+        if (error) {
+          console.log('[error]', error);
+          message.error(error);
+        } else {
+          console.log('[PaymentMethod]', paymentMethod);
+          await createSubscription({ paymentMethodId: paymentMethod.id });
+          props.setUserDetailsToStore(null,userFetchType.ACCOUNTS)
+        }
+        setShowLoading(false)
+        setLicModal(false);
+  }
+  else if(plan=="Free"){
+         await createSubscription({ paymentMethodId: "Free"});
+          props.setUserDetailsToStore(null,userFetchType.ACCOUNTS)
+          setShowLoading(false)
+          setLicModal(false);
+  }
+    
   };
     return (
 
@@ -340,5 +356,4 @@ const PaymentForm = (props) => (
     <CheckoutForm {...props} />
   </Elements>
 );
-
-export default connect(state_to_props)(PaymentForm);
+export default connect(state_to_props,{setUserDetailsToStore:setUserDetailsToStore})(PaymentForm);

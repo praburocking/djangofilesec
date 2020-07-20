@@ -12,7 +12,8 @@ def create_customer(user,license):
         print(customer)
         print(type(customer))
         stripe_customer=Stripe_customer(stripe_customer_id=customer.id,user=user,license=license)
-        return stripe_customer.save()
+        stripe_customer.save()
+        return stripe_customer
     except Exception as e:
         return str(e)
 def get_customer_from_stripe(user):

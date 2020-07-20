@@ -39,6 +39,7 @@ class createUser(APIView):
             licen= License.objects.create(userId=user,licenseType=LICENSE["FREE"]["NAME"],totalSpace=LICENSE["FREE"]["SIZE"])
             licenSerializer=LicenseSerializer(licen)
             stripe_customer=create_customer(user=user,license=licen)
+            print(stripe_customer)
             logger.info("license serialiser data ==> %s",licenSerializer.data)
             logger.info("type of the data %s",type(licenSerializer.data))
             newLicenseData={"stripe_customer_id":stripe_customer.stripe_customer_id}#licenSerializer.data["stripe_customer_id=stripe_customer.stripe_customer_id
