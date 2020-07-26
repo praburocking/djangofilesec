@@ -48,8 +48,8 @@ const Header=(props)=>
     <Header style={{ position: 'fixed', zIndex: 1, width: '100%',background: "rgba(2, 164, 255, 0.7)",minHeight:"64px",maxHeight:"8vh" }}  >
     
         <Row >
-          <Col span={21}><Link to="/"> <img src="static/logo_header.png" width="160" height="80"/></Link></Col>
-          <Col type="flex" justify="end" align="top">
+          <Col xs={21} md={12}><Link to="/"> <img src="static/logo_header.png" width="160" height="80"/></Link></Col>
+          <Col md={12} type="flex" justify="end" align="top">
 
     {!userExist() && menu}
     {userExist() &&   

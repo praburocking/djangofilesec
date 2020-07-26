@@ -16,6 +16,7 @@ import django_heroku
 import environ
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
+from datetime import timedelta
 env = environ.Env(
     DEBUG=(bool, False)
 )
@@ -133,6 +134,14 @@ REST_FRAMEWORK = {
         'knox.auth.TokenAuthentication',
     ),
     'DATETIME_FORMAT': "%m/%d/%Y %H:%M:%S",
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '40/minute',
+        'user': '60/minute'
+    }
 }
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -198,5 +207,14 @@ sentry_sdk.init(
     # django.contrib.auth) you may enable sending PII data.
     send_default_pii=True
 )
+
+
+#knox property
+REST_KNOX = {
+  'TOKEN_TTL': timedelta(hours=1),
+  'TOKEN_LIMIT_PER_USER': 3,
+  'AUTO_REFRESH': True,
+  'MIN_REFRESH_INTERVAL':600
+}
 
 django_heroku.settings(locals(),staticfiles=False)

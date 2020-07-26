@@ -11,5 +11,6 @@ urlpatterns=[
     path(r'signup/exist',userExist.as_view()),
     path(r'accounts/userimage',accountsImageView.as_view()),
     path(r'accounts/passwordchange',passwordChange.as_view()),
+    path(r'logoutall/', knox_views.LogoutAllView.as_view(), name='knox_logoutall'),
     path('verify/', include(mail_urls)),
 ]
