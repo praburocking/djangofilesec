@@ -12,8 +12,7 @@ const {Panel}=Collapse;
 const {Title}=Typography;
 const text = (
     <p style={{ paddingLeft: 24 }}>
-      A dog is a type of domesticated animal. Known for its loyalty and faithfulness, it can be found
-      as a welcome guest in many households across the world.
+      Diggy-Coffer helps to store  and retrive your important files like certificates that contains your PII on Internet. it focuses on simple task, how to store the important files securly on internet.
     </p>
   );
 
@@ -34,7 +33,7 @@ const text = (
         while on other hand FileCoffer is not really a replacement for online Cloud storage, mostly it tries to complement the regular online cloud storage by providing place to store only important files which you dont want tech gaints to snoop around.
       </div>
     </Panel>
-    <Panel header="This is panel header 3" key="3">
+    <Panel header="What is Digy-Coffer?" key="3">
       {text}
     </Panel>
   </Collapse>

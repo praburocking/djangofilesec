@@ -27,10 +27,16 @@ def verify(request, email_token,token_type):
     try:
         #template = settings.EMAIL_PAGE_TEMPLATE
         #return render(request, template, {'success': verifyToken(email_token)})
-        if verifyToken(email_token,token_type):
-            return HttpResponse('{status":"verified","message":"token verified"}', status=HTTPStatus.ACCEPTED,content_type='application/json')
+        user=verifyToken(email_token,token_type)
+        if user is not None:
+            if token_type=='U_V':
+                user.verified = True
+                user.save()
+                return HttpResponse('{"detail":"verified","message":"token verified"}', status=HTTPStatus.ACCEPTED,content_type='application/json')
+            elif token_type=='P_R':
+               print( request.data)
         else:
-            return HttpResponse('{"status":"not verified","message":"token verified failed/invalid token"}',status=HTTPStatus.FORBIDDEN,content_type='application/json')
+            return HttpResponse('{"detail":"not verified","message":"token verified failed/invalid token"}',status=HTTPStatus.FORBIDDEN,content_type='application/json')
     except AttributeError:
         raise NotAllFieldCompiled('EMAIL_PAGE_TEMPLATE field not found')
 
@@ -88,7 +94,6 @@ def sendConfirm_thread(email, token,token_type):
         
         html = settings.EMAIL_MAIL_HTML
         html = render_to_string(html, {'link': link})
-        print("html verification  mail "+html)
         msg = EmailMessage(subject, html,address, email.split(","))
         msg.content_subtype = "html"  # Main content is now text/html
         msg.send()
@@ -101,12 +106,10 @@ def verifyToken(email_token,token_type):
         user_email = Token.objects.get(token=email_token,token_type=token_type)
         if  user_email.is_token_active():
             user = get_user_model().objects.get(email=user_email.user.email)
-            user.verified = True
-            user.save()
             user_email.delete()
-            return True
+            return user
         else:
-            return False
+            return None
     except Token.DoesNotExist:
-        return False
+        return None
 

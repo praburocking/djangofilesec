@@ -21,6 +21,7 @@ from django.contrib.auth import get_user_model
 from userVerification import sendConfirm
 from payments.payment_util import create_customer,get_customer
 from http import HTTPStatus
+from userVerification import sendConfirm
 import logging
 logger = logging.getLogger(__name__)  # eg: log_viewer_demo/log_viewer_demo/logger.py
 #f_handler=logging.FileHandler('logs/app.log')
@@ -175,3 +176,14 @@ class passwordChange(APIView):
                 return Response(data={"detail":"old_password is incorrect"},status=HTTPStatus.FORBIDDEN)
         else:
             return Response(data={"detail":"not authenticated"},status=HTTPStatus.FORBIDDEN)    
+
+class forgotPassword(APIView):
+    def post(self,request):
+        if(request.user.is_authenticated):
+            return Response(data={"detail":"user already signed in"},status=HTTPStatus.BAD_REQUEST)
+        else:
+            queryset = User.objects.all()
+            user = get_object_or_404(queryset, email=request.data["email"])
+            sendConfirm(user,'P_R')
+            return Response(data={"details":"recovery mail is sent to the registered mail"},status=HTTPStatus.ACCEPTED)
+

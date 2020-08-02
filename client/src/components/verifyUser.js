@@ -7,13 +7,17 @@ import {withRouter} from 'react-router-dom'
 import message from 'antd/es/message'
 import {Button,Row,Col} from 'antd'
 import constants from '../util/constants'
+import ResetPasswordPage from './resetPassword/resetPasswordPage'
 
 const VerifyUser=(props)=>
 { 
+
+    
     const {  Content, Footer } = Layout;
     const {Title}=Typography;
     const [isVerified,setVerified]=useState(true);
     const [status,setStatus]=useState("Verifying User...");
+   
     useEffect(()=>{
         const verifyuser=async()=>
             {
@@ -56,7 +60,9 @@ const VerifyUser=(props)=>
             }
         verifyuser();
     },[]);
-
+    // if(props.type==='P_R'){
+    //     return <ResetPasswordPage/>
+    //  }
     return(
 <Layout className="layout-bg"  >
    <Header defaultSelectedKeys={['1']}/>
