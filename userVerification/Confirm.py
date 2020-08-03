@@ -1,4 +1,5 @@
 from http import HTTPStatus
+from rest_framework.decorators import api_view,authentication_classes
 from datetime import datetime as dt
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -19,10 +20,14 @@ from django.urls import get_resolver
 
 from .errors import InvalidUserModel, EmailTemplateNotFound
 from .errors import NotAllFieldCompiled
+from rest_framework.authentication import BasicAuthentication
+
 
 
 
 # Create your views here.
+@api_view(['GET', 'POST'])
+@authentication_classes([BasicAuthentication])
 def verify(request, email_token,token_type):
     try:
         #template = settings.EMAIL_PAGE_TEMPLATE
@@ -33,8 +38,12 @@ def verify(request, email_token,token_type):
                 user.verified = True
                 user.save()
                 return HttpResponse('{"detail":"verified","message":"token verified"}', status=HTTPStatus.ACCEPTED,content_type='application/json')
-            elif token_type=='P_R':
-               print( request.data)
+            elif token_type=='P_R' and request.method == 'POST':
+                if request.data['password'] is not None:
+                    user.set_password(request.data['password'])
+                    user.save()
+                    return HttpResponse('{"detail":"password updated","message":"password updated try logging-in"}',status=HTTPStatus.OK,content_type='application/json')
+                
         else:
             return HttpResponse('{"detail":"not verified","message":"token verified failed/invalid token"}',status=HTTPStatus.FORBIDDEN,content_type='application/json')
     except AttributeError:

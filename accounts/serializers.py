@@ -1,7 +1,7 @@
 from .models import User
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
-from userVerification import sendConfirm
+from userVerification.Confirm import sendConfirm
 
 class UserSerializer(serializers.ModelSerializer):
     email = serializers.EmailField( required=True,validators=[UniqueValidator(queryset=User.objects.all())])

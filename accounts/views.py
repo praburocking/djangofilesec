@@ -18,10 +18,9 @@ from licenses.models import License,LICENSE
 from licenses.serializer import LicenseSerializer
 from licenses.util import LicenseUtil
 from django.contrib.auth import get_user_model
-from userVerification import sendConfirm
 from payments.payment_util import create_customer,get_customer
 from http import HTTPStatus
-from userVerification import sendConfirm
+from userVerification.Confirm import sendConfirm
 import logging
 logger = logging.getLogger(__name__)  # eg: log_viewer_demo/log_viewer_demo/logger.py
 #f_handler=logging.FileHandler('logs/app.log')
@@ -170,7 +169,9 @@ class passwordChange(APIView):
     def post(self,request):
         if(request.user.is_authenticated):
             if authenticate(username=request.user.email, password=request.data['old_password']) is not None:
-                request.user.set_password(request.data['new_password'])
+                user=request.user
+                user.set_password(request.data['new_password'])
+                user.save()
                 return Response(data={"detail":"password updated"},status=HTTPStatus.OK)
             else:
                 return Response(data={"detail":"old_password is incorrect"},status=HTTPStatus.FORBIDDEN)

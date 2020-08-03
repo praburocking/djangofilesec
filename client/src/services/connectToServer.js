@@ -188,11 +188,11 @@ export const resetPass=async (key)=>
         return error.response;
     }
 }
-export const verifyUser=async(token,type)=>
+export const verifyUser=async(token,type,data)=>
 {
     try {
         console.log("token ..",token);
-        const response = await axios.get(verifyuser_url+"/"+type+"/"+token);
+        const response = await axios.post(verifyuser_url+"/"+type+"/"+token,data);
         return response;
     }
     catch (error) {
