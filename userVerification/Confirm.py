@@ -97,11 +97,9 @@ def sendConfirm_thread(email, token,token_type):
         password = settings.EMAIL_PASSWORD
     except AttributeError:
         raise NotAllFieldCompiled('Compile all the fields in the settings')
-
     link=link+token_type+"/"+token
     try:
-        
-        html = settings.EMAIL_MAIL_HTML
+        html = settings.USER_VERIFICATION_HTML_TEMPLATE[token_type]
         html = render_to_string(html, {'link': link})
         msg = EmailMessage(subject, html,address, email.split(","))
         msg.content_subtype = "html"  # Main content is now text/html
