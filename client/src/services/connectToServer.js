@@ -4,7 +4,7 @@ require('dotenv').config()
 
 console.log("server url",process.env);
 
-let url="https://filesec.herokuapp.com/api/v1/"
+let url="https://diggy-coffer.herokuapp.com/api/v1/"
 
 
 //url="http://localhost:8000/api/v1/"
