@@ -54,8 +54,9 @@ def sendConfirm(user, token_type, **kwargs):
     from .models import Token
     try:
         email = user.email
-        user.verified = False
-        user.save()
+        if token_type=='U_V':
+            user.verified = False
+            user.save()
 
         try:
             token = kwargs['token']

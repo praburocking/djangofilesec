@@ -31,7 +31,7 @@ const VerifyUser=(props)=>
            {
             message.success("User verified redirecting to Login");
             setVerified(true);
-            //props.history.push('/login');
+            props.history.push('/login');
             setStatus("Verified, Please login!!");
            }
            else

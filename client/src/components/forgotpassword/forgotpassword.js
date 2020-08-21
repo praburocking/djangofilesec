@@ -13,6 +13,7 @@ import {MailTwoTone} from '@ant-design/icons'
 import {withRouter,Link} from 'react-router-dom'
 
 import {forgotPassword} from '../../services/connectToServer'
+import constants from '../../util/constants';
 
 const setUserDetailsToStore=(user)=>
 {
@@ -26,7 +27,7 @@ const ForgotPassword=  (props)=>{
   const onFinish = async (values) => {
     setLoading(true);
     const forgotPassRes=await forgotPassword(values);
-    if(forgotPassRes && forgotPassRes.status===200)
+    if(forgotPassRes &&  !constants.errorResponse.includes(forgotPassRes.status))
     {
     message.success("password reset link has been sent to your registered mail-id");
     setLoading(false);
