@@ -137,11 +137,14 @@ REST_FRAMEWORK = {
     'DATETIME_FORMAT': "%m/%d/%Y %H:%M:%S",
     'DEFAULT_THROTTLE_CLASSES': [
         'rest_framework.throttling.AnonRateThrottle',
-        'rest_framework.throttling.UserRateThrottle'
+        'rest_framework.throttling.UserRateThrottle',
+         'rest_framework.throttling.ScopedRateThrottle'
     ],
     'DEFAULT_THROTTLE_RATES': {
         'anon': '40/minute',
-        'user': '60/minute'
+        'user': '60/minute',
+        'signin/signup':'5/minute',
+        'reset':'12/hour'
     }
 }
 

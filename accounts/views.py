@@ -30,8 +30,9 @@ logger.setLevel(logging.INFO)
 # Create your views here.
 
 class createUser(APIView):
-    authentication_classes = [BasicAuthentication]
 
+    authentication_classes = [BasicAuthentication]
+    throttle_scope = 'signin/signup'
     def post(self, request, format='json'):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
@@ -76,7 +77,7 @@ class userExist(APIView):
 
 class loginView(APIView):
     authentication_classes = [BasicAuthentication]
-
+    throttle_scope = 'signin/signup'
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
@@ -166,6 +167,7 @@ class accountsImageView(APIView):
             return Response({"detail": "not authenticated"})
 
 class passwordChange(APIView):
+    throttle_scope = 'reset'
     def post(self,request):
         if(request.user.is_authenticated):
             if authenticate(username=request.user.email, password=request.data['old_password']) is not None:
@@ -179,6 +181,7 @@ class passwordChange(APIView):
             return Response(data={"detail":"not authenticated"},status=HTTPStatus.FORBIDDEN)    
 
 class forgotPassword(APIView):
+    throttle_scope = 'reset'
     def post(self,request):
         if(request.user.is_authenticated):
             return Response(data={"detail":"user already signed in"},status=HTTPStatus.BAD_REQUEST)

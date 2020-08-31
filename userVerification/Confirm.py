@@ -1,5 +1,6 @@
 from http import HTTPStatus
-from rest_framework.decorators import api_view,authentication_classes
+from rest_framework.decorators import api_view,authentication_classes,throttle_classes
+from rest_framework.throttling import UserRateThrottle,AnonRateThrottle
 from datetime import datetime as dt
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -27,6 +28,7 @@ from rest_framework.authentication import BasicAuthentication
 
 # Create your views here.
 @api_view(['GET', 'POST'])
+@throttle_classes([UserRateThrottle,AnonRateThrottle])
 @authentication_classes([BasicAuthentication])
 def verify(request, email_token,token_type):
     try:
