@@ -45,6 +45,7 @@ const FileUploader=(props)=>
     const [isShowModal,setModal]=useState(false);
     const [eKey,setEKey]=useState(null);
     const [isFileUpLoading,setFileUpLoading]=useState(false)
+    const [desc,setDesc]=useState(null);
 
    const handleOk = async(e) => {
         console.log(e);
@@ -52,7 +53,7 @@ const FileUploader=(props)=>
         const data = new FormData() 
         data.append('file', file);
         data.append('private_key',eKey);
-        data.append('description','we are rocking');
+        data.append('description',desc);
         let uploadResp=await uploadfile(data)
         if([200,201,204].includes(uploadResp.status))
         {
@@ -111,7 +112,7 @@ const FileUploader=(props)=>
           <Input.Password type="text" placeholder="Encryption Key" value={eKey} onChange={changeEKey}/>
           <p>we will use this key along with our own random private key to encrypt your data</p>
           <Divider>optional</Divider>
-          <Input type="text" placeholder="Description (optional)" value={eKey} onChange={changeEKey}/>
+          <Input type="text" placeholder="Description (optional)" value={desc} onChange={(e)=>setDesc(e)}/>
         </Modal>
 	  </div>
     )
