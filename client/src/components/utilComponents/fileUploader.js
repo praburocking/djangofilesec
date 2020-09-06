@@ -112,7 +112,7 @@ const FileUploader=(props)=>
           <Input.Password type="text" placeholder="Encryption Key" value={eKey} onChange={changeEKey}/>
           <p>we will use this key along with our own random private key to encrypt your data</p>
           <Divider>optional</Divider>
-          <Input type="text" placeholder="Description (optional)" value={desc} onChange={(e)=>setDesc(e)}/>
+          <Input type="text" placeholder="Description (optional)" value={desc} onChange={(e)=>setDesc(e.target.value)}/>
         </Modal>
 	  </div>
     )
