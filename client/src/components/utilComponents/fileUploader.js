@@ -7,6 +7,7 @@ import './fileUploader.css'
 import {uploadfile} from '../../services/connectToServer'
 import React,{useState} from 'react'
 import {connect} from 'react-redux'
+import { Divider } from 'antd';
 
 const { Dragger } = Upload;
 
@@ -51,6 +52,7 @@ const FileUploader=(props)=>
         const data = new FormData() 
         data.append('file', file);
         data.append('private_key',eKey);
+        data.append('description','we are rocking');
         let uploadResp=await uploadfile(data)
         if([200,201,204].includes(uploadResp.status))
         {
@@ -96,8 +98,7 @@ const FileUploader=(props)=>
                </p>
                <p className="ant-upload-text">Click or drag file to this area to upload</p>
                 <p className="ant-upload-hint">
-                  Support for a single or bulk upload. Strictly prohibit from uploading company data or other
-                  band files
+                  Supports single upload only. Max allowed file size is 5MB
                 </p>
             </Dragger>
 	      
@@ -109,6 +110,8 @@ const FileUploader=(props)=>
           confirmLoading={isFileUpLoading}>
           <Input.Password type="text" placeholder="Encryption Key" value={eKey} onChange={changeEKey}/>
           <p>we will use this key along with our own random private key to encrypt your data</p>
+          <Divider>optional</Divider>
+          <Input type="text" placeholder="Description (optional)" value={eKey} onChange={changeEKey}/>
         </Modal>
 	  </div>
     )

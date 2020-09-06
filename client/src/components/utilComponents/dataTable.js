@@ -18,11 +18,17 @@ import {state_to_props} from '../../util/common_utils'
     const [currentDownload,setCurrentDownload]=useState(null); 
     const [eKey,setEKey]=useState(null);
     const [isFileDownLoading,setFileDownLoading]=useState(false)
+    const [deleteRecord,setDeleteRecord]=useState(null)
     const columns = [
       {
         title: 'Name',
         dataIndex: 'name',
         key: 'name',
+        render: text => <a style={{color:"black"}}>{text}</a>,
+      },{
+        title:'Description',
+        dataIndex:'description',
+        key:'description',
         render: text => <a style={{color:"black"}}>{text}</a>,
       },
      
@@ -33,7 +39,7 @@ import {state_to_props} from '../../util/common_utils'
           <span>
             <a style={{color:"black"}} onClick={()=>handleDownload(record)}>Download </a>
             <Divider type="vertical" style={{color:"black"}} />
-            <a style={{color:"black"}} onClick={()=>handeDelete(record.key)}>Delete</a>
+            <a style={{color:"black"}} onClick={()=>setDeleteRecord(record.key)}>Delete</a>
           </span>
         ),
       },
@@ -80,12 +86,12 @@ import {state_to_props} from '../../util/common_utils'
     }
 
 
-    const handeDelete=async(key)=>
+    const handeDelete=async()=>
       {
-          let deleteResp=await deleteFile(key)
+          let deleteResp=await deleteFile(deleteRecord)
           if([200,201,204].includes( deleteResp.status) )
             {
-              props.deleteFromStore(key)
+              props.deleteFromStore(deleteRecord)
             }
           else
             {
@@ -123,6 +129,16 @@ import {state_to_props} from '../../util/common_utils'
           confirmLoading={isFileDownLoading} >
           <Input.Password  placeholder="Decryption Key" value={eKey} onChange={changeEKey}/>
           <p>we will use this key along with our own random private key to decrypt your data</p>
+        </Modal>
+
+        <Modal
+          title="Are you sure want to delete the file?"
+          visible={deleteRecord!=null}
+          onOk={handeDelete}
+          onCancel={ ()=>setDeleteRecord(null)}
+          okType="danger"
+          >
+          <p>caution: you cannot recover the file once you deleted it.</p>
         </Modal>
         </div>
       )

@@ -30,6 +30,7 @@ class Files(models.Model):
     format=models.TextField(null=False,default='noformat')
     size=models.FloatField(null=False,default=0)
     user=models.ForeignKey(get_user_model(),related_name='Files',on_delete=models.CASCADE)
+    description=models.TextField(null=True)
     
     def save(self,*args,**kargs):
         if self._state.adding:
