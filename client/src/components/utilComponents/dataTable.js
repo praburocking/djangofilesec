@@ -25,11 +25,15 @@ import {state_to_props} from '../../util/common_utils'
         dataIndex: 'name',
         key: 'name',
         render: text => <a style={{color:"black"}}>{text}</a>,
+        responsive: ['xs','md'],
+       
       },{
         title:'Description',
         dataIndex:'description',
         key:'description',
         render: text => <a style={{color:"black"}}>{text}</a>,
+        responsive: ['xs','md'],
+       
       },
      
       {
@@ -42,6 +46,7 @@ import {state_to_props} from '../../util/common_utils'
             <a style={{color:"black"}} onClick={()=>setDeleteRecord(record.key)}>Delete</a>
           </span>
         ),
+        // responsive: ['xs','md'],
       },
     ];
 

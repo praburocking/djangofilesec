@@ -92,7 +92,7 @@ const FileUploader=(props)=>
 
     }
     return(
-            <div className="col-md-6" style={{backgroundColor:"rgb(57, 224, 89)"}}>
+            <div  style={{backgroundColor:"rgb(57, 224, 89)"}}>
             <Dragger {...prop} >
                 <p className="ant-upload-drag-icon">
                 <InboxOutlined />

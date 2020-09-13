@@ -11,6 +11,7 @@ import {connect} from 'react-redux'
 import {withRouter,Link} from 'react-router-dom'
 import React from 'react'
 import {verifyAndGetToken,state_to_props} from '../../util/common_utils'
+import { DownOutlined, UserOutlined } from '@ant-design/icons';
 //import { OmitProps } from 'antd/lib/transfer/renderListBody';
 
 
@@ -49,14 +50,21 @@ const Header=(props)=>
     
         <Row justify="space-between">
           <Col ><Link to="/"> <img src="static/logo_header.png" width="160" height="80"/></Link></Col>
-          <Col  type="flex" justify="end" align="top">
+          <Col md={{span:'3'}} xs={{span:0}} type="flex" justify="end" align="top">
             {!userExist() && menu}
             {userExist() &&   
             <>
-            <Avatar shape="square" size="large"  style={{margin:10, backgroundColor: "rgb(57, 224, 89)", verticalAlign: 'middle' }}> {props.user.username[0].toUpperCase()}</Avatar>
-            <Dropdown.Button  size ="large" overlay={menu} onClick={()=>props.history.push('/accounts')}>
+            <Dropdown.Button  size ="large" overlay={menu} onClick={()=>props.history.push('/accounts')} icon={<UserOutlined />}>
               Account
             </Dropdown.Button>
+            </>
+            }
+           </Col>
+           <Col md={{span:0}} xs={{span:3}} type="flex" justify="end" align="top">
+            {!userExist() && menu}
+            {userExist() &&   
+            <>
+            <Dropdown.Button  size ="large" overlay={menu} onClick={()=>props.history.push('/accounts')} icon={<UserOutlined />}/>
             </>
             }
            </Col>

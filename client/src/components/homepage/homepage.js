@@ -12,6 +12,7 @@ import DataTable from '../utilComponents/dataTable'
 import {state_to_props} from '../../util/common_utils'
 import {listFiles} from '../../store/action'
 import  CircularProgressBar from '../utilComponents/circularProgressBar'
+import './homePage.css'
 
 
 const HomePage=(props)=>
@@ -29,13 +30,13 @@ const HomePage=(props)=>
     <Layout className="layout-bg">
         {console.log("files in store ",props.files)}
    <Header defaultSelectedKeys={['1']} isLoggedIn="true"/>
-    <Content style={{  marginTop: 64, minHeight:"84vh",padding:20,maxHeight:"84vh"}}>
+    <Content className='wrapper' style={{  marginTop: 64, minHeight:"100vh",padding:20}}>
 
-        <Row style={{margin:20,marginLeft:100,marginRight:100}}>
-            <Col span={16} xs={{span:24,order:2}} md={{span:16,order:1}}>
+        <Row style={{marginTop:20,marginBottom:20}}>
+            <Col  xs={{span:24,order:2}} md={{span:16,order:1}}>
              <FileUploader/>
              </Col>
-             <Col span={6}   xs={{span:24,order:1}} md={{span:16,order:2}} className="App" style={{color:"white",padding:"20px",margin:20}}>
+             <Col span={6}   xs={{span:24,order:1}} md={{span:6,order:2}} className="App" style={{color:"white",padding:"20px",margin:20}}>
              {/* <Progress type="dashboard" percent={(props.license.usedSpace/props.license.totalSpace)*100} status="active" style={{color:"white"}} strokeWidth={12}/> */}
              <CircularProgressBar
             strokeWidth="10"
@@ -43,14 +44,15 @@ const HomePage=(props)=>
             percentage={((props.license.usedSpace/props.license.totalSpace)*100).toFixed(2)}/>
              </Col>
         </Row>
-        <Row style={{backgroundColor:"rgb(255, 255, 255)",marginLeft:50,marginRight:50}}>
+        <Row style={{backgroundColor:"rgb(255, 255, 255)"}}>
             <Col span={24}>
                 <DataTable data={props.files} loading={isTableLoading}/>
             </Col>
 
     </Row>
+    <div class="push"></div>
     </Content>
-    <Footer  style={{  minHeight:"8vh",maxHeight:"8vh"}}>
+    <Footer className={'footer'} >
     <div style={{textAlign:"left"}}>  For any enquiries, contact prabumohan96@gmail.com</div>
        <div style={{textAlign:"right"}}> © 2020, All Rights Reserved.</div></Footer>
 </Layout>)
