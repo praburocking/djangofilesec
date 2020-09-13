@@ -20,12 +20,11 @@ const LoginPage=(props)=>
     <Layout className="layout-bg"  >
    <Header defaultSelectedKeys={['1']}/>
     <Content style={{ padding: '0 0 0 0px', marginTop: 64,height:"84vh"}}>
-     <Row className="alignCenter"> 
-         <Col span={8}></Col>
-          <Col span={8}  style={{margin:"15px",marginTop:"120px",background: "rgba(3, 9, 49, 1)",paddingLeft:"40px",paddingRight:"40px",paddingBottom:"50px",paddingTop:"50px"}} >
+     <Row justify="center" className="alignCenter"> 
+         
+          <Col span={8} xs={{span:24}} md={{span:8}} style={{margin:"15px",marginTop:"120px",background: "rgba(3, 9, 49, 1)",paddingLeft:"40px",paddingRight:"40px",paddingBottom:"50px",paddingTop:"50px"}} >
      <Login/>
      </Col>
-     <Col span={8}></Col>
      </Row>
     
     </Content>

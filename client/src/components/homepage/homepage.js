@@ -32,10 +32,10 @@ const HomePage=(props)=>
     <Content style={{  marginTop: 64, minHeight:"84vh",padding:20,maxHeight:"84vh"}}>
 
         <Row style={{margin:20,marginLeft:100,marginRight:100}}>
-            <Col span={16}>
+            <Col span={16} xs={{span:24,order:2}} md={{span:16,order:1}}>
              <FileUploader/>
              </Col>
-             <Col span={6} className="App" style={{color:"white",padding:"20px",margin:20}}>
+             <Col span={6}   xs={{span:24,order:1}} md={{span:16,order:2}} className="App" style={{color:"white",padding:"20px",margin:20}}>
              {/* <Progress type="dashboard" percent={(props.license.usedSpace/props.license.totalSpace)*100} status="active" style={{color:"white"}} strokeWidth={12}/> */}
              <CircularProgressBar
             strokeWidth="10"
