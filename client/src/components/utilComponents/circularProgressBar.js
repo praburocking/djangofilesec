@@ -56,9 +56,9 @@ class CircularProgressBar extends React.Component {
   }
   
   CircularProgressBar.defaultProps = {
-    sqSize: 200,
+    sqSize: 180,
     percentage: 25,
-    strokeWidth: 10
+    strokeWidth: 8
   };
   
   export default CircularProgressBar;

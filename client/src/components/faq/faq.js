@@ -19,7 +19,7 @@ const text = (
     return(
     <Layout className="layout-bg" >
    <Header defaultSelectedKeys={['2']}/>
-    <Content classNamee="wrapper" style={{ padding: '0 0 0 0px', minHeight:"100vh",marginLeft:"80px",marginRight:"80px",marginTop:"120px", }}>
+    <Content className="wrapper" style={{ padding: '0 0 0 0px', minHeight:"100vh",marginLeft:"80px",marginRight:"80px",marginTop:"120px", }}>
      <Title className="alignCenter" style={{color:"white"}}>FAQ</Title>
     <Collapse bordered={false} defaultActiveKey={['1']} style={{backgroundColor:"rgb(5, 163, 255)",color:"white"}}>
     <Panel header={<h4>what is the difference between other cloud storage like google drive and this?</h4>} key="1" style={{color:"white"}}>

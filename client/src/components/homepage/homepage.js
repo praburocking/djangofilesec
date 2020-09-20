@@ -8,6 +8,7 @@ import Progress from 'antd/es/progress'
 import {connect} from 'react-redux'
 import Header from '../utilComponents/header'
 import FileUploader from '../utilComponents/fileUploader'
+import Footer from '../utilComponents/footer'
 import DataTable from '../utilComponents/dataTable'
 import {state_to_props} from '../../util/common_utils'
 import {listFiles} from '../../store/action'
@@ -17,7 +18,7 @@ import './homePage.css'
 
 const HomePage=(props)=>
 { 
-    const {  Content, Footer } = Layout;
+    const {  Content } = Layout;
     const [isTableLoading,setTableLoading]=useState(true)
     useEffect(()=>
     {
@@ -52,9 +53,7 @@ const HomePage=(props)=>
     </Row>
     <div class="push"></div>
     </Content>
-    <Footer className={'footer'} >
-    <div style={{textAlign:"left"}}>  For any enquiries, contact prabumohan96@gmail.com</div>
-       <div style={{textAlign:"right"}}> © 2020, All Rights Reserved.</div></Footer>
+   <Footer/>
 </Layout>)
 }
 

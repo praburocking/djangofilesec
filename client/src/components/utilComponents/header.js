@@ -45,6 +45,23 @@ const Header=(props)=>
                 </Menu>
     )
 
+    const mobileMenu=(
+      <Menu
+       theme={userExist()?"light":"dark"}
+       mode={!userExist() && "horizontal"}
+       defaultSelectedKeys={props.defaultSelectedKeys}
+       className={ !userExist() && "header"}
+       style={{ lineHeight: '64px',maxWidth:"200px" }}>
+       
+       {!userExist()&&<Menu.Item key="1" style={{ minWidth:"5vw",minHeight:"8vh" }} onClick={()=>props.history.push('/login')}>LOGIN</Menu.Item>}
+       {!userExist()  && <Menu.Item key="2" style={{ minWidth:"5vw",minHeight:"8vh"}} onClick={()=>props.history.push('/faq')}>FAQ</Menu.Item>}
+       {userExist()  && <Menu.Item key="1" style={{ minWidth:"5vw"}} onClick={()=>props.history.push('/accounts')}>Acccounts</Menu.Item>}
+       {userExist()  && <Menu.Item key="2" style={{ minWidth:"5vw"}} onClick={()=>props.history.push('/faq')}>FAQ</Menu.Item>}
+       {userExist() && <Menu.Divider />}
+       {userExist() && <Menu.Item key="3" style={{ minWidth:"5vw" ,color:"red"}} onClick={()=>props.history.push('/logout')}>Logout</Menu.Item>}
+       </Menu>
+)
+
     return(
     <Header style={{ position: 'fixed', zIndex: 1, width: '100%',background: "rgba(2, 164, 255, 0.7)",minHeight:"64px",maxHeight:"8vh" }}  >
     
@@ -54,7 +71,7 @@ const Header=(props)=>
             {!userExist() && menu}
             {userExist() &&   
             <>
-            <Dropdown.Button  size ="large" overlay={menu} onClick={()=>props.history.push('/accounts')} icon={<UserOutlined />}>
+            <Dropdown.Button  size ="large" overlay={menu} onClick={()=>props.history.push('/accounts')} placement="bottomLeft" icon={<UserOutlined />}>
               Account
             </Dropdown.Button>
             </>
@@ -64,7 +81,7 @@ const Header=(props)=>
             {!userExist() && menu}
             {userExist() &&   
             <>
-            <Dropdown.Button  size ="large" overlay={menu} onClick={()=>props.history.push('/accounts')} icon={<UserOutlined />}/>
+            <Dropdown.Button  size ="large" overlay={mobileMenu}  placement="bottomLeft"><UserOutlined />{""}</Dropdown.Button>
             </>
             }
            </Col>

@@ -61,3 +61,8 @@ class Files(models.Model):
         return self.user.username+"_"+self.file.name+"_"+self.name
     objects=FileManager.as_manager()
 
+class downloadHistory(models.Model):
+     id=models.UUIDField( primary_key = True, default = uuid.uuid4, editable = False)
+     file=models.ForeignKey(Files,related_name='downloadHistory',on_delete=models.CASCADE)
+     time=models.DateTimeField( auto_now=True, auto_now_add=False)
+     ip=models.TextField(null=False)

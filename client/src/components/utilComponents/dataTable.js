@@ -1,15 +1,18 @@
 
- import {Table,Divider,message,Modal,Input,Tag} from 'antd'
+ import {message,Modal,Input,Tag,List} from 'antd'
  import {downloadFiles,deleteFile} from '../../services/connectToServer'
 import {connect} from 'react-redux'
 import React,{useState} from 'react';
 import {state_to_props} from '../../util/common_utils'
+import { PageHeader, Button, Descriptions } from 'antd';
 
 
   const deleteFromStore=(key)=>
   {
     return {type:"FILES_DEL",data:key}
   }
+
+
 
 
   const DataTable=(props)=>
@@ -19,37 +22,35 @@ import {state_to_props} from '../../util/common_utils'
     const [eKey,setEKey]=useState(null);
     const [isFileDownLoading,setFileDownLoading]=useState(false)
     const [deleteRecord,setDeleteRecord]=useState(null)
-    const columns = [
-      {
-        title: 'Name',
-        dataIndex: 'name',
-        key: 'name',
-        render: text => <a style={{color:"black"}}>{text}</a>,
-        responsive: ['xs','md'],
-       
-      },{
-        title:'Description',
-        dataIndex:'description',
-        key:'description',
-        render: text => <a style={{color:"black"}}>{text}</a>,
-        responsive: ['xs','md'],
-       
-      },
-     
-      {
-        title: 'Action',
-        key: 'action',
-        render: (text, record) => (
-          <span>
-            <a style={{color:"black"}} onClick={()=>handleDownload(record)}>Download </a>
-            <Divider type="vertical" style={{color:"black"}} />
-            <a style={{color:"black"}} onClick={()=>setDeleteRecord(record.key)}>Delete</a>
-          </span>
-        ),
-        // responsive: ['xs','md'],
-      },
-    ];
+  
 
+
+    const listView=(<List
+    itemLayout="horizontal"
+    dataSource={props.data}
+    renderItem={item => (
+      <List.Item>
+      <PageHeader style={{overflow: "hidden",textOverflow:"ellipsis"}}
+      ghost={false}
+      title={item.name}
+      extra={[
+        <Button key="3" onClick={()=>handleDownload(item)} >Download</Button>,
+        <Button key="2">Edit</Button>,
+        <Button key="1" onClick={()=>setDeleteRecord(item.key)} type="danger">
+          delete
+        </Button>,
+      ]}
+    >
+      <Descriptions size="small" column={2}>
+        <Descriptions.Item label="Creation Time">2017-01-10</Descriptions.Item>
+        <Descriptions.Item label="Last Edited Time">2017-10-10</Descriptions.Item>
+        <Descriptions.Item label="description">{item.description}</Descriptions.Item>
+        <Descriptions.Item label="size">{"50"}</Descriptions.Item>
+      </Descriptions>
+    </PageHeader>
+      </List.Item>
+    )}
+  />)
 
     const download=async (record)=>
     {
@@ -125,7 +126,9 @@ import {state_to_props} from '../../util/common_utils'
       }
       return(
     <div  >
-      <Table columns={columns} dataSource={props.data} size="middle" loading={props.loading} />
+      {/* <Table columns={columns} dataSource={props.data} size="middle" loading={props.loading} /> */}
+     {listView}
+   
       <Modal
           title="please Enter your decryption key"
           visible={isShowModal}

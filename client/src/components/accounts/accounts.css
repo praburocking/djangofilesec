@@ -2,6 +2,7 @@ body, html {
     height: 100%;
     background-repeat: no-repeat;
     background-image: linear-gradient(rgb(104, 145, 162), rgb(12, 97, 33));
+    margin: 0;
 }
 /**
  * Profile image component
@@ -46,3 +47,15 @@ body, html {
 .account-change-cursor:hover{
     cursor: pointer;
 }
+
+  .wrapper {
+    min-height: 100%;
+  
+    /* Equal to height of footer */
+    /* But also accounting for potential margin-bottom of last child */
+    margin-bottom: -50px;
+  }
+  .footer,
+  .push {
+    height: 50px;
+  }
