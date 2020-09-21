@@ -42,10 +42,10 @@ import { PageHeader, Button, Descriptions } from 'antd';
       ]}
     >
       <Descriptions size="small" column={2}>
-        <Descriptions.Item label="Creation Time">2017-01-10</Descriptions.Item>
-        <Descriptions.Item label="Last Edited Time">2017-10-10</Descriptions.Item>
+        <Descriptions.Item label="Creation Time">{item.created_time}</Descriptions.Item>
+        <Descriptions.Item label="Last Edited Time">{item.modified_time}</Descriptions.Item>
         <Descriptions.Item label="description">{item.description}</Descriptions.Item>
-        <Descriptions.Item label="size">{"50"}</Descriptions.Item>
+        <Descriptions.Item label="size">{item.size+ " mb"}</Descriptions.Item>
       </Descriptions>
     </PageHeader>
       </List.Item>

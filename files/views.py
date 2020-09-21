@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.generics import ListCreateAPIView,RetrieveDestroyAPIView,GenericAPIView
 from rest_framework.permissions import IsAuthenticated
-from .models import Files
+from .models import Files,DownloadHistory
 from .serializers import FilesSerializers
 from django.shortcuts import get_object_or_404
 from django.core.files import File
@@ -38,6 +38,8 @@ class filesDownload(GenericAPIView):
                 file=File(file.file,name=file.name)
                 user_key = request.data["private_key"]
                 file=decrypt(file,key_fuser(key,user_key),salt,file_name)
+                DownloadHistory.objects.create(file=get_object_or_404(Files,pk=pk))
+
                 return(HttpResponse(file,content_type='text/plain',))
             else:
                 return Response({"exception":"invalid data"})

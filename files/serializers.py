@@ -6,6 +6,7 @@ class FilesSerializers(serializers.ModelSerializer):
     user=serializers.CharField(read_only=True)
     name=serializers.CharField(read_only=True)
     private_key=serializers.CharField(write_only=True)
+    file=serializers.CharField(write_only=True)
 
     def update(self, instance, validated_data):
         instance.email = validated_data.get('description', instance.description)    
@@ -13,4 +14,4 @@ class FilesSerializers(serializers.ModelSerializer):
     
     class Meta:
         model=Files
-        fields=['id','user','file','private_key','name','description']
+        fields=['id','user','file','private_key','name','description','modified_time','created_time','size']

@@ -31,6 +31,8 @@ class Files(models.Model):
     size=models.FloatField(null=False,default=0)
     user=models.ForeignKey(get_user_model(),related_name='Files',on_delete=models.CASCADE)
     description=models.TextField(null=True)
+    created_time = models.DateTimeField(auto_now_add=True)
+    modified_time = models.DateTimeField(auto_now=True)
     
     def save(self,*args,**kargs):
         if self._state.adding:
@@ -61,8 +63,9 @@ class Files(models.Model):
         return self.user.username+"_"+self.file.name+"_"+self.name
     objects=FileManager.as_manager()
 
-class downloadHistory(models.Model):
+class DownloadHistory(models.Model):
      id=models.UUIDField( primary_key = True, default = uuid.uuid4, editable = False)
      file=models.ForeignKey(Files,related_name='downloadHistory',on_delete=models.CASCADE)
-     time=models.DateTimeField( auto_now=True, auto_now_add=False)
+     time=models.DateTimeField(auto_now_add=True)
      ip=models.TextField(null=False)
+     download_success=models.BooleanField(default=False)
