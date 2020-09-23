@@ -1,6 +1,6 @@
 
- import {message,Modal,Input,Tag,List} from 'antd'
- import {downloadFiles,deleteFile} from '../../services/connectToServer'
+ import {message,Modal,Input,Tag,List,Drawer, Timeline} from 'antd'
+ import {downloadFiles,deleteFile,getDownloadHistory} from '../../services/connectToServer'
 import {connect} from 'react-redux'
 import React,{useState} from 'react';
 import {state_to_props} from '../../util/common_utils'
@@ -22,20 +22,28 @@ import { PageHeader, Button, Descriptions } from 'antd';
     const [eKey,setEKey]=useState(null);
     const [isFileDownLoading,setFileDownLoading]=useState(false)
     const [deleteRecord,setDeleteRecord]=useState(null)
+    const [downloadHistory,setDownloadHistory]=useState(null)
   
+   const handleDownloadHistory=async (id)=>{
+      var response=await getDownloadHistory(id);
+      console.log(response);
+      setDownloadHistory(response.data);
+    }
 
-
-    const listView=(<List
+    const listView=(
+    <div style={{width:"700"}}>
+    <List
     itemLayout="horizontal"
     dataSource={props.data}
     renderItem={item => (
-      <List.Item>
+      <List.Item  >
       <PageHeader style={{overflow: "hidden",textOverflow:"ellipsis"}}
       ghost={false}
       title={item.name}
       extra={[
-        <Button key="3" onClick={()=>handleDownload(item)} >Download</Button>,
-        <Button key="2">Edit</Button>,
+        <Button key="4" onClick={()=>handleDownload(item)} >Download</Button>,
+        <Button key="3">Edit</Button>,
+        <Button key="2" onClick={()=> handleDownloadHistory(item.key)}>Download History</Button>,
         <Button key="1" onClick={()=>setDeleteRecord(item.key)} type="danger">
           delete
         </Button>,
@@ -50,7 +58,35 @@ import { PageHeader, Button, Descriptions } from 'antd';
     </PageHeader>
       </List.Item>
     )}
-  />)
+  />
+  </div>
+  )
+
+
+
+
+const downloadHistoryDrawer=()=>(
+        <Drawer
+          title="Download History"
+          width={"30vw"}
+          closable={false}
+          onClose={()=>setDownloadHistory(null)}
+          visible={downloadHistory}
+        >
+        {downloadHistory && <Timeline>
+      {downloadHistory.map(function(item) {
+            return <Timeline.Item key={item.id} color={item.download_success?"green":"red"}>download {item.download_success?"succcess":"failed"} on {item.time} from ip {item.ip} </Timeline.Item>;
+    })}
+    {!downloadHistory && "No Data"}
+       
+   
+    
+   
+    </Timeline>}
+          </Drawer>
+       
+)
+
 
     const download=async (record)=>
     {
@@ -128,7 +164,8 @@ import { PageHeader, Button, Descriptions } from 'antd';
     <div  >
       {/* <Table columns={columns} dataSource={props.data} size="middle" loading={props.loading} /> */}
      {listView}
-   
+   {downloadHistoryDrawer()}
+ 
       <Modal
           title="please Enter your decryption key"
           visible={isShowModal}

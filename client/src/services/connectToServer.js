@@ -223,6 +223,17 @@ export const getFiles=async ()=>
     }
 }
 
+export const getDownloadHistory=async (id)=>
+{
+    try {
+        const response = await axios.get(getfiles_url+"/"+id+"/downloadhistory",setAuthorizationHeader());
+        return response;
+    }
+    catch (error) {
+        return error.response;
+    }
+}
+
 
 
 export const deleteFile=async (id)=>

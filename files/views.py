@@ -4,11 +4,11 @@ from rest_framework import status
 from rest_framework.generics import ListCreateAPIView,RetrieveDestroyAPIView,GenericAPIView
 from rest_framework.permissions import IsAuthenticated
 from .models import Files,DownloadHistory
-from .serializers import FilesSerializers
+from .serializers import FilesSerializers,FilesDownLoadHistorySerializers
 from django.shortcuts import get_object_or_404
 from django.core.files import File
 from django.http import HttpResponse
-from .utils import decrypt,key_fuser
+from .utils import decrypt,key_fuser,get_client_ip
 from cryptography.fernet import InvalidToken
 
 class filesListCreateView(ListCreateAPIView):
@@ -38,13 +38,29 @@ class filesDownload(GenericAPIView):
                 file=File(file.file,name=file.name)
                 user_key = request.data["private_key"]
                 file=decrypt(file,key_fuser(key,user_key),salt,file_name)
-                DownloadHistory.objects.create(file=get_object_or_404(Files,pk=pk))
+                dobj=DownloadHistory.objects.create(file=get_object_or_404(Files,pk=pk),download_success=True,ip=get_client_ip(request))
+               
 
                 return(HttpResponse(file,content_type='text/plain',))
             else:
                 return Response({"exception":"invalid data"})
         except (InvalidToken):
+            dobj=DownloadHistory.objects.create(file=get_object_or_404(Files,pk=pk),download_success=False,ip=get_client_ip(request))
             return Response(data={"message":"invalid key"},status=status.HTTP_401_UNAUTHORIZED)
+
+
+class filesDownloadHistory(GenericAPIView):
+    def get(self,request,fileId):
+        try:
+            downloadHistory=DownloadHistory.objects.filter(file=fileId).order_by('-time')
+            downloadHistorySerializer=FilesDownLoadHistorySerializers(downloadHistory,many=True)
+            data=downloadHistorySerializer.data
+            return Response(data=data,status=status.HTTP_200_OK)
+        except Exception as e :
+            print(e)
+            return Response(data={"message":"exception while retriviing the  list"},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
 
 
 

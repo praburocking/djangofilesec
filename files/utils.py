@@ -60,5 +60,13 @@ def random_key_gen(N):
 def key_fuser(system_key,user_key):
     return system_key+user_key
 
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
+
 
 
