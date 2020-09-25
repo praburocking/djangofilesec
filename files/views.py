@@ -1,6 +1,7 @@
 
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.generics import ListCreateAPIView,RetrieveDestroyAPIView,GenericAPIView
 from rest_framework.permissions import IsAuthenticated
 from .models import Files,DownloadHistory
@@ -11,9 +12,16 @@ from django.http import HttpResponse
 from .utils import decrypt,key_fuser,get_client_ip
 from cryptography.fernet import InvalidToken
 
+
+class StandardResultsSetPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 100
+
 class filesListCreateView(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = FilesSerializers
+    pagination_class = StandardResultsSetPagination
     def get_queryset(self):
         return Files.objects.filter(user=self.request.user)
     def perform_create(self,serializer):

@@ -1,6 +1,6 @@
 import React,{useRef,useEffect,useState} from 'react'
 import {Row,Col,Layout,Divider,Upload,Input,Form} from 'antd'
-import { Button,Avatar,Modal } from 'antd';
+import { Button,Avatar,Modal ,Drawer} from 'antd';
 import {state_to_props} from '../../util/common_utils'
 import {connect} from 'react-redux'
 import Header from '../utilComponents/header'
@@ -138,7 +138,20 @@ const showLicModal=()=>{
                 <Col span={11}><strong>password</strong></Col><Col span={11}>{'***'}</Col>  <Col span={2} className="account-change-cursor" onClick={()=>showPassModal()}><EditFilled/></Col>
             </Row> 
             <Row>
-                <Modal title="password change" visible={isPassModal}  onOk={handleOk} onCancel={handleCancel} confirmLoading={false} >
+                <Drawer title="password change" visible={isPassModal}  onOk={handleOk} onClose={handleCancel} width={"30vw"}
+                bodyStyle={{ paddingBottom: 80 }}
+                footer={
+                <div style={{textAlign: 'right' }}>
+                <Button onClick={ handleCancel} style={{ marginRight: 8 }} >
+                    Cancel
+                 </Button>
+                 <Button onClick={handleOk} type="primary" >
+                 Submit
+                </Button>
+                </div>
+                }>
+
+                 
                      <p>please type your old password along with your new password</p>
                      <Form form={form} >
                         <Form.Item name="old_password">
@@ -148,7 +161,7 @@ const showLicModal=()=>{
                           <Input.Password name="new_password" id="new_password" placeholder="new password" />
                         </Form.Item>
                     </Form>
-                 </Modal>
+                 </Drawer>
             </Row>
             <Row>
                  <CheckoutForm isLicModal={isLicModal} setLicModal={setLicModal}/>

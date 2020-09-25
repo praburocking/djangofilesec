@@ -28,8 +28,8 @@ export const listFiles=()=>
         if(filesResp.status===200)
         {
         let files=filesResp.data;
-        files.map(file=>{file.key=file.id})
-        dispatch ({type:ACTIONS.FILES_INIT,data:filesResp.data})}
+        //files.results.map(file=>{file.key=file.id})
+        dispatch ({type:ACTIONS.FILES_INIT,data:filesResp.data.results})}
 }
 }
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './CheckoutForm.css';
-import { Button,Avatar,Modal,Select,Form, Input, Radio, message  } from 'antd';
+import { Button,Avatar,Modal,Select,Form, Input, Radio, message ,Drawer } from 'antd';
 import { loadStripe } from '@stripe/stripe-js';
 import {
   CardElement,
@@ -292,7 +292,29 @@ else{
     return (
 
 
-           <Modal title="update plan" visible={isLicModal}  onOk={handleOk} onCancel={cancelLicModal} confirmLoading={isShowLoading} >
+           <Drawer title="update plan"
+            visible={isLicModal}
+            width={"30vw"}
+            onClose={cancelLicModal}
+            confirmLoading={isShowLoading}
+           
+          bodyStyle={{ paddingBottom: 80 }}
+          footer={
+            <div
+              style={{
+                textAlign: 'right',
+              }}
+            >
+              <Button onClick={!isShowLoading&&  cancelLicModal} style={{ marginRight: 8 }} visible={!isShowLoading} loading={isShowLoading}>
+                Cancel
+              </Button>
+              <Button onClick={handleOk} type="primary" loading={isShowLoading} >
+                Submit
+              </Button>
+            </div>
+          }
+           
+            >
                 <Select
                 size="large" 
                 prefix={<LockTwoTone style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -302,6 +324,9 @@ else{
                 <Option value="planA">plan A, 100MB</Option>
                  <Option value="planB">plan B, 200MB</Option>
                  </Select>
+                 <br/>
+                 <br/>
+                 
                   {/* {showAddressForm&&  
                 <>  
                 <p> ADDRESS</p>
@@ -346,7 +371,7 @@ else{
                     />
             </form>}
             <br/>
-        </Modal>
+        </Drawer>
     );
   
 };

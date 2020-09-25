@@ -5,6 +5,12 @@ import {connect} from 'react-redux'
 import React,{useState} from 'react';
 import {state_to_props} from '../../util/common_utils'
 import { PageHeader, Button, Descriptions } from 'antd';
+import {
+  Responsive,
+  isMobileDevice,
+  isTabletDevice,
+  isLaptopDevice
+} from "responsive-react";
 
 
   const deleteFromStore=(key)=>
@@ -23,7 +29,10 @@ import { PageHeader, Button, Descriptions } from 'antd';
     const [isFileDownLoading,setFileDownLoading]=useState(false)
     const [deleteRecord,setDeleteRecord]=useState(null)
     const [downloadHistory,setDownloadHistory]=useState(null)
-  
+    const [showEditDrawer,setEditDrawer]=useState(null)
+    const {TextArea} = Input;
+
+
    const handleDownloadHistory=async (id)=>{
       var response=await getDownloadHistory(id);
       console.log(response);
@@ -31,7 +40,7 @@ import { PageHeader, Button, Descriptions } from 'antd';
     }
 
     const listView=(
-    <div style={{width:"700"}}>
+    <div style={{width:"700",maxHeight:"400"}}>
     <List
     itemLayout="horizontal"
     dataSource={props.data}
@@ -42,9 +51,9 @@ import { PageHeader, Button, Descriptions } from 'antd';
       title={item.name}
       extra={[
         <Button key="4" onClick={()=>handleDownload(item)} >Download</Button>,
-        <Button key="3">Edit</Button>,
-        <Button key="2" onClick={()=> handleDownloadHistory(item.key)}>Download History</Button>,
-        <Button key="1" onClick={()=>setDeleteRecord(item.key)} type="danger">
+        <Button key="3" onClick={()=>setEditDrawer(item)}>Edit</Button>,
+        <Button key="2" onClick={()=> handleDownloadHistory(item.id)}>Download History</Button>,
+        <Button key="1" onClick={()=>setDeleteRecord(item.id)} type="danger">
           delete
         </Button>,
       ]}
@@ -68,7 +77,7 @@ import { PageHeader, Button, Descriptions } from 'antd';
 const downloadHistoryDrawer=()=>(
         <Drawer
           title="Download History"
-          width={"30vw"}
+          width={isMobileDevice()?"30vw" :"30vw"}
           closable={false}
           onClose={()=>setDownloadHistory(null)}
           visible={downloadHistory}
@@ -90,7 +99,7 @@ const downloadHistoryDrawer=()=>(
 
     const download=async (record)=>
     {
-      var key=record.key;
+      var key=record.id;
       setFileDownLoading(true)
       var downloadResp=await downloadFiles(key,eKey);
       setEKey(null);
@@ -166,15 +175,64 @@ const downloadHistoryDrawer=()=>(
      {listView}
    {downloadHistoryDrawer()}
  
-      <Modal
+      <Drawer
           title="please Enter your decryption key"
           visible={isShowModal}
-          onOk={()=>download(currentDownload)}
-          onCancel={!isFileDownLoading && handleCancel}
-          confirmLoading={isFileDownLoading} >
+     
+          width={isMobileDevice()?"30vw" :"30vw"}
+          onClose={!isFileDownLoading && handleCancel}
+        
+          
+          bodyStyle={{ paddingBottom: 80 }}
+          footer={
+            <div
+              style={{
+                textAlign: 'right',
+              }}
+            >
+              <Button onClick={!isFileDownLoading &&  handleCancel} style={{ marginRight: 8 }} visible={!isFileDownLoading}>
+                Cancel
+              </Button>
+              <Button onClick={()=>download(currentDownload)} type="primary" loading={isFileDownLoading} >
+                Submit
+              </Button>
+            </div>
+          }
+          >
+        
           <Input.Password  placeholder="Decryption Key" value={eKey} onChange={changeEKey}/>
           <p>we will use this key along with our own random private key to decrypt your data</p>
-        </Modal>
+        </Drawer>
+
+        <Drawer
+          title="Edit"
+          visible={showEditDrawer}
+     
+          width={isMobileDevice()?"30vw" :"30vw"}
+          onClose={()=>setEditDrawer(null)}
+        
+          
+          bodyStyle={{ paddingBottom: 80 }}
+          footer={
+            <div
+              style={{
+                textAlign: 'right',
+              }}
+            >
+              <Button onClick={()=>setEditDrawer(null)} style={{ marginRight: 8 }} visible={!isFileDownLoading}>
+                Cancel
+              </Button>
+              <Button onClick={()=>setEditDrawer(null)} type="primary" loading={isFileDownLoading} >
+                Submit
+              </Button>
+            </div>
+          }
+          >
+        
+          <TextArea type="text" placeholder="Description (optional)" />
+          
+        </Drawer>
+
 
         <Modal
           title="Are you sure want to delete the file?"

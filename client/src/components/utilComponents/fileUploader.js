@@ -7,7 +7,13 @@ import './fileUploader.css'
 import {uploadfile} from '../../services/connectToServer'
 import React,{useState} from 'react'
 import {connect} from 'react-redux'
-import { Divider } from 'antd';
+import { Divider, Drawer,Button } from 'antd';
+import {
+  Responsive,
+  isMobileDevice,
+  isTabletDevice,
+  isLaptopDevice
+} from "responsive-react";
 
 const { Dragger } = Upload;
 
@@ -19,7 +25,7 @@ const updateFilesToStore=(files)=>
 
 const FileUploader=(props)=>
 {
-    
+  const { TextArea } = Input;
     const prop = {
         name: 'file',
         multiple: false,
@@ -103,17 +109,34 @@ const FileUploader=(props)=>
                 </p>
             </Dragger>
 	      
-          <Modal
+          <Drawer
           title="please Enter your entryption key"
           visible={isShowModal}
-          onOk={handleOk}
-          onCancel={!isFileUpLoading  &&  handleCancel}
-          confirmLoading={isFileUpLoading}>
+          width={isMobileDevice()?"30vw" :"30vw"}
+          onClose={!isFileUpLoading  &&  handleCancel}
+          confirmLoading={isFileUpLoading}
+          
+          bodyStyle={{ paddingBottom: 80 }}
+          footer={
+            <div
+              style={{
+                textAlign: 'right',
+              }}
+            >
+              <Button onClick={!isFileUpLoading  &&  handleCancel} style={{ marginRight: 8 }} visible={!isFileUpLoading}>
+                Cancel
+              </Button>
+              <Button onClick={handleOk} type="primary" >
+                Submit
+              </Button>
+            </div>
+          }
+          >
           <Input.Password type="text" placeholder="Encryption Key" value={eKey} onChange={changeEKey}/>
           <p>we will use this key along with our own random private key to encrypt your data</p>
           <Divider>optional</Divider>
-          <Input type="text" placeholder="Description (optional)" value={desc} onChange={(e)=>setDesc(e.target.value)}/>
-        </Modal>
+          <TextArea type="text" placeholder="Description (optional)" value={desc} onChange={(e)=>setDesc(e.target.value)}/>
+        </Drawer>
 	  </div>
     )
 }
