@@ -37,8 +37,8 @@ const setLicModal=props.setLicModal;
   const [subscribing, setSubscribing] = useState(false);
   const [isShowLoading, setShowLoading] = useState(false);
   const [isShowCard,setShowCard]=useState(false);
-  const plan_A_priceid="price_1H3yk3AD7nX8Xg8myxZ505pY";
-  const plan_B_priceid="price_1H3ynxAD7nX8Xg8mKDhsWjHT";
+  const plan_A_priceid=process.env.NODE_ENV==="production"?process.env.REACT_APP_PLAN_A_LIVE_INR_PRICEID:process.env.REACT_APP_PLAN_A_TEST_INR_PRICEID;
+  const plan_B_priceid=process.env.NODE_ENV==="production"?process.env.REACT_APP_PLAN_B_LIVE_INR_PRICEID:process.env.REACT_APP_PLAN_B_TEST_INR_PRICEID;
   const [showAddressForm,setAddressForm]=useState(false);
   const [form] = Form.useForm();
   const [plan,setPlan]=useState(props.license.licenseType)
