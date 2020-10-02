@@ -30,13 +30,14 @@ class createSubscription(APIView):
                 return Response({"message":"no subscription change"})
             # Attach the payment method to the customer
             logger.info("input data "+str(data))
-            if stripe_customer.stripe_default_card is None and data["priceId"]!="free":
+            if (stripe_customer.stripe_default_card is None or data['paymentMethodId']!=stripe_customer.stripe_default_card) and data["priceId"]!="Free":
                 paymentAttach=stripe.PaymentMethod.attach(data['paymentMethodId'],customer=data['customerId'])
                 # Set the default payment method on the customer
                 stripe.Customer.modify(data['customerId'],invoice_settings={'default_payment_method': data['paymentMethodId']})
                 stripe_customer.stripe_default_card=data['paymentMethodId']
 
             # Create the subscription
+            subscription=None
             if stripe_customer.stripe_subscription_id is not None and stripe_customer.stripe_subscription_id!='':
                 stripe.Subscription.delete(stripe_customer.stripe_subscription_id)
             if data["priceId"]!="Free":
@@ -57,7 +58,11 @@ class createSubscription(APIView):
             logger.info("Stripe customer before saving "+str(stripe_customer))
             stripe_customer.save()
             stripe_customer_serializer=StripeCustomerSerializer(stripe_customer)
-            return Response(stripe_customer_serializer.data)
+            if(subscription is not None):
+                subscription.update({"model_data":stripe_customer_serializer.data})
+            else:
+                subscription={"model_data":stripe_customer_serializer.data}
+            return Response(subscription)
         except Exception as e:
             logger.exception(str(e))
             stripe_customer.save()

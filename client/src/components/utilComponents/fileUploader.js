@@ -8,13 +8,8 @@ import {uploadfile} from '../../services/connectToServer'
 import React,{useState} from 'react'
 import {connect} from 'react-redux'
 import { Divider, Drawer,Button } from 'antd';
-import {
-  Responsive,
-  isMobileDevice,
-  isTabletDevice,
-  isLaptopDevice
-} from "responsive-react";
 
+import {withGetScreen} from 'react-getscreen'
 const { Dragger } = Upload;
 
 const updateFilesToStore=(files)=>
@@ -112,7 +107,7 @@ const FileUploader=(props)=>
           <Drawer
           title="please Enter your entryption key"
           visible={isShowModal}
-          width={isMobileDevice()?"30vw" :"30vw"}
+          width={props.isMobile()?"60vw" :"30vw"}
           onClose={!isFileUpLoading  &&  handleCancel}
           confirmLoading={isFileUpLoading}
           
@@ -141,6 +136,6 @@ const FileUploader=(props)=>
     )
 }
 
-export default connect(null,{updateFilesToStore})(FileUploader);
+export default connect(null,{updateFilesToStore})(withGetScreen(FileUploader));
 
 

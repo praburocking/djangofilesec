@@ -201,43 +201,22 @@ else{
       customerId: props.license.stripe_customer_id,
       paymentMethodId: paymentMethodId,
       priceId: priceId,
-    }) .then((response) => {
-          return response.json();
-        })
-        // If the card is declined, display an error to the user.
-        .then((result) => {
-          if (result.error) {
-            // The card had an error when trying to attach it to a customer
-            throw result;
-          }
-          return result;
-        })
-        // Normalize the result to contain the object returned
-        // by Stripe. Add the addional details we need.
-        .then((result) => {
+    })
+      .then((result) => {
           return {
             // Use the Stripe 'object' property on the
             // returned result to understand what object is returned.
-            subscription: result,
+            subscription: result.data,
             paymentMethodId: paymentMethodId,
             priceId: priceId,
           };
         })
-        // Some payment methods require a customer to do additional
-        // authentication with their financial institution.
-        // Eg: 2FA for cards.
-        .then(handleCustomerActionRequired)
-        // If attaching this card to a Customer object succeeds,
-        // but attempts to charge the customer fail. You will
-        // get a requires_payment_method error.
-        .then(handlePaymentMethodRequired)
-        // No more actions required. Provision your service for the user.
+        .then(handlePaymentThatRequiresCustomerAction)
+       // .then(handlePaymentMethodRequired)
         .then(onSubscriptionComplete)
         .catch((error) => {
-          // An error has happened. Display the failure to the user here.
-          // We utilize the HTML element we created.
           console.log(error);
-          // displayError(error);
+          message.error("exception in updating license kindly contact customer care")
         })
     );
   }
@@ -251,11 +230,6 @@ else{
       // form submission until Stripe.js has loaded.
       return;
     }
-
-    // Get a reference to a mounted CardElement. Elements knows how
-    // to find your CardElement because there can only ever be one of
-    // each type of element.
-
     if(props.license.licenseType===plan){
       return;
     }
@@ -270,7 +244,8 @@ else{
           type: 'card',
           card: cardElement,
         });
-
+        
+        console.log(paymentMethod);
         if (error) {
           console.log('[error]', error);
           message.error(error);
@@ -290,6 +265,62 @@ else{
   }
     
   };
+
+
+  function handlePaymentThatRequiresCustomerAction({
+    subscription,
+    invoice,
+    priceId,
+    paymentMethodId,
+    isRetry,
+  }) {
+    if (subscription && subscription.status === 'active') {
+      // Subscription is active, no customer actions required.
+      return { subscription, priceId, paymentMethodId };
+    }
+  
+    // If it's a first payment attempt, the payment intent is on the subscription latest invoice.
+    // If it's a retry, the payment intent will be on the invoice itself.
+    let paymentIntent = invoice ? invoice.payment_intent : subscription.latest_invoice.payment_intent;
+  
+    if (
+      paymentIntent.status === 'requires_action' ||
+      (isRetry === true && paymentIntent.status === 'requires_payment_method')
+    ) {
+      return stripe
+        .confirmCardPayment(paymentIntent.client_secret, {
+          payment_method: paymentMethodId,
+        })
+        .then((result) => {
+          if (result.error) {
+            // Start code flow to handle updating the payment details.
+            // Display error message in your UI.
+            // The card was declined (i.e. insufficient funds, card has expired, etc).
+            throw result;
+          } else {
+            if (result.paymentIntent.status === 'succeeded') {
+              // Show a success message to your customer.
+              // There's a risk of the customer closing the window before the callback.
+              // We recommend setting up webhook endpoints later in this guide.
+              return {
+                priceId: priceId,
+                subscription: subscription,
+                invoice: invoice,
+                paymentMethodId: paymentMethodId,
+              };
+            }
+          }
+        })
+        .catch((error) => {
+          //displayError(error);
+          console.error(error);
+        });
+    } else {
+      // No customer action needed.
+      return { subscription, priceId, paymentMethodId };
+    }
+  }
+
     return (
 
 
@@ -313,9 +344,7 @@ else{
                 Submit
               </Button>
             </div>
-          }
-           
-            >
+          }>
                 <Select
                 size="large" 
                 prefix={<LockTwoTone style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -323,33 +352,10 @@ else{
                 onChange={handlePlanChange} >
                 <Option value="Free">Free, 50MB</Option>
                 <Option value="planA">plan A, 100MB</Option>
-                 <Option value="planB">plan B, 200MB</Option>
+                <Option value="planB">plan B, 200MB</Option>
                  </Select>
-                 <br/>
-                 <br/>
-                 
-                  {/* {showAddressForm&&  
-                <>  
-                <p> ADDRESS</p>
-                  <Form form={form} >
-                        <Form.Item name="line1">
-                          <Input name="line1" id="line1" placeholder="line 1" />
-                        </Form.Item>
-                        <Form.Item name="city">
-                          <Input name="city" id="city" placeholder="city" />
-                        </Form.Item>
-                        <Form.Item name="state">
-                          <Input name="state" id="state" placeholder="state" />
-                        </Form.Item>
-                        <Form.Item name="postal_code">
-                          <Input name="postal_code" id="postal_code" placeholder="postal code" />
-                        </Form.Item>
-                        <Form.Item name="country">
-                          <Input name="country" id="country" placeholder="country" />
-                       </Form.Item>
-                    </Form>
-      
-                </>} */}
+                
+           
               {isShowCard&&  <form id="payment-form" onSubmit={handleSubmit}>
                     <br/>
                     <CardElement

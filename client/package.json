@@ -25,6 +25,7 @@
     "react-app-rewired": "^2.1.5",
     "react-dev-utils": "^10.2.1",
     "react-dom": "^16.12.0",
+    "react-getscreen": "^1.1.3",
     "react-infinite-scroller": "^1.2.4",
     "react-redux": "^7.2.1",
     "react-router-dom": "^5.1.2",

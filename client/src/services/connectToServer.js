@@ -7,7 +7,7 @@ console.log("server url",process.env);
 let url="https://digy-coffer.com/api/v1/"
 
 
-//url="http://localhost:8000/api/v1/"
+//url="https://127.0.0.1:8000/api/v1/"
 
 let user_url=url+"iam/accounts";
 let login_url=url+"iam/login";
@@ -116,10 +116,10 @@ catch (error) {
 }
 
 
-export const subscribeUser=async (data)=>
+export const subscribeUser= (data)=>
 {
     try {
-        const response = await axios.post(payment_url+"/createSubscription",data, setAuthorizationHeader());
+        const response =  axios.post(payment_url+"/createSubscription",data, setAuthorizationHeader());
         return response;
     }
     catch (error) {

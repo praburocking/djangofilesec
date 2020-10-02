@@ -5,12 +5,8 @@ import {connect} from 'react-redux'
 import React,{useState} from 'react';
 import {state_to_props} from '../../util/common_utils'
 import { PageHeader, Button, Descriptions } from 'antd';
-import {
-  Responsive,
-  isMobileDevice,
-  isTabletDevice,
-  isLaptopDevice
-} from "responsive-react";
+import {withGetScreen} from 'react-getscreen'
+
 
 
   const deleteFromStore=(key)=>
@@ -77,7 +73,7 @@ import {
 const downloadHistoryDrawer=()=>(
         <Drawer
           title="Download History"
-          width={isMobileDevice()?"30vw" :"30vw"}
+          width={props.isMobile()?"60vw" :"30vw"}
           closable={false}
           onClose={()=>setDownloadHistory(null)}
           visible={downloadHistory}
@@ -179,7 +175,7 @@ const downloadHistoryDrawer=()=>(
           title="please Enter your decryption key"
           visible={isShowModal}
      
-          width={isMobileDevice()?"30vw" :"30vw"}
+          width={props.isMobile()?"60vw" :"30vw"}
           onClose={!isFileDownLoading && handleCancel}
         
           
@@ -208,7 +204,7 @@ const downloadHistoryDrawer=()=>(
           title="Edit"
           visible={showEditDrawer}
      
-          width={isMobileDevice()?"30vw" :"30vw"}
+          width={props.isMobile()?"60vw" :"30vw"}
           onClose={()=>setEditDrawer(null)}
         
           
@@ -248,4 +244,4 @@ const downloadHistoryDrawer=()=>(
   }
 
 
-export default connect(null,{deleteFromStore})(DataTable);
+export default connect(null,{deleteFromStore})(withGetScreen(DataTable));
