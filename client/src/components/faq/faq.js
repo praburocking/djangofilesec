@@ -41,10 +41,13 @@ const text = (
        <li>EMail ID</li>
        <li>profile pic</li>
        <li> your data file, encrypted with the key you provided(note: we dont store your encryption key)</li>
-       <li>if you are paid user, your card information will be stored in our payment processor, <strong>Stripe</strong> (to know more about how stripe stores your data click <a herf="#">here</a>)  </li>
+       <li>if you are paid user, your card information will be stored in our payment processor, <strong>Stripe</strong> (to know more about how stripe stores your data click <a herf="https://stripe.com/">here</a>)  </li>
      </ul>
       <br></br>
-      
+    </Panel>
+    <Panel header={<h4>why do we provide free tier?</h4>} key="5">
+      <div>In Digy-Coffer, we belive everyone on the internet should be able to store their data safely without getting invaded in their privacy and we believe it is a small step towards that goal </div>
+      <br/>
     </Panel>
   </Collapse>
 

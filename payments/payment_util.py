@@ -1,8 +1,10 @@
 import stripe
 from .models import Stripe_customer
-stripe.api_key = 'sk_test_Unw7PdsP5tDxm4X9SM5MQrtj00ucSnT4B1'
+from django.conf import settings
 from licenses.models import License
 from django.shortcuts import get_object_or_404
+stripe.api_key =settings.STRIPE_API_KEY
+
 
 def create_customer(user,license):
     try:

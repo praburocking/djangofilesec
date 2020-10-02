@@ -180,6 +180,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'build', 'static')
 STATICFILES_DIRS = []
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STRIPE_API_KEY=env('STRIPE_API_KEY')
 
 #amazon S3 settings
 AWS_S3_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')

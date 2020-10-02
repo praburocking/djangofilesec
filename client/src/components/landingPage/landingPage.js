@@ -37,6 +37,9 @@ const LandingPage=(props)=>
                     <div>
                     <img  src="static/acc_3.jpg"  height="500" width="800"/>
                     </div>
+                    <div>
+                    <img  src="static/acc_4.jpg"  height="500" width="800"/>
+                    </div>
                      {/* <div>
                      <h3>we are here to tell some awesome things about our product</h3>
                  </div> */}

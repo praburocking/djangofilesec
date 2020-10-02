@@ -18,8 +18,9 @@ import {setUserDetailsToStore,userFetchType} from '../../store/action'
 const Option={Select};
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
-const stripePromise = loadStripe(process.env.REACT_APP_TEST_STRIPE_PK);
-if (!process.env.REACT_APP_TEST_STRIPE_PK) {
+const stripekey=process.env.NODE_ENV==="production"?process.env.REACT_APP_PRODUCTION_STRIPE_PK:process.env.REACT_APP_TEST_STRIPE_PK;
+const stripePromise = loadStripe(stripekey);
+if (!stripekey) {
   console.error('**Stripe publishable key environment variable not set**');
   console.error(
     '**Add an environemnt variable REACT_APP_STRIPE_PUBLISHABLE_KEY**'
