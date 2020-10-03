@@ -17,6 +17,9 @@ django-log-viewer==1.0.6
 django-rest-framework==0.1.0
 django-rest-knox==4.1.0
 django-s3-storage==0.13.0
+django-searchable-encrypted-fields==0.1.4
+django-sslify==0.2.7
+django-sslserver==0.22
 django-storages==1.9.1
 django-verification-token==0.0.6
 djangorestframework==3.11.0
@@ -33,6 +36,7 @@ Pillow==7.1.1
 psycopg2==2.8.4
 pycparser==2.20
 pycrypto==2.6.1
+pycryptodome==3.9.8
 pylint==2.5.3
 python-dateutil==2.8.1
 python-dotenv==0.12.0
@@ -48,4 +52,3 @@ toml==0.10.1
 urllib3==1.25.8
 whitenoise==5.0.1
 wrapt==1.12.1
-django-sslify>=0.2
