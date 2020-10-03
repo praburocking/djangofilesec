@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'files',
     'payments',
     'userVerification',
+    'webhook'
    
 ]
 MIDDLEWARE = [

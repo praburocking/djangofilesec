@@ -4,7 +4,6 @@ from django.urls import include, path
 urlpatterns = [
     path('iam/',include('accounts.urls')),
     path ('app/',include('files.urls')),
-    path('payment/',include('payments.urls'))
-
-
+    path('payment/',include('payments.urls')),
+    path('webhook/',include('webhook.urls'))
 ]
