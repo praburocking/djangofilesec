@@ -7,6 +7,7 @@ class UserSerializer(serializers.ModelSerializer):
     email = serializers.EmailField( required=True,validators=[UniqueValidator(queryset=User.objects.all())])
     username = serializers.CharField(min_length=4)
     password = serializers.CharField(min_length=8,write_only=True)
+    verified = serializers.CharField(read_only=True)
 
     def create(self, validated_data):
         user = User.objects.create_user(email=validated_data['email'], password=validated_data['password'],username=validated_data['username'])
@@ -18,7 +19,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ( 'username', 'email', 'password')
+        fields = ( 'username', 'email', 'password','verified')
 
 class UserUpdateSerializer(serializers.ModelSerializer):
     username=serializers.CharField(min_length=4,required=False)

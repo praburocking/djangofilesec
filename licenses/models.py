@@ -1,15 +1,15 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.conf import settings
 import uuid
 
 # Create your models here.
 
 
-
 LICENSE={
-    "FREE": {"NAME": "Free", "SIZE": 50,"priceId":"Free"},
-    "PAID1": {"NAME": "Paid1", "SIZE": 100,"priceId":"price_1H3yk3AD7nX8Xg8myxZ505pY"},
-    "Paid2": {"NAME": "Paid2", "SIZE": 200,"priceId":"price_1H3ynxAD7nX8Xg8mKDhsWjHT"},
+    "FREE": {"NAME": "Free", "SIZE": 50,"priceId":"Free","PRODUCT_ID":"Free","PRODUCT_ID":"Free"},
+    "PAID1": {"NAME": "Paid1", "SIZE": 100,"priceId":"price_1H3yk3AD7nX8Xg8myxZ505pY","PRODUCT_ID":settings.STRIPE_PLAN_A_PRODUCT_ID},
+    "PAID2": {"NAME": "Paid2", "SIZE": 200,"priceId":"price_1H3ynxAD7nX8Xg8mKDhsWjHT","PRODUCT_ID":settings.STRIPE_PLAN_B_PRODUCT_ID},
 }
 
 

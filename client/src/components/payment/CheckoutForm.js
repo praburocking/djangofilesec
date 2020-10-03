@@ -39,6 +39,8 @@ const setLicModal=props.setLicModal;
   const [isShowCard,setShowCard]=useState(false);
   const plan_A_priceid=process.env.NODE_ENV==="production"?process.env.REACT_APP_PLAN_A_LIVE_INR_PRICEID:process.env.REACT_APP_PLAN_A_TEST_INR_PRICEID;
   const plan_B_priceid=process.env.NODE_ENV==="production"?process.env.REACT_APP_PLAN_B_LIVE_INR_PRICEID:process.env.REACT_APP_PLAN_B_TEST_INR_PRICEID;
+  const plan_A_productid=process.env.NODE_ENV==="production"?process.env.REACT_APP_PLAN_A_LIVE_PRODUCTID:process.env.REACT_APP_PLAN_A_TEST_PRODUCTID;
+  const plan_B_productid=process.env.NODE_ENV==="production"?process.env.REACT_APP_PLAN_B_LIVE_PRODUCTID:process.env.REACT_APP_PLAN_B_TEST_PRODUCTID;
   const [showAddressForm,setAddressForm]=useState(false);
   const [form] = Form.useForm();
   const [plan,setPlan]=useState(props.license.licenseType)
@@ -189,18 +191,23 @@ else{
   function createSubscription({ paymentMethodId }) {
 
     let priceId = plan==="planA"?plan_A_priceid:plan_B_priceid;
+    let productId;
     if(plan==="Free"){
       priceId="Free";
+      productId="Free"
     }else if(plan==="planA"){
       priceId=plan_A_priceid;
+      productId="Freee"
     }else if(plan==="planB"){
       priceId=plan_B_priceid;
+      productId="Freee"
     }
     return (
     subscribeUser({
       customerId: props.license.stripe_customer_id,
       paymentMethodId: paymentMethodId,
       priceId: priceId,
+      productId:productId
     })
       .then((result) => {
           return {
