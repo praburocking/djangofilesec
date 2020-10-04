@@ -80,7 +80,7 @@ const downloadHistoryDrawer=()=>(
         >
         {downloadHistory && <Timeline>
       {downloadHistory.map(function(item) {
-            return <Timeline.Item key={item.id} color={item.download_success?"green":"red"}>download {item.download_success?"succcess":"failed"} on {item.time} from ip {item.ip} </Timeline.Item>;
+            return <Timeline.Item key={item.id} color={item.download_success?"green":"red"}>download {item.download_success?"succcess":"failed"} on {item.time} from IP {item.ip} </Timeline.Item>;
     })}
     {!downloadHistory && "No Data"}
        

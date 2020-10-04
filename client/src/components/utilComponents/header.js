@@ -12,7 +12,7 @@ import {withRouter,Link} from 'react-router-dom'
 import React,{useState} from 'react'
 import {verifyAndGetToken,state_to_props} from '../../util/common_utils'
 import { DownOutlined, UserOutlined } from '@ant-design/icons';
-import {message,Modal} from 'antd'
+import {message,Modal,Button} from 'antd'
 //import { OmitProps } from 'antd/lib/transfer/renderListBody';
 
 
@@ -91,13 +91,26 @@ const Header=(props)=>
         </Row>
     </Header>
     <Modal
-          title="Are you sure want to delete the file?"
+          title="Are you sure want to logout?"
           visible={showLogout}
           onOk={()=>props.history.push('/logout')}
           onCancel={ ()=>setLogout(false)}
           okType="danger"
+          okText="logout"
+          footer={[
+            <Button key="submit" onClick={()=>setLogout(false)}>
+              Cancel
+            </Button>,
+            <Button key="back" type="danger" onClick={()=>props.history.push('/logout')}>
+              Logout All
+            </Button>,
+            <Button key="submit" type="danger"  onClick={()=>props.history.push('/logout')}>
+              Logout
+            </Button>,
+
+          ]}
           >
-          <p>caution: you cannot recover the file once you deleted it.</p>
+          <p>Logout your sessions</p>
         </Modal>
     </>)
 }
