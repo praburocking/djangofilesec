@@ -62,7 +62,6 @@ class filesDownload(GenericAPIView):
 
 
 class filesDownloadHistory(GenericAPIView):
-    permission_classes = [IsAuthenticated]
     def get(self,request,fileId):
         try:
             downloadHistory=DownloadHistory.objects.filter(file=fileId).order_by('-time')
