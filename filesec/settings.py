@@ -134,12 +134,11 @@ DATABASES = {
 
 
 #authentication configurations
-
 AUTH_USER_MODEL = 'accounts.User'
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (  # added
+     'DEFAULT_AUTHENTICATION_CLASSES': [
         'knox.auth.TokenAuthentication',
-    ),
+    ],
     'DATETIME_FORMAT': "%m/%d/%Y %H:%M:%S",
     'DEFAULT_THROTTLE_CLASSES': [
         'rest_framework.throttling.AnonRateThrottle',

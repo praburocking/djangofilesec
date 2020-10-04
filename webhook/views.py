@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from django.shortcuts import get_object_or_404
+from rest_framework.authentication import BasicAuthentication
 from django.conf import settings
 import stripe
 
@@ -17,6 +18,7 @@ from http import HTTPStatus
 
 class stripeHook(APIView):
     endpoint_secret=settings.STRIPE_WH_SCRECT
+    authentication_classes = [BasicAuthentication]
     def post(self,request):
         payload = request.body
         sig_header = request.META['HTTP_STRIPE_SIGNATURE']

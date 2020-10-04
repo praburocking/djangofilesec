@@ -12,6 +12,8 @@ from django.http import HttpResponse
 from .utils import decrypt,key_fuser,get_client_ip
 from cryptography.fernet import InvalidToken
 
+from knox.auth import TokenAuthentication
+
 
 class StandardResultsSetPagination(PageNumberPagination):
     page_size = 10
@@ -35,6 +37,8 @@ class filesRetriveDestroyView(RetrieveDestroyAPIView):
     queryset = Files.objects.all()
 
 class filesDownload(GenericAPIView):
+   # permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
     def post(self,request,pk):
         try:
             print(request.data.keys())
@@ -58,6 +62,7 @@ class filesDownload(GenericAPIView):
 
 
 class filesDownloadHistory(GenericAPIView):
+    permission_classes = [IsAuthenticated]
     def get(self,request,fileId):
         try:
             downloadHistory=DownloadHistory.objects.filter(file=fileId).order_by('-time')
