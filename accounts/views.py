@@ -21,6 +21,8 @@ from django.contrib.auth import get_user_model
 from payments.payment_util import create_customer,get_customer
 from http import HTTPStatus
 from userVerification.Confirm import sendConfirm
+from rest_framework.permissions import IsAuthenticated
+from knox.auth import TokenAuthentication
 import logging
 logger = logging.getLogger(__name__)  # eg: log_viewer_demo/log_viewer_demo/logger.py
 #f_handler=logging.FileHandler('logs/app.log')
@@ -107,6 +109,9 @@ class loginView(APIView):
 
 
 class accountsView(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
+
     def delete(self, request, format='json'):
         if request.user.is_authenticated:
             queryset = User.objects.all()

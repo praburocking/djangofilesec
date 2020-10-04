@@ -12,13 +12,16 @@ from .models import Stripe_customer
 import logging
 from http import HTTPStatus
 from .serializers import StripeCustomerSerializer
+from rest_framework.permissions import IsAuthenticated
+from knox.auth import TokenAuthentication
 
 
 logger=logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 # Create your views here.
 class createSubscription(APIView):
-    
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
     def post(self,request):
         #data = json.loads(request.data)
         data=request.data
@@ -53,7 +56,7 @@ class createSubscription(APIView):
             if data["priceId"]=="Free"  or subscription.latest_invoice.payment_intent.status=="succeeded":
                 licenseUtil=LicenseUtil(userId=request.user.id,licenseId=None)
                 for i in LICENSE:
-                   if LICENSE[i]['priceId']==data['priceId']:
+                   if LICENSE[i]['PRODUCT_ID']==data['productId']:
                         licenseUtil.updateLicense(totalSpace=LICENSE[i]['SIZE'],licenseType=LICENSE[i]['NAME'])
             logger.info("Stripe customer before saving "+str(stripe_customer))
             stripe_customer.save()
@@ -70,6 +73,8 @@ class createSubscription(APIView):
             return Response(exp,status=HTTPStatus.INTERNAL_SERVER_ERROR)
 
 class stripe_customer(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
     def get(self,request):
         return(Response(data=get_customer_from_stripe(request.user)))
     def patch(self,request):

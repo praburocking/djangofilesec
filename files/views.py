@@ -37,7 +37,7 @@ class filesRetriveDestroyView(RetrieveDestroyAPIView):
     queryset = Files.objects.all()
 
 class filesDownload(GenericAPIView):
-   # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     authentication_classes = [TokenAuthentication]
     def post(self,request,pk):
         try:
@@ -62,6 +62,8 @@ class filesDownload(GenericAPIView):
 
 
 class filesDownloadHistory(GenericAPIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
     def get(self,request,fileId):
         try:
             downloadHistory=DownloadHistory.objects.filter(file=fileId).order_by('-time')
