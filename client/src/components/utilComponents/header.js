@@ -9,9 +9,10 @@ import Avatar from 'antd/es/avatar'
 
 import {connect} from 'react-redux'
 import {withRouter,Link} from 'react-router-dom'
-import React from 'react'
+import React,{useState} from 'react'
 import {verifyAndGetToken,state_to_props} from '../../util/common_utils'
 import { DownOutlined, UserOutlined } from '@ant-design/icons';
+import {message,Modal} from 'antd'
 //import { OmitProps } from 'antd/lib/transfer/renderListBody';
 
 
@@ -22,6 +23,7 @@ const Header=(props)=>
 
     const { Header} = Layout;
     console.log("header",props);
+    const[showLogout,setLogout]=useState(false)
     
 
     const userExist=()=>
@@ -41,7 +43,7 @@ const Header=(props)=>
                 {userExist()  && <Menu.Item key="2" style={{ minWidth:"5vw"}} onClick={()=>props.history.push('/faq')}>FAQ</Menu.Item>}
                 {!userExist()  && <Menu.Item key="2" style={{ minWidth:"5vw",minHeight:"8vh"}} onClick={()=>props.history.push('/faq')}>FAQ</Menu.Item>}
                 {userExist() && <Menu.Divider />}
-                {userExist() && <Menu.Item key="3" style={{ minWidth:"5vw" ,color:"red"}} onClick={()=>props.history.push('/logout')}>Logout</Menu.Item>}
+                {userExist() && <Menu.Item key="3" style={{ minWidth:"5vw" ,color:"red"}} onClick={()=>setLogout(true)}>Logout</Menu.Item>}
                 </Menu>
     )
 
@@ -58,11 +60,12 @@ const Header=(props)=>
        {userExist()  && <Menu.Item key="1" style={{ minWidth:"5vw"}} onClick={()=>props.history.push('/accounts')}>Acccounts</Menu.Item>}
        {userExist()  && <Menu.Item key="2" style={{ minWidth:"5vw"}} onClick={()=>props.history.push('/faq')}>FAQ</Menu.Item>}
        {userExist() && <Menu.Divider />}
-       {userExist() && <Menu.Item key="3" style={{ minWidth:"5vw" ,color:"red"}} onClick={()=>props.history.push('/logout')}>Logout</Menu.Item>}
+       {userExist() && <Menu.Item key="3" style={{ minWidth:"5vw" ,color:"red"}} onClick={()=>setLogout(true)}>Logout</Menu.Item>}
        </Menu>
 )
 
     return(
+    <>
     <Header style={{ position: 'fixed', zIndex: 1, width: '100%',background: "rgba(2, 164, 255, 0.7)",minHeight:"64px",maxHeight:"8vh" }}  >
     
         <Row justify="space-between">
@@ -86,7 +89,17 @@ const Header=(props)=>
             }
            </Col>
         </Row>
-    </Header>)
+    </Header>
+    <Modal
+          title="Are you sure want to delete the file?"
+          visible={showLogout}
+          onOk={()=>props.history.push('/logout')}
+          onCancel={ ()=>setLogout(false)}
+          okType="danger"
+          >
+          <p>caution: you cannot recover the file once you deleted it.</p>
+        </Modal>
+    </>)
 }
 
 export default connect(state_to_props,{})(withRouter(Header));
