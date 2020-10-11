@@ -9,7 +9,7 @@ class FilesSerializers(serializers.ModelSerializer):
     file=serializers.FileField(write_only=True)
 
     def update(self, instance, validated_data):
-        instance.email = validated_data.get('description', instance.description)    
+        instance.description = validated_data.get('description', instance.description)    
         return instance
     
     class Meta:
