@@ -26,15 +26,21 @@ const FileUploader=(props)=>
         multiple: false,
         action:'#',
         showUploadList:false,
-        onChange(info) {
-          console.log('FILE',info.file);
-          if(info.file)
+    
+        beforeUpload:(file)=>{
+          console.log('FILE',file);
+          if(file )
         {
-            setFile(info.file);
+          const isLt5M = file.size / 1024 / 1024 < 5;
+          if(isLt5M){
+            setFile(file);
             setModal(true);
+          }
+          else{
+            message.error("File must be smaller than 5 MB");
+          }
         }
         },
-        beforeUpload:()=>false,
         onSubmit(e){
           console.log("iam in submit")
           e.preventDefault();
