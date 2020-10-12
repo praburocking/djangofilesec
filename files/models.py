@@ -7,6 +7,9 @@ from django_s3_storage.storage import S3Storage
 from .utils import get_key,encrypt,random_key_gen,CONSTANTS,key_fuser
 import os
 from licenses.util import LicenseUtil
+from api.middleware import CurrentUserMiddleware as cum
+from crum import get_current_request
+
 
 storage = S3Storage(aws_s3_bucket_name='filesec')
 
@@ -35,8 +38,11 @@ class Files(models.Model):
     modified_time = models.DateTimeField(auto_now=True)
     
     def save(self,*args,**kargs):
-        if self._state.adding:
+        if self._state.adding :
+            
             self.name =self.file.name
+            #self.id=cum.get_current_user().id+"_"+self.id
+            #self.id=get_current_request().user.id+"_"+str(self.id)
             self.file.name=str(self.id)
             self.size=self.file.size/1000000
             self.salt=os.urandom(16)

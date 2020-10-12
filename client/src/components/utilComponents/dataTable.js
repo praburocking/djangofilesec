@@ -58,7 +58,7 @@ import {withGetScreen} from 'react-getscreen'
         <Descriptions.Item label="Creation Time">{item.created_time}</Descriptions.Item>
         <Descriptions.Item label="Last Edited Time">{item.modified_time}</Descriptions.Item>
         <Descriptions.Item label="description">{item.description}</Descriptions.Item>
-        <Descriptions.Item label="size">{item.size+ " mb"}</Descriptions.Item>
+        <Descriptions.Item label="size">{item.size+ " MB"}</Descriptions.Item>
       </Descriptions>
     </PageHeader>
       </List.Item>

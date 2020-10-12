@@ -124,7 +124,7 @@ const FileUploader=(props)=>
                 textAlign: 'right',
               }}
             >
-              <Button onClick={!isFileUpLoading  &&  handleCancel} style={{ marginRight: 8 }} visible={!isFileUpLoading}>
+              <Button onClick={!isFileUpLoading  &&  handleCancel} style={{ marginRight: 8 }} disabled={!isFileUpLoading}>
                 Cancel
               </Button>
               <Button onClick={handleOk} type="primary" >
