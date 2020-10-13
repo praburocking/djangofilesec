@@ -30,7 +30,7 @@ DEBUG = env('DEBUG')
 #cors settings
 ALLOWED_HOSTS = ['filesec.herokuapp.com','localhost']
 CORS_URLS_REGEX = r'^/api/v1/.*$'
-CORS_ORIGIN_WHITELIST = ['http://localhost:3000']
+CORS_ORIGIN_WHITELIST = ['http://localhost:3000','http://localhost:3001']
 
 # Application definition
 INSTALLED_APPS = [
