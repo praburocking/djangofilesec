@@ -51,7 +51,7 @@ const HomePage=(props)=>
             </Col>
 
     </Row>
-    <div class="push"></div>
+    <div className="push"></div>
     </Content>
    <Footer/>
 </Layout>)
