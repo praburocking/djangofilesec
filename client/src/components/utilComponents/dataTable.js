@@ -150,6 +150,7 @@ const downloadHistoryDrawer=()=>(
                   message.error("Exception while deleting the file, Please try again later")
                 }
               }
+              setDeleteRecord(null)
         }
 
         const  handleCancel = e => {
@@ -185,9 +186,9 @@ const downloadHistoryDrawer=()=>(
                 textAlign: 'right',
               }}
             >
-              <Button onClick={!isFileDownLoading &&  handleCancel} style={{ marginRight: 8 }} visible={!isFileDownLoading}>
+            {!isFileDownLoading && <Button onClick={!isFileDownLoading &&  handleCancel} style={{ marginRight: 8 }} >
                 Cancel
-              </Button>
+              </Button>}
               <Button onClick={()=>download(currentDownload)} type="primary" loading={isFileDownLoading} >
                 Submit
               </Button>
