@@ -2,6 +2,9 @@ from django.db import models
 from django.contrib.auth.models import BaseUserManager,AbstractBaseUser
 from django_s3_storage.storage import S3Storage
 import uuid
+import guardian
+from guardian.mixins import GuardianUserMixin
+from django.contrib.auth.models import PermissionsMixin
 storage = S3Storage(aws_s3_bucket_name='filesec-userimage')
 
 # Create your models here.
@@ -29,11 +32,12 @@ class UserManager(BaseUserManager):
         user = self.create_user(email=email,password=password,**kargs)
         user.staff = True
         user.admin = True
+        user.is_superuser=True
         user.save(using=self._db)
         return user
 
 
-class User(AbstractBaseUser):
+class User(AbstractBaseUser,PermissionsMixin,guardian.mixins.GuardianUserMixin):
 
     id=models.UUIDField(primary_key = True, default = uuid.uuid4, editable = False)
     email=models.EmailField(unique=True,max_length=255)
@@ -66,12 +70,6 @@ class User(AbstractBaseUser):
 
     def __str__(self):  # __unicode__ on Python 2
         return self.email
-
-    def has_perm(self, perm, obj=None):
-        return True
-
-    def has_module_perms(self, app_label):
-        return True
         
     @property
     def is_staff(self):

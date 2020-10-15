@@ -35,6 +35,7 @@ CORS_ORIGIN_WHITELIST = ['http://localhost:3000','http://localhost:3001']
 # Application definition
 INSTALLED_APPS = [
     "sslserver",
+    'grappelli',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -47,6 +48,7 @@ INSTALLED_APPS = [
     'knox',
     'django.contrib.sites',
     'django_s3_storage',
+    'guardian',
     'accounts',
     'licenses',
     'log_viewer',
@@ -55,6 +57,7 @@ INSTALLED_APPS = [
     'payments',
     'userVerification',
     'webhook'
+
    
 ]
 MIDDLEWARE = [
@@ -84,6 +87,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                
             ],
         },
     },
@@ -181,8 +185,10 @@ USE_TZ = True
 
  #static configurations
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'build', 'static')
-STATICFILES_DIRS = []
+STATIC_ROOT =os.path.join(BASE_DIR, 'build', 'static')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'dev_static'),
+]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STRIPE_API_KEY=env('STRIPE_API_KEY')
 STRIPE_PLAN_A_PRODUCT_ID=env('STRIPE_PLAN_A_PRODUCT_ID')
@@ -224,7 +230,10 @@ sentry_sdk.init(
     send_default_pii=True
 )
 
-
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend', # this is default
+    'guardian.backends.ObjectPermissionBackend',
+)
 #knox property
 REST_KNOX = {
   'TOKEN_TTL': timedelta(hours=1),
@@ -232,5 +241,5 @@ REST_KNOX = {
   'AUTO_REFRESH': True,
   'MIN_REFRESH_INTERVAL':600
 }
-
+GUARDIAN_MONKEY_PATCH = False
 django_heroku.settings(locals(),staticfiles=False)

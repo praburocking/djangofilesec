@@ -75,3 +75,9 @@ class DownloadHistory(models.Model):
      time=models.DateTimeField(auto_now_add=True)
      ip=models.TextField(null=False)
      download_success=models.BooleanField(default=False)
+
+     class Meta:
+        permissions = (
+            ('view_current_downloadhistory', 'view current downloadhistory'),
+        )
+

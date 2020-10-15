@@ -11,6 +11,8 @@ from django.core.files import File
 from django.http import HttpResponse
 from .utils import decrypt,key_fuser,get_client_ip
 from cryptography.fernet import InvalidToken
+from guardian.shortcuts import get_objects_for_user
+from guardian.shortcuts import assign_perm
 
 from knox.auth import TokenAuthentication
 
@@ -51,13 +53,14 @@ class filesDownload(GenericAPIView):
                 user_key = request.data["private_key"]
                 file=decrypt(file,key_fuser(key,user_key),salt,file_name)
                 dobj=DownloadHistory.objects.create(file=get_object_or_404(Files,pk=pk),download_success=True,ip=get_client_ip(request))
-               
+                assign_perm('view_downloadhistory',request.user,dobj)
 
                 return(HttpResponse(file,content_type='text/plain',))
             else:
                 return Response({"exception":"invalid data"})
         except (InvalidToken):
             dobj=DownloadHistory.objects.create(file=get_object_or_404(Files,pk=pk),download_success=False,ip=get_client_ip(request))
+            assign_perm('view_downloadhistory',request.user,dobj)
             return Response(data={"message":"invalid key"},status=status.HTTP_401_UNAUTHORIZED)
 
 
@@ -66,7 +69,7 @@ class filesDownloadHistory(GenericAPIView):
     authentication_classes = [TokenAuthentication]
     def get(self,request,fileId):
         try:
-            downloadHistory=DownloadHistory.objects.filter(file=fileId).order_by('-time')
+            downloadHistory=get_objects_for_user(request.user, 'files.view_downloadhistory',klass=DownloadHistory.objects.filter(file=fileId).order_by('-time'))
             downloadHistorySerializer=FilesDownLoadHistorySerializers(downloadHistory,many=True)
             data=downloadHistorySerializer.data
             return Response(data=data,status=status.HTTP_200_OK)

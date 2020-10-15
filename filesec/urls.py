@@ -25,7 +25,9 @@ def trigger_error(request):
     logger.error("we are testing")
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('grappelli/', include('grappelli.urls')), # grappelli URLS
+    path(r'admin/', admin.site.urls),
+    
     path('api/v1/', include('api.urls')),
     path('admin/log_viewer/', include('log_viewer.urls')),
     path('sentry-debug/', trigger_error),

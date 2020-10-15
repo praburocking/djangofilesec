@@ -88,12 +88,15 @@ class loginView(APIView):
         try:
             if not request.user.is_authenticated:
                 user = authenticate(username=request.data['email'], password=request.data['password'])
-                
+                print(user)
+                print(user.verified)
                 if user is not None and user.verified:
                     # login(request,user)
                     licenseUtil=LicenseUtil(userId=user.id)
                     license_value=licenseUtil.getLicenseJo()
+             
                     license_value["stripe_customer_id"]=get_customer(user=user).stripe_customer_id
+                    print(license_value)
                     return Response(data={"user": UserSerializer(instance=user).data, "authtoken": AuthToken.objects.create(user)[1], "license": license_value})
                 elif user is not None and not user.verified:
                     sendConfirm(user,'U_V')

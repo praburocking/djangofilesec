@@ -13,6 +13,8 @@ django-cors-headers==3.2.1
 django-crum==0.7.7
 django-email-verification==0.0.2
 django-environ==0.4.5
+django-grappelli==2.14.2
+django-guardian==2.3.0
 django-heroku==0.3.1
 django-log-viewer==1.0.6
 django-rest-framework==0.1.0
