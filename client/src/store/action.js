@@ -29,7 +29,7 @@ export const listFiles=()=>
         {
         let files=filesResp.data;
         //files.results.map(file=>{file.key=file.id})
-        dispatch ({type:ACTIONS.FILES_INIT,data:filesResp.data.results})}
+        dispatch ({type:ACTIONS.FILES_INIT,data:filesResp.data})}
 }
 }
 
@@ -105,16 +105,12 @@ export const setUserDetailsToStore=(values,type)=>
 const dispatchError=(res,dispatch)=>
 {
   console.log("dispatching error"); 
-  if(res && res.data && res.data.detail)
+  if(res && res.data )
   {
     console.log("dispatching error  inside if"); 
-    dispatch({type:ACTIONS.USER_ERROR,data:{error:{code:res.code,detail:res.data.detail}}})
+    dispatch({type:ACTIONS.USER_ERROR,data:{error:{code:res.code,detail:res.data}}})
   }
-  else
-  {
-    console.log("dispatching unkown error"); 
-    dispatch({type:ACTIONS.USER_ERROR,data:{error:{code:500,detail:"unkown error"}}})
-  }
+
 
 
 }

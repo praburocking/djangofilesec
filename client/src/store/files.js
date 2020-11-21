@@ -1,6 +1,6 @@
 import { ACTIONS } from "./action";
 
-const fileReducer=(state=[],action)=>
+const fileReducer=(state={results:[]},action)=>
 {
 
         if(action.type===ACTIONS.FILES_INIT)
@@ -19,7 +19,7 @@ const fileReducer=(state=[],action)=>
         }
         else if(action.type===ACTIONS.EMT_STORE)
         {
-            return []
+            return {results:[]}
         }
         else{
             return state
