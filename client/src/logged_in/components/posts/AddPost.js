@@ -35,16 +35,20 @@ function AddPost(props) {
           isErrorMessage: true,
           text: "You cannot upload more than one file at once",
         });
-      } else if (acceptedFiles.length === 0) {
-        pushMessageToSnackbar({
-          isErrorMessage: true,
-          text: "File size is more than 5MB",
-        });
-      } else if (acceptedFiles.length === 1) {
+      } 
+       else if (acceptedFiles.length === 1) {
+        if (acceptedFiles[0].size/1000000>5) {
+          pushMessageToSnackbar({
+            isErrorMessage: true,
+            text: "File size should not be more than 5MB",
+          });
+        }
+          else{
         const curfile = acceptedFiles[0];
         curfile.preview = URL.createObjectURL(curfile);
         curfile.key = new Date().getTime();
         setFiles([curfile]);
+          }
       }
     },
     [pushMessageToSnackbar,setFiles]

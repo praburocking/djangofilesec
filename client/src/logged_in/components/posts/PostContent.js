@@ -83,7 +83,7 @@ function PostContent(props) {
     return (
       <Box m={2}>
         <HighlightedInformation>
-          No posts added yet. Click on &quot;NEW&quot; to create your first one.
+          No Files added yet. Click on &quot;ADD FILES&quot; to create your first one.
         </HighlightedInformation>
       </Box>
     );

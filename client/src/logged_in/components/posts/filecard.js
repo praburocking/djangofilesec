@@ -144,12 +144,12 @@ export default function FileCard(props) {
         <Typography variant="h5" component="h2">
          {props.file.name}
         </Typography>
-        <Grid container justify="space-between" color="textSecondary">
+        {/* <Grid container justify="space-between" color="textSecondary">
           <Typography className={classes.pos}>Total download : 30</Typography>
           <Typography className={classes.pos} style={{ color: "red" }}>
             failed :10
           </Typography>
-        </Grid>
+        </Grid> */}
         <Grid container justify="space-between" color="textSecondary" style={{margin:5,paddingTop:7}}>
         <Typography variant="body2" component="p">
           Description:
