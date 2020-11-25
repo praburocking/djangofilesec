@@ -21,3 +21,8 @@ class FilesDownLoadHistorySerializers(serializers.ModelSerializer):
         model=DownloadHistory
         fields='__all__'
        
+class FilesUpdateSerializers(serializers.ModelSerializer):
+   
+    class Meta:
+        model=Files
+        fields=['description']

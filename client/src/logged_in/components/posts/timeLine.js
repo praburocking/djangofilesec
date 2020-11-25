@@ -13,6 +13,8 @@ import HotelIcon from '@material-ui/icons/Hotel';
 import RepeatIcon from '@material-ui/icons/Repeat';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import CancelIcon from '@material-ui/icons/Cancel';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -42,13 +44,18 @@ console.log(props.downloadHistory)
 <TimelineItem>
         <TimelineOppositeContent>
           <Typography variant="body2" color="textSecondary">
-           {curHistory.time}
+         {new Date(curHistory.time+" GMT").toLocaleString()}
           </Typography>
         </TimelineOppositeContent>
         <TimelineSeparator>
-          <TimelineDot>
-            <FastfoodIcon />
-          </TimelineDot>
+        
+          { !curHistory.download_success && <TimelineDot style={{color:"red"}}> < CancelIcon style={{color:"red"}}/> </TimelineDot>}
+          
+          
+          {
+            curHistory.download_success && <TimelineDot style={{color:"green"}}>< CheckCircleIcon style={{color:"green"}}/></TimelineDot>
+          }
+          
           <TimelineConnector />
         </TimelineSeparator>
         <TimelineContent>

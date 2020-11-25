@@ -20,7 +20,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DownloadHistory from "./timeLine";
-import {downloadFiles,deleteFile,getDownloadHistory} from '../../../services/connectToServer'
+import {downloadFiles,deleteFile,getDownloadHistory,updateFile} from '../../../services/connectToServer'
 
 
 
@@ -60,6 +60,7 @@ export default function FileCard(props) {
    const [openEdit, setOpenEdit] = useState(false);
 
   const encryptKeyRef=useRef(null);
+  const despRef=useRef(null);
   const [downloadHistory,setDownloadHistory]=useState(null);
   const handleClose = () => {
     setDownloadHistory(null);
@@ -113,7 +114,20 @@ export default function FileCard(props) {
       console.log(response);
     }
 
-  const handeEdit=()=>{
+  const handeEdit=async()=>{
+    let updateResp= await updateFile(props.file.id,{"description":despRef.current.value});
+    if(![200,201,204].includes( updateResp.status) )
+    {
+      if(updateResp.data && updateResp.data.detail)
+        {
+          props.pushMessageToSnackbar({text:updateResp.data.detail})
+        }
+      else
+        {
+          props.pushMessageToSnackbar({text:"Exception while deleting the file, Please try again later"})
+        }
+      }
+    
     setOpenEdit(false)
   }
     const handeDelete=async()=>
@@ -303,6 +317,7 @@ export default function FileCard(props) {
           multiline
           rows={4}
           defaultValue={props.file.description}
+          inputRef={despRef}
           variant="outlined"
         />
           </DialogContentText>

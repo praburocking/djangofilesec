@@ -2,10 +2,10 @@
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.generics import ListCreateAPIView,RetrieveDestroyAPIView,GenericAPIView
+from rest_framework.generics import ListCreateAPIView,RetrieveDestroyAPIView,GenericAPIView,RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticated
 from .models import Files,DownloadHistory
-from .serializers import FilesSerializers,FilesDownLoadHistorySerializers
+from .serializers import FilesSerializers,FilesDownLoadHistorySerializers,FilesUpdateSerializers
 from django.shortcuts import get_object_or_404
 from django.core.files import File
 from django.http import HttpResponse
@@ -33,9 +33,9 @@ class filesListCreateView(ListCreateAPIView):
         savedData=FilesSerializers(savedData)
         return Response(savedData.data)
 
-class filesRetriveDestroyView(RetrieveDestroyAPIView):
+class filesRetriveDestroyView(RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
-    serializer_class = FilesSerializers
+    serializer_class = FilesUpdateSerializers
     queryset = Files.objects.all()
 
 class filesDownload(GenericAPIView):

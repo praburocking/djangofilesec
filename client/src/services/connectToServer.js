@@ -247,6 +247,17 @@ export const deleteFile=async (id)=>
     }
 }
 
+export const updateFile=async (id,data)=>
+{
+    try {
+        const response = await axios.put(deletefile_url+"/"+id,data,setAuthorizationHeader());
+        return response;
+    }
+    catch (error) {
+        return error.response;
+    }
+}
+
 export const downloadFiles=async (id,key)=>{
 
     try{
