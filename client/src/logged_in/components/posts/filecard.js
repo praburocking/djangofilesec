@@ -21,7 +21,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DownloadHistory from "./timeLine";
 import {downloadFiles,deleteFile,getDownloadHistory,updateFile} from '../../../services/connectToServer'
-
+import ButtonCircularProgress from "../../../shared/components/ButtonCircularProgress";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -58,6 +58,7 @@ export default function FileCard(props) {
   const [openDownload, setOpenDownload] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
    const [openEdit, setOpenEdit] = useState(false);
+   const [isLoading,setIsLoading] =useState(false)
 
   const encryptKeyRef=useRef(null);
   const despRef=useRef(null);
@@ -77,8 +78,10 @@ export default function FileCard(props) {
 
   const download=async (record)=>
     {
+      setIsLoading(true)
       if(encryptKeyRef.current.value===""||encryptKeyRef.current.value===null){
          props.pushMessageToSnackbar({text:"empty encryption key"})
+         setIsLoading(false)
          return
       }
       var downloadResp=await downloadFiles(props.file.id,encryptKeyRef.current.value);
@@ -104,6 +107,7 @@ export default function FileCard(props) {
             props.pushMessageToSnackbar({text:"Exception while downloading the file"})
           }
         }
+        setIsLoading(false)
         setOpenDownload(false)
 
     }
@@ -115,23 +119,26 @@ export default function FileCard(props) {
     }
 
   const handeEdit=async()=>{
+    setIsLoading(true)
     let updateResp= await updateFile(props.file.id,{"description":despRef.current.value});
     if(![200,201,204].includes( updateResp.status) )
     {
       if(updateResp.data && updateResp.data.detail)
         {
           props.pushMessageToSnackbar({text:updateResp.data.detail})
+          props.listFiles()
         }
       else
         {
           props.pushMessageToSnackbar({text:"Exception while deleting the file, Please try again later"})
         }
       }
-    
+      setIsLoading(false)
     setOpenEdit(false)
   }
     const handeDelete=async()=>
     {
+      setIsLoading(true)
         let deleteResp=await deleteFile(props.file.id)
         if([200,201,204].includes( deleteResp.status) )
           {
@@ -148,6 +155,7 @@ export default function FileCard(props) {
                 props.pushMessageToSnackbar({text:"Exception while deleting the file, Please try again later"})
               }
             }
+            setIsLoading(false)
           setOpenDelete(false)
       }
 
@@ -268,8 +276,9 @@ export default function FileCard(props) {
           <Button onClick={()=>setOpenDownload(false)}  >
             cancel
           </Button>
-          <Button onClick={download} color="secondary" variant="contained">
-            download
+          <Button onClick={download} color="secondary" variant="contained" disabled={isLoading}>
+          {!isLoading &&  "download"}
+          {isLoading && <> <ButtonCircularProgress />  download</>}
           </Button>
         </DialogActions>
       </Dialog>
@@ -290,11 +299,12 @@ export default function FileCard(props) {
           </DialogContentText>
         </DialogContent>
         <DialogActions   >
-        <Button onClick={()=>setOpenDelete(false)} >
+        <Button onClick={()=>setOpenDelete(false)} disabled={isLoading} >
           cancel
           </Button>
-          <Button onClick={handeDelete} color="secondary" variant="contained">
-            Delete
+          <Button onClick={handeDelete} color="secondary" variant="contained" disabled={isLoading}>
+          {!isLoading &&  "Delete"}
+          {isLoading && <> <ButtonCircularProgress />  Delete</>}
           </Button>
         </DialogActions>
       </Dialog>
@@ -323,11 +333,12 @@ export default function FileCard(props) {
           </DialogContentText>
         </DialogContent>
         <DialogActions   >
-        <Button onClick={()=>setOpenEdit(false)}  >
+        <Button onClick={()=>setOpenEdit(false)} disabled={isLoading} >
             Cancel
           </Button>
-          <Button onClick={handeEdit} color="secondary" variant="contained">
-            Edit
+          <Button onClick={handeEdit} color="secondary" variant="contained" disabled={isLoading}>
+          {!isLoading &&  "Update"}
+          {isLoading && <> <ButtonCircularProgress />  Update</>}
           </Button>
         </DialogActions>
       </Dialog>

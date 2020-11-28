@@ -73,7 +73,7 @@ function PostContent(props) {
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((file) => (
                 <Grid item xs={12} sm={6} md={3} key={file.id}>
-                    <FileCard file={file} setIsDeletePostDialogOpen={setIsDeletePostDialogOpen} pushMessageToSnackbar={pushMessageToSnackbar}/>
+                    <FileCard file={file} setIsDeletePostDialogOpen={setIsDeletePostDialogOpen} pushMessageToSnackbar={pushMessageToSnackbar} listFiles={props.listFiles}/>
                 </Grid>
               ))}
           </Grid>
