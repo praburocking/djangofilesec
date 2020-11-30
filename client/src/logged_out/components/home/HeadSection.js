@@ -153,9 +153,9 @@ function HeadSection(props) {
                   <Hidden smDown>
                     <Grid item md={6}>
                       <ZoomImage
-                        src="images/logged_out/digy-coffer.png"
+                        src="static/images/logged_out/digy-coffer.png"
                         className={classes.image}
-                        alt="header example"
+                        alt="digy-coffer-screen"
                       />
                     </Grid>
                   </Hidden>
