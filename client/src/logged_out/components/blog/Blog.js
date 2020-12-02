@@ -38,7 +38,6 @@ function Blog(props) {
       display="flex"
       justifyContent="center"
       className={classNames(classes.wrapper, "lg-p-top")}
-      
     >
       <Faq className={classes.faqWrapper}/>
     </Box>
@@ -47,7 +46,6 @@ function Blog(props) {
 
 Blog.propTypes = {
   selectBlog: PropTypes.func.isRequired,
-  classes: PropTypes.object.isRequired,
   width: PropTypes.string.isRequired,
   blogPosts: PropTypes.arrayOf(PropTypes.object),
 };

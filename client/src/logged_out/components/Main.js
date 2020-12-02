@@ -68,6 +68,10 @@ function Main(props) {
     setDialogOpen("termsOfService");
   }, [setDialogOpen]);
 
+  const openPrivacyPolicy = useCallback(() => {
+    setDialogOpen("privacyPolicy");
+  }, [setDialogOpen]);
+
   const handleMobileDrawerOpen = useCallback(() => {
     setIsMobileDrawerOpen(true);
   }, [setIsMobileDrawerOpen]);
@@ -108,7 +112,7 @@ function Main(props) {
   useEffect(fetchBlogPosts, []);
   console.log("props==>",props);
 
- 
+ console.log(" privacy policy ===> ",openPrivacyPolicy);
 
   return (
     <div className={classes.wrapper}>
@@ -122,6 +126,7 @@ function Main(props) {
         dialogOpen={dialogOpen}
         onClose={closeDialog}
         openTermsDialog={openTermsDialog}
+        openPrivacyPolicy={openPrivacyPolicy}
         openRegisterDialog={openRegisterDialog}
         openChangePasswordDialog={openChangePasswordDialog}
       />

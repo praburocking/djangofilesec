@@ -82,7 +82,7 @@ const infos = [
   },
   {
     icon: <MailIcon />,
-    description: "contact prabumohan96@gmail.com"
+    description: "contact prabu@digy-coffer.com"
   }
 ];
 
@@ -211,8 +211,7 @@ function Footer(props) {
               About the Company
             </Typography>
             <Typography style={{ color: "#8f9296" }} paragraph>
-              Lorem ipsum dolor sit amet, consectateur adispicing elit. Fusce
-              euismod convallis velit, eu auctor lacus vehicula sit amet.
+              Digy-Coffer was established by Prabu Mohan, to help people store their small and important files safly on the internet, which our primary motto "To protect and provide privacy to user's Information"
             </Typography>
             <Box display="flex">
               {socialIcons.map((socialIcon, index) => (

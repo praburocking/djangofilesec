@@ -12,6 +12,9 @@ import MeassageIcon from "@material-ui/icons/Message";
 import CancelIcon from "@material-ui/icons/Cancel";
 import calculateSpacing from "./calculateSpacing";
 import FeatureCard from "./FeatureCard";
+import MobileFriendlyIcon from '@material-ui/icons/MobileFriendly';
+import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
+import LockIcon from '@material-ui/icons/Lock';
 
 const iconSize = 30;
 
@@ -21,7 +24,7 @@ const features = [
     headline: "Security",
     text:
       "we are one of the safest place on the internet to store your most important files, we use a user generated and a system generated key to encrypt the file, so it is highly impossible to decrypt the file without two parties",
-    icon: <BuildIcon style={{ fontSize: iconSize }} />,
+    icon: <LockIcon  style={{ fontSize: iconSize }} />,
     mdDelay: "0",
     smDelay: "0"
   },
@@ -30,7 +33,7 @@ const features = [
     headline: "Simplicity",
     text:
       "unlike other data storage services, we focus only on storing small size important digital documents",
-    icon: <CalendarTodayIcon style={{ fontSize: iconSize }} />,
+    icon: <BuildIcon style={{ fontSize: iconSize }} />,
     mdDelay: "200",
     smDelay: "200"
   },
@@ -39,7 +42,7 @@ const features = [
     headline: "Afforability",
     text:
       "we are offering free and afforable paid service as well",
-    icon: <MeassageIcon style={{ fontSize: iconSize }} />,
+    icon: <AttachMoneyIcon style={{ fontSize: iconSize }} />,
     mdDelay: "400",
     smDelay: "0"
   },
@@ -56,20 +59,20 @@ const features = [
     color: "#DD2C00",
     headline: "Download & upload on the GO",
     text:
-      "we provide dedicated mobile applications and mobile first website to make your files more accessible",
-    icon: <BarChartIcon style={{ fontSize: iconSize }} />,
+      " mobile first website to make your files more accessible",
+    icon: <MobileFriendlyIcon style={{ fontSize: iconSize }} />,
     mdDelay: "200",
     smDelay: "0"
   },
-  {
-    color: "#64DD17",
-    headline: "Feature 6",
-    text:
-      "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et.",
-    icon: <HeadsetMicIcon style={{ fontSize: iconSize }} />,
-    mdDelay: "400",
-    smDelay: "200"
-  },
+  // {
+  //   color: "#64DD17",
+  //   headline: "Feature 6",
+  //   text:
+  //     "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et.",
+  //   icon: <HeadsetMicIcon style={{ fontSize: iconSize }} />,
+  //   mdDelay: "400",
+  //   smDelay: "200"
+  // },
   
 ];
 

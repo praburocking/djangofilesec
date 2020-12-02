@@ -89,7 +89,6 @@ class loginView(APIView):
             if not request.user.is_authenticated:
                 user = authenticate(username=request.data['email'], password=request.data['password'])
                 print(user)
-                print(user.verified)
                 if user is not None and user.verified:
                     # login(request,user)
                     licenseUtil=LicenseUtil(userId=user.id)

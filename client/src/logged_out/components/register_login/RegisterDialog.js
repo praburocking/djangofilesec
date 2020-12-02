@@ -37,7 +37,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function RegisterDialog(props) {
-  const { setStatus, theme, onClose, openTermsDialog, status } = props;
+  console.log("props ==> ",props);
+  const { setStatus, theme, onClose, openTermsDialog, status,openPrivacyPolicy } = props;
   const [isLoading, setIsLoading] = useState(false);
   const [hasTermsOfServiceError, setHasTermsOfServiceError] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -52,9 +53,8 @@ function RegisterDialog(props) {
     console.log("props user==>",props.user)
     if(props.user && props.user.username && props.user.email && getCookie("token"))
     {
-         
           setIsLoading(false);
-          props.history.push("/c")
+          props.history.push("/home")
     }
     else if(props.user.error)
     { 
@@ -223,6 +223,24 @@ function RegisterDialog(props) {
             label={
               <Typography variant="body1">
                 I agree to the
+                <span
+                  className={classes.link}
+                  onClick={isLoading ? null : openPrivacyPolicy}
+                  tabIndex={0}
+                  role="button"
+                  onKeyDown={(event) => {
+                    // For screenreaders listen to space and enter events
+                    if (
+                      (!isLoading && event.keyCode === 13) ||
+                      event.keyCode === 32
+                    ) {
+                      openPrivacyPolicy();
+                    }
+                  }}
+                >
+                  {" "}
+                  privacy policy
+                </span> and 
                 <span
                   className={classes.link}
                   onClick={isLoading ? null : openTermsDialog}

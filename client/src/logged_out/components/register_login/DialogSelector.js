@@ -2,17 +2,20 @@ import React, { useState, useCallback, Fragment } from "react";
 import PropTypes from "prop-types";
 import RegisterDialog from "./RegisterDialog";
 import TermsOfServiceDialog from "./TermsOfServiceDialog";
+import PrivacyPolicyDialog from "./privacyPolicy";
 import LoginDialog from "./LoginDialog";
 import ChangePasswordDialog from "./ChangePasswordDialog";
 import ModalBackdrop from "../../../shared/components/ModalBackdrop";
 
 function DialogSelector(props) {
+  console.log("dialogselector ===>  ",props);
   const {
     dialogOpen,
     openTermsDialog,
     openRegisterDialog,
     openLoginDialog,
     openChangePasswordDialog,
+    openPrivacyPolicy,
     onClose,
   } = props;
   const [loginStatus, setLoginStatus] = useState(null);
@@ -25,18 +28,22 @@ function DialogSelector(props) {
   }, [onClose, setLoginStatus, setRegisterStatus]);
 
   const printDialog = useCallback(() => {
+    console.log("asdaf ==> ",dialogOpen);
     switch (dialogOpen) {
       case "register":
         return (
           <RegisterDialog
             onClose={_onClose}
             openTermsDialog={openTermsDialog}
+            openPrivacyPolicy={openPrivacyPolicy}
             status={registerStatus}
             setStatus={setRegisterStatus}
           />
         );
       case "termsOfService":
         return <TermsOfServiceDialog onClose={openRegisterDialog} />;
+      case "privacyPolicy":
+        return <PrivacyPolicyDialog onClose={openRegisterDialog} / > ; 
       case "login":
         return (
           <LoginDialog
