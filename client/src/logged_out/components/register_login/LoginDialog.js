@@ -57,18 +57,18 @@ function LoginDialog(props) {
   const loginPassword = useRef();
 
   useEffect(()=>{
-    console.log(" props.user ",props.user)
+   
     if(props.user.username && props.user.email &&getCookie("token"))
     {
-      props.history.push('/c')
+      props.history.push('/home')
     }
     else if(props.user.error)
     {
       console.log("error 1 ==?",props.user.error)
-      if(props.user.error.detail)
+      if(props.user.error.detail.detail)
       {
         console.log("error  ==?",props.user.error.detail)
-        setStatus("error_"+props.user.error.detail);
+        setStatus("error_"+props.user.error.detail.detail);
       }
       
     }
