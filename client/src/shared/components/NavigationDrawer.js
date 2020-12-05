@@ -29,7 +29,13 @@ const styles = theme => ({
   },
   noDecoration: {
     textDecoration: "none !important"
-  }
+  },
+  bottomPush: {
+    position: "fixed",
+    bottom: 0,
+    textAlign: "center",
+    paddingBottom: 10,
+}
 });
 
 function NavigationDrawer(props) {
@@ -41,9 +47,10 @@ function NavigationDrawer(props) {
     classes,
     menuItems,
     selectedItem,
-    theme
+    theme,
+    bottomMenuItems
   } = props;
-
+console.log("bottom menu  ==>",bottomMenuItems);
   useEffect(() => {
     window.onresize = () => {
       if (isWidthUp("sm", width) && open) {
@@ -116,7 +123,57 @@ function NavigationDrawer(props) {
             </ListItem>
           );
         })}
+        </List>
+        { bottomMenuItems &&
+      <div className={classes.bottomPush}>
+      <List className={classes.blackList}>
+        {bottomMenuItems.map(element => {
+          if (element.link && false) {
+            console.log("link ",element)
+            return (
+              <Link
+                key={element.name}
+                to={element.link}
+                className={classes.noDecoration}
+                onClick={onClose}
+              >
+                <ListItem
+                  button
+                  selected={selectedItem === element.name}
+                  /**
+                   * We disable ripple as it will make a weird animation
+                   * with primary and secondary color
+                   */
+                  disableRipple
+                  disableTouchRipple
+                >
+                  <ListItemIcon>{element.icon}</ListItemIcon>
+                  <ListItemText
+                    primary={
+                      <Typography variant="subtitle1" className="text-white">
+                        {element.name}
+                      </Typography>
+                    }
+                  />
+                </ListItem>
+              </Link>
+            );
+          }
+          return (
+            <ListItem button key={element.name} onClick={element.onClick}>
+              <ListItemIcon>{element.icon}</ListItemIcon>
+              <ListItemText
+                primary={
+                  <Typography variant="subtitle1" className="text-white">
+                    {element.name}
+                  </Typography>
+                }
+              />
+            </ListItem>
+          );
+        })}
       </List>
+</div>}
     </Drawer>
   );
 }

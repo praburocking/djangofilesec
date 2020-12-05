@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { List, Divider, Paper, withStyles } from "@material-ui/core";
 import SubscriptionTable from "./SubscriptionTable";
 import SubscriptionInfo from "./SubscriptionInfo";
+import Account from "../AccountView/index"
 
 const styles = {
   divider: {
@@ -30,6 +31,10 @@ function Subscription(props) {
     </Paper>
   );
 }
+
+// function Subscription(props){
+// return(<Account {...props}/>)
+// }
 
 Subscription.propTypes = {
   classes: PropTypes.object.isRequired,

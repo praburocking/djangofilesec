@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import {connect} from 'react-redux'
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import {
   AppBar,
   Toolbar,
@@ -20,6 +21,7 @@ import {
   withStyles,
   isWidthUp,
   withWidth,
+  Grid
 } from "@material-ui/core";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import ImageIcon from "@material-ui/icons/Image";
@@ -139,6 +141,12 @@ const styles = (theme) => ({
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
   },
+   bottomPush: {
+    position: "fixed",
+    bottom: 0,
+    textAlign: "center",
+    paddingBottom: 10,
+}
 });
 
 
@@ -147,6 +155,7 @@ function NavBar(props) {
   const { selectedTab, messages, classes, width, openAddBalanceDialog } = props;
   // Will be use to make website more accessible by screen readers
   const links = useRef([]);
+  const bottomLinks = useRef([]);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isSideDrawerOpen, setIsSideDrawerOpen] = useState(false);
 
@@ -168,6 +177,7 @@ function NavBar(props) {
 
 
   const logOut=async()=>{
+    console.log("log out")
     const signOutRes=await signout();
     if([200,204].includes(signOutRes.status))
     {
@@ -180,6 +190,18 @@ function NavBar(props) {
         const exception=true;
     }
   }
+
+  const bottomMenuItems=[ {
+   
+    name: "Logout",
+    onClick:logOut,
+    icon: {
+      desktop: (
+        <ExitToAppIcon className="text-white" style={{color:"red"}} fontSize="large" />
+      ),
+      mobile: <ExitToAppIcon className="text-white" />,
+    },
+  },];
 
   const menuItems = [
     
@@ -217,17 +239,7 @@ function NavBar(props) {
         mobile: <AccountBalanceIcon className="text-white" />,
       },
     },
-    {
-      link: "/",
-      name: "Logout",
-      onClick:logOut,
-      icon: {
-        desktop: (
-          <PowerSettingsNewIcon className="text-white" style={{color:"red"}} fontSize="small" />
-        ),
-        mobile: <PowerSettingsNewIcon className="text-white" />,
-      },
-    },
+   
   ];
   return (
     <Fragment>
@@ -296,6 +308,16 @@ function NavBar(props) {
           }}
           open={false}
         >
+        <Grid
+  container
+  item
+  direction="column"
+  justify="space-between"
+  alignItems="stretch"
+  flex
+  xs={11}
+>
+          <Grid item container flex>
           <List>
             {menuItems.map((element, index) => (
               <Link
@@ -332,8 +354,54 @@ function NavBar(props) {
                   </ListItem>
                 </Tooltip>
               </Link>
+
+             
             ))}
           </List>
+          </Grid>
+          <Grid item >
+          <List>
+            {bottomMenuItems.map((element, index) => (
+              <Link
+                to={element.link}
+                className={classes.menuLink}
+                onClick={element.onClick}
+                key={index}
+                ref={(node) => {
+                  bottomLinks.current[index] = node;
+                }}
+              >
+                <Tooltip
+                  title={element.name}
+                  placement="right"
+                  key={element.name}
+                >
+                  <ListItem
+                    selected={selectedTab === element.name}
+                    button
+                    divider={index !== menuItems.length - 1}
+                    className={classes.permanentDrawerListItem}
+                    onClick={() => {
+                      bottomLinks.current[index].click();
+                    }}
+                    aria-label={
+                      element.name === "Logout"
+                        ? "Logout"
+                        : `Go to ${element.name}`
+                    }
+                  >
+                    <ListItemIcon className={classes.justifyCenter}>
+                      {element.icon.desktop}
+                    </ListItemIcon>
+                  </ListItem>
+                </Tooltip>
+              </Link>
+
+             
+            ))}
+          </List>
+          </Grid>
+          </Grid>
         </Drawer>
       </Hidden>
       <NavigationDrawer
@@ -343,6 +411,14 @@ function NavBar(props) {
           icon: element.icon.mobile,
           onClick: element.onClick,
         }))}
+        bottomMenuItems={bottomMenuItems.map((element) => ({
+          link: element.link,
+          name: element.name,
+          icon: element.icon.mobile,
+          onClick: element.onClick,
+        }))
+
+        }
         anchor="left"
         open={isMobileOpen}
         selectedItem={selectedTab}

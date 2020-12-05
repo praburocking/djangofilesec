@@ -22,8 +22,17 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DownloadHistory from "./timeLine";
 import {downloadFiles,deleteFile,getDownloadHistory,updateFile} from '../../../services/connectToServer'
 import ButtonCircularProgress from "../../../shared/components/ButtonCircularProgress";
+import { withStyles} from '@material-ui/core/styles';
 
-
+const HtmlTooltip = withStyles((theme) => ({
+  tooltip: {
+    backgroundColor: '#f5f5f9',
+    color: 'rgba(0, 0, 0, 0.87)',
+    maxWidth: 220,
+    fontSize: theme.typography.pxToRem(12),
+    border: '1px solid #dadde9',
+  },
+}))(Tooltip);
 const useStyles = makeStyles((theme) => ({
   root: {
     minWidth: 270,
@@ -163,9 +172,11 @@ export default function FileCard(props) {
    <div>
     <Card className={classes.root}>
       <CardContent style={{minHeight:200}}>
-        <Typography variant="h5" component="h2">
+      <HtmlTooltip title={props.file.name} arrow>
+        <Typography variant="h5" component="h2" noWrap={true}>
          {props.file.name}
         </Typography>
+        </HtmlTooltip>
         {/* <Grid container justify="space-between" color="textSecondary">
           <Typography className={classes.pos}>Total download : 30</Typography>
           <Typography className={classes.pos} style={{ color: "red" }}>
