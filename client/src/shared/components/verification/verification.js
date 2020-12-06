@@ -1,12 +1,12 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect,useState,useRef } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import { Grid, Box, isWidthUp, withWidth, Button ,Container,Typography} from "@material-ui/core";
+import { Grid, Box, isWidthUp, withWidth, Button ,Container,Typography,TextField} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 // import {UserVerification} from './userVerification';
 import {withRouter} from 'react-router-dom'
 
-import {verifyUser} from '../../../services/connectToServer'
+import {verifyUser,forgotPasswordVerify,resetPass} from '../../../services/connectToServer'
 import constants from '../../../util/constants'
   
 const useStyles = makeStyles((theme) => ({
@@ -41,6 +41,7 @@ const useStyles = makeStyles((theme) => ({
 function Verify(props) {
   const classes=useStyles();
 console.log("verification props ==>",props);
+const passwordComp=useRef(null);
 const [isVerified,setVerified]=useState(true);
 const [status,setStatus]=useState("Verifying User...");
 
@@ -52,26 +53,27 @@ const verifyuser=async (data)=>
     {   let token=props.token;
         let type=props.type;
         console.log("token ==> ",token);
-       const verifyUserResp=await verifyUser(token,type,data);
-       if(!constants.errorResponse.includes (verifyUserResp.status))
-       {
-        
-        setVerified(true);
-        props.history.push('/');
-       
-       }
-       else
-       {   console.log("eriyuser ",verifyUserResp.data)
-           if(verifyUserResp.data.message)
-           {
-            setStatus(verifyUserResp.data.message)
-           }
-           else
-           {
-               setStatus("Exception while verifying user")
-           }
-           
-       }
+            const verifyUserResp=await verifyUser(token,type,data);
+            if(!constants.errorResponse.includes (verifyUserResp.status))
+            {
+              
+              setVerified(true);
+              props.history.push('/');
+            
+            }
+            else
+            {   console.log("eriyuser ",verifyUserResp.data)
+                if(verifyUserResp.data.message)
+                {
+                  setStatus(verifyUserResp.data.message)
+                }
+                else
+                {
+                    setStatus("Exception while verifying user")
+                }
+                
+            }
+    
     }
     else
     {
@@ -85,7 +87,7 @@ const verifyuser=async (data)=>
                 verifyuser(null);
             }
     },[]);
-
+if(props.type==='U_V'){
   return (
     <Container maxWidth="sm" className={classes.container}>
     <Grid
@@ -127,6 +129,101 @@ const verifyuser=async (data)=>
     </Grid>
     </Container>
   );
+}
+else if(props.type==='P_R'){
+   return(
+   
+    <Container maxWidth="sm" className={classes.container}>
+    <Grid
+  container
+  direction="column"
+  justify="center"
+  alignItems="center"
+>
+<Grid>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          verifyuser({password:passwordComp.current.value});
+        }}
+      >
+        <Grid className={classes.dialogContent}>
+          <Typography paragraph>
+           Kindly enter your new password
+          </Typography>
+          <TextField
+            variant="outlined"
+            margin="dense"
+            required
+            fullWidth
+            label="Password"
+            autoFocus
+            type="password"
+            autoComplete="off"
+            inputRef={passwordComp}
+          />
+        </Grid>
+        <Grid className={classes.dialogActions}>
+          <Button
+            type="submit"
+            variant="contained"
+            color="secondary"
+           
+          >
+            Reset password
+          
+          </Button>
+        </Grid>
+      </form>
+  </Grid>
+    </Grid>
+    </Container>
+   
+   );
+}
+else{
+  return (
+    <Container maxWidth="sm" className={classes.container}>
+    <Grid
+  container
+  direction="column"
+  justify="center"
+  alignItems="center"
+>
+    <Grid item
+    container
+  direction="column"
+  justify="center"
+  alignItems="center"
+      className={classNames(classes.wrapper, "lg-p-top")}
+      
+    >
+    <Grid item
+    container span={4} justify="center"
+  alignItems="center">
+    <Typography variant="h3" component="h4" style={{padding:10}}>
+ Invalid verification URL
+</Typography>
+</Grid>
+<Grid item
+    container span={4} justify="center"
+  alignItems="center">
+    <Typography variant="h5" component="h5"  style={{padding:10}}>
+ Kindly try again
+</Typography>
+</Grid>
+<Grid item
+    container span={4} justify="center"
+  alignItems="center">
+     <Button variant="contained" color="primary" size="large" onClick={verifyuser} style={{padding:10,margin:20}}>
+        Verify User
+</Button>
+</Grid>
+    </Grid>
+    </Grid>
+    </Container>
+  );
+}
 }
 
 Verify.propTypes = {

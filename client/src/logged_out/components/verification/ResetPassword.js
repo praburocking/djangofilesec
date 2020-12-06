@@ -2,7 +2,7 @@ import React, { useState, useCallback,useRef } from "react";
 import PropTypes from "prop-types";
 import {
   TextField,
-  Dialog,
+Grid,
   DialogContent,
   DialogActions,
   Button,
@@ -12,6 +12,7 @@ import {
 import ButtonCircularProgress from "../../../shared/components/ButtonCircularProgress";
 import {forgotPassword} from '../../../services/connectToServer'
 import constants from '../../../util/constants';
+import {forgotPasswordVerify,resetPass} from '../../../services/connectToServer'
 
 const styles = (theme) => ({
   dialogContent: {
@@ -57,14 +58,7 @@ function ChangePassword(props) {
   }, [setIsLoading, setLoginStatus, onClose]);
 
   return (
-    <Dialog
-      open
-      hideBackdrop
-      onClose={onClose}
-      disableBackdropClick={isLoading}
-      disableEscapeKeyDown={isLoading}
-      maxWidth="xs"
-    >
+    <Grid>
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -103,7 +97,7 @@ function ChangePassword(props) {
           </Button>
         </DialogActions>
       </form>
-    </Dialog>
+  </Grid>
   );
 }
 
