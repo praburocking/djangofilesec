@@ -61,7 +61,8 @@ export default function Faq() {
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-          To put it in the layman's term google drive is your garage or a cuboard where you put all your stuffs and filecoffer is your bank safe where you will only put the most important thing and only, only you can access it.
+         A normal cloud drive uses "encryption at rest" method to provide security to the data when the drive is compromised, which is good when we considering the wide types of file we are storing on the drive. while digy-coffer on other hand uses combined symmetric encryption to encrypt the files, 
+         which can we decrypted only by the user. Digy-Coffer provides additional security to the informations that are too sensitve to store in normal cloud Drives.
           </Typography>
         </AccordionDetails>
       </Accordion>
