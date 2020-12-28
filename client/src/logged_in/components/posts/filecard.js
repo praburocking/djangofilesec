@@ -24,6 +24,10 @@ import {downloadFiles,deleteFile,getDownloadHistory,updateFile} from '../../../s
 import ButtonCircularProgress from "../../../shared/components/ButtonCircularProgress";
 import { withStyles} from '@material-ui/core/styles';
 
+import {state_to_props} from '../../../util/common_utils'
+import {listFiles} from '../../../store/action'
+import {connect} from 'react-redux'
+
 const HtmlTooltip = withStyles((theme) => ({
   tooltip: {
     backgroundColor: '#f5f5f9',
@@ -61,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function FileCard(props) {
+ function FileCard(props) {
   const classes = useStyles();
   // const [openDownloadHist, setOpenDownloadHist] = useState(false);
   const [openDownload, setOpenDownload] = useState(false);
@@ -107,8 +111,10 @@ export default function FileCard(props) {
         }
       else
         {
+          console.log("push message ",downloadResp)
           if(downloadResp.data && downloadResp.data.message)
             {
+              console.log("push message")
               props.pushMessageToSnackbar({text:downloadResp.data.message})
             }
           else
@@ -151,7 +157,8 @@ export default function FileCard(props) {
         let deleteResp=await deleteFile(props.file.id)
         if([200,201,204].includes( deleteResp.status) )
           {
-            props.deleteFromStore(props.file.id)
+            //props.deleteFromStore(props.file.id)
+            props.listFiles()
           }
         else
           {
@@ -187,7 +194,7 @@ export default function FileCard(props) {
         <Typography variant="body2" component="p">
           Description:
         </Typography>
-          <Typography className={classes.pos}>Size :{props.file.size}</Typography>
+          <Typography className={classes.pos}>Size :{ Math.round((props.file.size + Number.EPSILON) * 100) / 100} MB</Typography>
         </Grid>
         <Grid container justify="space-between" style={{minHeight:110}}  >
         <Typography variant="body2" component="p" >
@@ -357,3 +364,5 @@ export default function FileCard(props) {
     </div>
   );
 }
+
+export default connect(state_to_props,{listFiles})(FileCard);

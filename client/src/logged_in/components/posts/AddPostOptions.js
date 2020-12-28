@@ -1,6 +1,7 @@
 import React, { Fragment, useState, useCallback } from "react";
 import PropTypes from "prop-types";
 import {useDropzone} from 'react-dropzone'
+import VisibilityPasswordTextField from "../../../shared/components/VisibilityPasswordTextField";
 import {
   Typography,
   IconButton,
@@ -91,6 +92,8 @@ function AddPostOptions(props) {
     uploadAt,
     onChangeUploadAt,
   } = props;
+  const [isPasswordVisible,setIsPasswordVisible]=useState(false)
+  const [status,setStatus]=useState(null)
 
   const printFile = useCallback(() => {
     if (files[0]) {
@@ -190,15 +193,40 @@ function AddPostOptions(props) {
               </ListItemText>
               
                 <ListItemSecondaryAction>
-                <TextField
-                      id="standard-password-input"
-          label="Encryption Key"
-          type="password"
-          autoComplete="current-password"
-          variant="outlined"
-          size="small"
-          inputRef={encrpytKey}
-        />
+                <VisibilityPasswordTextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            error={
+              status === "passwordTooShort" || status === "passwordsDontMatch"
+            }
+            label="Encryption Key"
+            inputRef={encrpytKey}
+            autoComplete="off"
+            size="small"
+            onChange={() => {
+              if (
+                status === "passwordTooShort" ||
+                status === "passwordsDontMatch"
+              ) {
+                setStatus(null);
+              }
+            }}
+            helperText={(() => {
+              if (status === "passwordTooShort") {
+                return "Create a password at least 6 characters long.";
+              }
+              if (status === "passwordsDontMatch") {
+                return "Your passwords dont match.";
+              }
+              return null;
+            })()}
+            FormHelperTextProps={{ error: true }}
+            isVisible={isPasswordVisible}
+            onVisibilityChange={setIsPasswordVisible}
+            name="password"
+          />
                 </ListItemSecondaryAction>
    
             </ListItem>
@@ -213,16 +241,40 @@ function AddPostOptions(props) {
               </ListItemText>
               
                 <ListItemSecondaryAction>
-                <TextField
-                      id="standard-password-input"
-          label="Encryption Key"
-          type="password"
-          autoComplete="current-password"
-          variant="outlined"
-          size="small"
-          inputRef={reEncrpytKey}
-         
-        />
+               
+       
+          <VisibilityPasswordTextField
+            variant="outlined"
+            margin="normal"
+            size="small"
+            required
+            fullWidth
+            error={
+              status === "passwordTooShort" || status === "passwordsDontMatch"
+            }
+            label="Repeat Encryption Key"
+            inputRef={reEncrpytKey}
+            autoComplete="off"
+            onChange={() => {
+              if (
+                status === "passwordTooShort" ||
+                status === "passwordsDontMatch"
+              ) {
+                setStatus(null);
+              }
+            }}
+            helperText={(() => {
+              if (status === "passwordTooShort") {
+                return "Create a password at least 6 characters long.";
+              }
+              if (status === "passwordsDontMatch") {
+                return "Your passwords dont match.";
+              }
+            })()}
+            FormHelperTextProps={{ error: true }}
+            isVisible={isPasswordVisible}
+            onVisibilityChange={setIsPasswordVisible}
+          />
                 </ListItemSecondaryAction>
    
             </ListItem>
