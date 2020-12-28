@@ -188,6 +188,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT =os.path.join(BASE_DIR, 'build', 'static')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'dev_static'),
+   
 ]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STRIPE_API_KEY=env('STRIPE_API_KEY')
