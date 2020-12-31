@@ -61,8 +61,8 @@ export default function Faq() {
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-         A normal cloud drive uses "encryption at rest" method to provide security to the data when the drive is compromised, which is good when we considering the wide types of file we are storing on the drive. while digy-coffer on other hand uses combined symmetric encryption to encrypt the files, 
-         which can we decrypted only by the user. Digy-Coffer provides additional security to the informations that are too sensitve to store in normal cloud Drives.
+         A normal cloud drive uses "encryption at rest" method to provide security to the data when the Hard-drive is compromised, which is good when we considering the wide types of file we are storing on the drive. while digy-coffer on the other hand uses combined symmetric encryption to encrypt the files, 
+         which can be decrypted only by the user. Digy-Coffer provides additional security to the informations that are too sensitve to store in normal cloud Drives.
           </Typography>
         </AccordionDetails>
       </Accordion>
