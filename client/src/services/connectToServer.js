@@ -4,7 +4,7 @@ require('dotenv').config()
 
 console.log("server url",process.env);
 
-let url="https://digy-coffer.com/api/v1/"
+let url="http://digy-coffer.com/api/v1/"
 
 
 //url="https://127.0.0.1:8000/api/v1/"
